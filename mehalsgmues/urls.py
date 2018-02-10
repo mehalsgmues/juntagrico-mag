@@ -15,10 +15,14 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import juntagrico
+from mehalsgmues import views as mehalsgmues
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('juntagrico.urls')),
     url(r'^$', juntagrico.views.home),
     url(r'^impersonate/', include('impersonate.urls')),
+    
+    # API
+    url(r'^wochenmail/$', mehalsgmues.api_emaillist)
 ]
