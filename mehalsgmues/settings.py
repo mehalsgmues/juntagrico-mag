@@ -193,8 +193,8 @@ IMAGES = {'status_100': '/static/img/indicators/status_100.png',
             'core': '/static/img/indicators/single_core.png'}
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
-    'welcome': 'mails/welcome_mail.txt',
-    'co_welcome': 'mails/welcome_added_mail.txt',
+    'welcome': 'mag_mails/welcome_mail.txt',
+    'co_welcome': 'mag_mails/welcome_added_mail.txt',
     'password': 'mails/password_reset_mail.txt',
     'j_reminder': 'mails/job_reminder_mail.txt',
     'j_canceled': 'mails/job_canceled_mail.txt',
