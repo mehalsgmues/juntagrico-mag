@@ -84,6 +84,8 @@ USE_I18N = True
 # calendars according to the current locale.
 USE_L10N = True
 
+TIME_ZONE = 'UTC'
+
 DATE_INPUT_FORMATS =['%d.%m.%Y',]
 
 AUTHENTICATION_BACKENDS = (
@@ -154,30 +156,30 @@ ASSIGNMENT_STRING = "Mitglied"
 ASSIGNMENTS_STRING = "Arbeitseinsätze"
 ORGANISATION_NAME = "meh als gmües"
 ORGANISATION_LONG_NAME = "meh als gmües"
-ORGANISATION_ADDRESS = {"name":"meh als gmües", 
+ORGANISATION_ADDRESS = {"name":"Genossenschaft meh als gmües", 
             "street" : "Dialogweg",
             "number" : "6",
             "zip" : "8050",
             "city" : "Zürich",
-            "extra" : "Address Extra"}
+            "extra" : "c/o Verein MIR"}
 ORGANISATION_PHONE =''
-ORGANISATION_BANK_CONNECTION = {"PC" : "PC Number",
-            "IBAN" : "IBAN",
-            "BIC" : "BIC",
-            "NAME" : "Bank Name",
-            "ESR" : "ESR Number"}
+ORGANISATION_BANK_CONNECTION = {"PC" : "",
+            "IBAN" : "CH80 0900 0000 6170 9835 0",
+            "BIC" : "POFICHBEXXX",
+            "NAME" : "PostFinance AG",
+            "ESR" : ""}
 INFO_EMAIL = "info@mehalsgmues.ch"
 SERVER_URL = "www.mehalsgmues.ch"
-ADMINPORTAL_NAME = "admin.mehalsgmues"
-ADMINPORTAL_SERVER_URL = "admin.mehalsgmues.ch"
+ADMINPORTAL_NAME = "my.mehalsgmues"
+ADMINPORTAL_SERVER_URL = "my.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 STYLE_SHEET = "/static/css/mehalsgmues.css"
 BOOTSTRAP = "/static/external/bootstrap-3.3.1/css/bootstrap.min.css"
 FAVICON = "/static/img/favicon_mag.ico"
-FAQ_DOC = "/static/doc/fac.pdf"
-EXTRA_SUB_INFO = "/static/doc/extra_sub_info.pdf"
-ACTIVITY_AREA_INFO = "/static/doc/activity_area_info.pdf"
+FAQ_DOC = ""
+EXTRA_SUB_INFO = ""
+ACTIVITY_AREA_INFO = ""
 SHARE_PRICE = "250"
 PROMOTED_JOB_TYPES = []
 PROMOTED_JOBS_AMOUNT = 2

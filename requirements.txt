@@ -1,4 +1,4 @@
-juntagrico>=1.1.1
+juntagrico==1.1.2
 boto==2.48.0
 django-storages==1.6.5
 gunicorn==19.7.1
