@@ -17,6 +17,7 @@ DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True')=='True'
 
 ALLOWED_HOSTS = ['admin.mehalsgmues.ch', 'localhost', 'my.mehalsgmues.ch']
 
+ADMINS = [('IT', 'it@mehalsgmues.ch')]
 
 # Application definition
 
