@@ -23,7 +23,7 @@ ADMINS = (
     ('Admin', os.environ.get('MEHALSGMUES_ADMIN_EMAIL')),
 )
 MANAGERS = ADMINS
-SERVER_EMAIL="server@ortoloco.ch"
+SERVER_EMAIL="server@mehalsgmues.ch"
 
 
 # Application definition
