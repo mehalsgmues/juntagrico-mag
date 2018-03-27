@@ -17,7 +17,14 @@ DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True')=='True'
 
 ALLOWED_HOSTS = ['admin.mehalsgmues.ch', 'localhost', 'my.mehalsgmues.ch']
 
-ADMINS = [('IT', 'it@mehalsgmues.ch')]
+
+# Admin Settings
+ADMINS = (
+    ('Admin', os.environ.get('MEHALSGMUES_ADMIN_EMAIL')),
+)
+MANAGERS = ADMINS
+SERVER_EMAIL="server@ortoloco.ch"
+
 
 # Application definition
 
