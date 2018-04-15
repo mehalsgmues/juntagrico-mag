@@ -12,4 +12,4 @@ import json
 def api_emaillist(request):
     """prints comma separated list of member emails"""
     # get emails
-    return HttpResponse(', '.join( Member.objects.all().values_list('email', flat=True) ))
+    return HttpResponse(', '.join( Member.objects.filter(inactive = False).values_list('email', flat=True) ))
