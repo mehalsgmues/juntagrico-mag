@@ -1,4 +1,4 @@
-git+http://github.com/ortoloco/juntagrico.git
+git+http://github.com/ortoloco/juntagrico.git@da16567d7ffcd1b5197c16e2748
 boto==2.48.0
 django-storages==1.6.5
 gunicorn==19.7.1
