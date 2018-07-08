@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load config %}
+
+{% block content %}
+    {% for message in messages %}
+        {{ message }}
+        {% if forloop.last %}
+            <br/><br/>
+        {% endif %}
+    {% endfor %}
+
+    {% autoescape off %}
+        {{ announcement }}
+    {% endautoescape %}
+    <h3>Aktuelle Arbeitseinsätze</h3>
+    {% include "snippet_jobs.html" %}
+    <br/>
+    <a href="/my/assignments" class="joblink">Hier alle Arbeitseinsätze anzeigen</a>
+    <br/><br/><br/>
+    <h4>Zu den Kalendern der einzelnen Tätigkeitsbereiche</h4>
+    <table class="teams">
+        {% for team in teams %}
+            <tr>
+                <td><a href="/my/teams/{{ team.id }}" class="{% if team.core %}core {% endif %}">{{ team.name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/static/external/datatables.min.js"></script>
+<script type="text/javascript" src="/static/external/require.min.js" data-main="/static/js/initHomeJobs.js"></script>
+{% endblock %}

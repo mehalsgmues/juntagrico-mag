@@ -77,34 +77,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     padding: 0px 40px 0 40px;
 }
 
-.ortoloco {
-    margin-top: 80px;
-    background: no-repeat; 
-    padding-bottom: 400px;
-}
-
-.ortoloco.home {
-    background: none;
-    padding-bottom: 0;
-}
-
-.ortoloco.home .lastNews {
-    margin-bottom: 585px;
-}
-
-.ortoloco.home .lastNews h3 {
-    color: #753D18;
-}
-
-.ortoloco.home .ortoloco_gemuese {
-    background: url(/static/img/mehalsgmues_logo.png) right bottom no-repeat;
-    position: absolute;
-    bottom: -5px;
-    right: 70px;
-    width: 600px;
-    height: 600px;
-}
-
 /* menu */
 .nav-pills > li.active > a {
     color: #e57f32;
@@ -162,22 +134,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 
 .nav-pills ul.nav-pills > .active > a, .nav-pills ul.nav-pills > .active > a:hover, .nav-pills ul.nav-pills > .active > a:focus {
     background-color: transparent;
-}
-
-.myortoloco_link {
-    position: absolute;
-    right: 25px;
-    bottom: 80px;
-    width: 18px;
-    height: 140px;
-    display: inline-block;
-    background: url(/static/img/myortoloco_link.png) 0px 0px no-repeat;
-
-}
-
-.myortoloco_link:hover {
-    background-position: -19px 0;
-
 }
 
 /* medias */
@@ -261,6 +217,10 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     height: 310px;
 }
 
+.pagetitle {
+    margin-top: 5px;
+}
+
 .next-jobs {
     margin-top: 5px;
 }
@@ -290,6 +250,12 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     margin-bottom: 20px;
 }
 
+a.joblink {
+    font-size: 30pt;
+    font-weight: bold;
+    color: #F4441C;
+}
+
 #filter-locos a {
     color: white;
     text-decoration: underline;
@@ -315,18 +281,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 
 .jobstatus {
     margin-right: -7px;
-}
-
-.ortoloco {
-    margin-top: 0;
-}
-
-.myortoloco {
-    margin-top: 80px;
-}
-
-.ortoloco h3 {
-    margin-top: 30px;
 }
 
 .createabo .control-label {
