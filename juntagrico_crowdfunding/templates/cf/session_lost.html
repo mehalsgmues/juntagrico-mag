@@ -1,0 +1,14 @@
+{% extends "cf/public_access_wrapper.html" %}
+{% load config %}
+{% block page_title %}
+    <h3>Es ist etwas schiefgegangen</h3>
+{% endblock %}
+
+{% block content %}
+
+    <div>Leider haben wir die angefangene Bestellung verloren. Bitte versuche es erneut.</div>
+    <div><a href="/cf/">Zurück zu den Projekten</a></div>
+
+    <div><a href="mailto:it@mehalsgmues.ch">Support kontaktieren</a></div>
+
+{% endblock %}

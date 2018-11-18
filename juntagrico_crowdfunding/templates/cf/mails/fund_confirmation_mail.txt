@@ -1,0 +1,30 @@
+{% extends "mails/email.txt" %}
+{% load config %}
+{% block content %}
+Vielen Dank für deine Unterstützung.
+
+Bitte überweise den Betrag von {% config "currency" %} {{ fund.contribution }} auf das folgende Konto:
+    {% config "organisation_address" as addr%}
+    {{ addr.name }}
+    {% if addr.extra %}
+    {{ addr.extra }}
+    {% endif %}
+    {{ addr.street }} {{ addr.number }}
+    {{ addr.zip }} {{ addr.city }}
+    {% config "organisation_bank_connection" as bank%}
+    {{ bank.NAME }}
+    Postkonto-Nummer: {{ bank.PC }}
+    IBAN: {{ bank.IBAN }}
+    BIC: {{ bank.BIC }}
+
+{% if password %}
+Mit deiner E-mail-Addresse und folgendem Passwort kannst du dich auf {{serverurl}}/cf anmelden.
+Passwort: {{ password }}
+{% else %}
+Du findest hier eine Übersicht deiner Beiträge {{serverurl}}/cf
+{% endif %}
+Bitte beachte, dass es mehrere Tage dauern kann, bis deine Zahlung bestätigt wird.
+
+Bis bald und liebe Grüsse die {% config "organisation_name" %}-Betriebsgruppe
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block allcontent %}
+    {% if user.is_authenticated and is_member %}
+        {{ block.super }}
+    {% else %}
+        {% if user.is_authenticated and is_funder %}
+        {% include "cf/funder_menu.html" %}
+        <div class="col-md-6">
+        {% else %}
+            <div class="col-md-6 offset-md-3">
+        {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
+

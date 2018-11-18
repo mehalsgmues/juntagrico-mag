@@ -1,0 +1,35 @@
+{% extends "cf/public_access_wrapper.html" %}
+{% load config %}
+{% block page_title %}
+    <h3>Bestätigung</h3>
+{% endblock %}
+
+{% block content %}
+
+    <form action="/cf/confirm" method="POST">
+        {% csrf_token %}
+        Du bist dabei folgendes zu finanzieren:
+        <h4>{{ order.fundable.name }}</h4>
+        <div>{{ order.fundable.description }}</div>
+        <div>Preis/Einheit: {{ order.fundable.price }} {% config "currency" %}</div>
+        <div>Anzahl: {{ order.quantity }}</div>
+        <div>Pate(n): <b>{{ order.sponsor }}</b></div>
+        <div>Mitteilung: {{order.message}}</div>
+        <div>Dein Betrag: <b>{{ order.contribution }} {% config "currency" %}</b></div>
+        <a href="/cf/edit/order">Ändern</a>
+        <br>
+
+        <h4>Liefer- und Rechnugsadresse</h4>
+	    <p><b>{{ funder.first_name }} {{ funder.last_name }}</b><br>
+        {{ funder.addr_street }}<br>
+        {{ funder.addr_zipcode }} {{ funder.addr_location }}<br>
+        {{ funder.phone }}<br>
+        <b>{{ funder.email }}</b><br>
+        <a href="/cf/edit/funder">Ändern</a>
+        </p>
+   
+        <button name="confirm" value="1" class="btn btn-success" type="submit">Verbindlich bestätigen</button>
+        <a href="/cf">Abbrechen</a>
+    </form>
+
+{% endblock %}

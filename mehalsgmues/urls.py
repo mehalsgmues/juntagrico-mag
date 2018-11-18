@@ -15,12 +15,14 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import juntagrico
+import juntagrico_crowdfunding
 from mehalsgmues import views as mehalsgmues
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls), 
     url(r'^', include('juntagrico.urls')),
     url(r'^$', juntagrico.views.home),
+    url(r'^', include('juntagrico_crowdfunding.urls')),
     url(r'^impersonate/', include('impersonate.urls')),
     
     # API

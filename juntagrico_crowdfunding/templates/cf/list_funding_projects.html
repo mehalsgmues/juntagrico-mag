@@ -1,0 +1,15 @@
+{% extends "cf/public_access_wrapper.html" %}
+{% load config %}
+{% block page_title %}
+    <h3>Unterstützungs-Projekte</h3>
+{% endblock %}
+
+{% block content %}
+
+    <ul>
+        {% for f in funding_projects %}
+        <li><a href="/cf/list/{{ f.id }}">{{ f.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

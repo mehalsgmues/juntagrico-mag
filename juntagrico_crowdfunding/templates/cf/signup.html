@@ -1,0 +1,136 @@
+{% extends "cf/public_access_wrapper.html" %}
+{% load config %}
+{% block page_title %}
+    <h3>Rechnungs- und Lieferadresse</h3>
+{% endblock %}
+
+{% block content %}
+
+    {% if not user.is_authenticated %}
+    <h4>Anmelden</h4>
+
+    <div>Für {% vocabulary "member_pl" %} von {% config "organisation_name" %} und bestehende Paten</div>
+    <form action="/accounts/login/" method="post">
+        {% csrf_token %}
+        <br/><br/>
+        <div class="form-group row">
+            <label class="control-label col-md-4" for="username">Email {% config "demouser" %}</label>
+            <div class="controls col-md-8">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Email-Adresse">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-4" for="password">Passwort {% config "demopwd" %}</label>
+            <div class="controls col-md-8">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Passwort">
+            </div>
+        </div>
+        {% if form.errors %}
+            <div class="offset-md-4 alert alert-danger">Sorry, das ist kein gültiges Login</div>
+        {% endif %}
+        <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+                <button type="submit" class="btn btn-success">Anmelden</button><br/><br/>
+                <a href="/my/newpassword">Neues Passwort anfordern</a>
+            </div>
+        </div>
+        <input type="hidden" name="next" value="/cf/confirm"/>
+    </form>
+
+    <h4>Ich bin neu hier</h4>
+
+    {% endif %}
+
+    <form action="" method="post"id="new_member">
+        {% csrf_token %}
+        <div class="form-group row {% if funderform.last_name.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_last_name">Name *</label>
+
+            <div class="col-md-9">
+                {{ funderform.last_name }}
+                {% if funderform.last_name.errors %}
+                    <span class="help-inline">Name ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.first_name.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_first_name">Vorname *</label>
+
+            <div class="col-md-9">
+                {{ funderform.first_name }}
+                {% if funderform.first_name.errors %}
+                    <span class="help-inline">Vorname ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.addr_street.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_addr_street">{{ funderform.addr_street.label }} *</label>
+
+            <div class="col-md-9">
+                {{ funderform.addr_street }}
+                {% if funderform.addr_street.errors %}
+                    <span class="help-inline">Strasse ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.addr_zipcode.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_addr_zipcode">{{ funderform.addr_zipcode.label }} *</label>
+
+            <div class="col-md-9">
+                {{ funderform.addr_zipcode }}
+                {% if funderform.addr_zipcode.errors %}
+                    <span class="help-inline">PLZ ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.addr_location.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_addr_location">{{ funderform.addr_location.label }} *</label>
+
+            <div class="col-md-9">
+                {{ funderform.addr_location }}
+                {% if funderform.addr_location.errors %}
+                    <span class="help-inline">Ort ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.phone.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_phone">{{ funderform.phone.label }} *</label>
+
+            <div class="col-md-9">
+                {{ funderform.phone }}
+                {% if funderform.phone.errors %}
+                    <span class="help-inline">Telefon ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row {% if funderform.email.errors %}invalid{% endif %}">
+            <label class="col-md-3" for="id_email">E-Mail Adresse *</label>
+
+            <div class="col-md-9">
+                {{ funderform.email }}
+
+                {% if funderform.email.errors %}
+                    <span class="help-inline">E-Mail ungültig</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if userexists %}
+            <div class="alert alert-danger">
+                Diese Email-Adresse existiert bereits im System. Bitte benutze das Anmeldeformular ganz oben.
+            </div>
+        {% endif %}
+        <div class="form-actions row">
+            <div class="offset-md-3 col-md-9">
+                <button type="submit" class="btn btn-success">Weiter</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load config %}
+{% block page_title %}
+    <h3>Bestätigung</h3>
+{% endblock %}
+
+{% block content %}
+
+    <form action="/cf/confirm" method="POST">
+        {% csrf_token %}
+        Du bist dabei folgendes zu finanzieren:
+        <h4>{{ fundable.name }}</h4>
+        <div>{{ fundable.description }}</div>
+        <div>Preis/Einheit: {{ fundable.price }} CHF</div>
+        <div>Anzahl: <input name="quantity" type="number" value="1" min="1" size="2" required/></div>
+        <div><input name="anonymous" type="checkbox" value="1" id="anonymous"/><label for="anonymous">Ich möchte <u>nicht</u> namentlich erwähnt werden.</label></div>
+        <input name="fundable" type="hidden" value="{{ fundable.id }}"></input>
+        <button class="btn btn-success" type="submit">Ermöglichen</button>
+    </form>
+
+{% endblock %}
