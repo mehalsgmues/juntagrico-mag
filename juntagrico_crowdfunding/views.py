@@ -134,29 +134,30 @@ def fund(request, fundable_id):
 
 def signup(request):
 
-    if request.method == 'POST':
-        initial = {}
-        if hasattr(request.user, 'member'): # copy from juntagrico member if available
-            member = request.user.member
-            initial = {
-                'first_name': member.first_name,
-                'last_name': member.last_name,
-                'addr_street': member.addr_street,
-                'addr_zipcode': member.addr_zipcode,
-                'addr_location': member.addr_location,
-                'phone': member.phone,
-                'email': member.email
-            }
+    initial = {}
+    if hasattr(request.user, 'member'): # copy from juntagrico member if available
+        member = request.user.member
+        initial = {
+            'first_name': member.first_name,
+            'last_name': member.last_name,
+            'addr_street': member.addr_street,
+            'addr_zipcode': member.addr_zipcode,
+            'addr_location': member.addr_location,
+            'phone': member.phone,
+            'email': member.email
+        }
 
+    if request.method == 'POST':
         funderform = RegisterFunderForm(request.POST, initial=initial)
     elif request.session.get('pastfunder') is not None: #when changing funder
         funderform = RegisterFunderForm(instance=request.session.get('pastfunder'))
     else:
-        funderform = RegisterFunderForm()
+        funderform = RegisterFunderForm(initial=initial)
 
-    renderdict = {
+    renderdict = get_menu_dict(request)
+    renderdict.update({
         'funderform': funderform
-    }
+    })
     return render(request, "cf/signup.html", renderdict)
 
 
