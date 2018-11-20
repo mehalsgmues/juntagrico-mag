@@ -203,6 +203,7 @@ def confirm(request):
     # save confirmed order
     if request.POST.get('confirm') == '1':
         print("creating fund")
+        password = None
         if request.user.is_authenticated:
             funder.user = request.user
         else:
@@ -218,7 +219,7 @@ def confirm(request):
         )
         
         #send confirmation email
-        send_fund_confirmation_mail(fund, funder)
+        send_fund_confirmation_mail(fund, password)
 
         funder.user.save()
         funder.save()

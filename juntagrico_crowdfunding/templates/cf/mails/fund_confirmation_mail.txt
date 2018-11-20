@@ -16,9 +16,10 @@ Bitte überweise den Betrag von {% config "currency" %} {{ fund.contribution }} 
     Postkonto-Nummer: {{ bank.PC }}
     IBAN: {{ bank.IBAN }}
     BIC: {{ bank.BIC }}
+    Zahlungsgrund: {{ fund.fundable.funding_project.title }} {{ fund.fundable.name }}
 
 {% if password %}
-Mit deiner E-mail-Addresse und folgendem Passwort kannst du dich auf {{serverurl}}/cf anmelden.
+Mit deiner E-mail-Addresse und folgendem Passwort kannst du dich auf {{serverurl}}/accounts/login/?next=/cf/ anmelden.
 Passwort: {{ password }}
 {% else %}
 Du findest hier eine Übersicht deiner Beiträge {{serverurl}}/cf
