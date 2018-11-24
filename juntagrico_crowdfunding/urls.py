@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^cf/confirm', crowdfunding.confirm),
     url(r'^cf/edit/order', crowdfunding.edit_order),
     url(r'^cf/edit/funder', crowdfunding.edit_funder),
-    url(r'^cf/thanks', crowdfunding.thanks),
+    url(r'^cf/thanks/(?P<funding_project_id>.*?)$', crowdfunding.thanks),
     url(r'^cf/contribution', crowdfunding.contribution),
 ]

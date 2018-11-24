@@ -217,6 +217,7 @@ def confirm(request):
             sponsor=order.get('sponsor'),
             message=order.get('message')
         )
+        funding_project_id = order.get('fundable').funding_project.id
         
         #send confirmation email
         send_fund_confirmation_mail(fund, password)
@@ -228,9 +229,10 @@ def confirm(request):
 
         # clear session and show thanks message
         request.session['funder'] = None
+        request.session['pastfunder'] = None
         request.session['order'] = None
         request.session['pastorder'] = None
-        return HttpResponseRedirect('/cf/thanks')
+        return HttpResponseRedirect('/cf/thanks/'+str(funding_project_id))
 
     # show summary to confirm
     renderdict = get_menu_dict(request)
@@ -273,12 +275,14 @@ def edit_funder(request):
     return HttpResponseRedirect('/cf/confirm/')
 
 
-def thanks(request):
+def thanks(request, funding_project_id=None):
     """
     Thank you page
     """
 
     renderdict = get_menu_dict(request)
+    if funding_project_id:
+        renderdict.update({ 'funding_project': FundingProject.objects.get(id=funding_project_id) })
     return render(request, "cf/thanks.html", renderdict)
 
 

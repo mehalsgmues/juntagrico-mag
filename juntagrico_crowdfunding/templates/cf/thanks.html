@@ -6,8 +6,8 @@
 
 {% block content %}
 
-    <div>Vielen Dank für deinen Beitrag!</div>
-    <div>Du wirst in Kürze ein E-mail mit weiteren Informationen erhalten.</div>
+	<p>{{ funding_project.vocabulary_thankYouMessage|default:"Vielen Dank für deinen Beitrag!" }}</p>
+    <p>Du wirst in Kürze ein E-mail mit weiteren Informationen erhalten.</p>
     <div><a href="/cf">Zurück zu den Projekten</a></div>
 
 {% endblock %}

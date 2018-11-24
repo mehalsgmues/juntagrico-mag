@@ -10,7 +10,7 @@
 
     <div>{{ fundable.description }}</div>
     <div>Preis/Einheit: {{ fundable.price }} {% config "currency" %}</div>
-    <div>Finanziert: {{ fundable.funded_ratio }}%</div>
+    <div>Finanziert: {{ fundable.funded_ratio|floatformat:0 }}%</div>
 
     {% if not fundable.is_funded %}
     <br>
