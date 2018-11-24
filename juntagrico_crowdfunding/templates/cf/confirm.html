@@ -19,7 +19,7 @@
         <a href="/cf/edit/order">Ändern</a>
         <br>
 
-        <h4>Liefer- und Rechnugsadresse</h4>
+        <h4>Rechnungs- und Lieferadresse</h4>
 	    <p><b>{{ funder.first_name }} {{ funder.last_name }}</b><br>
         {{ funder.addr_street }}<br>
         {{ funder.addr_zipcode }} {{ funder.addr_location }}<br>
@@ -28,7 +28,9 @@
         <a href="/cf/edit/funder">Ändern</a>
         </p>
    
-        <button name="confirm" value="1" class="btn btn-success" type="submit">Verbindlich bestätigen</button>
+
+	<p>{{ order.fundable.funding_project.vocabulary_confirmOrder|default:"Bei Bestätigung kaufst du eine Patenschaft und machst damit eine Schenkung an die Genossenschaft meh als gmües. Du bekommst eine Patenschaftsbestätigung (Karte - als Geschenk geeignet) per Post. Der Name, auf welchen die Patenschaft lautet, wird auf einer Tafel in der Gärtnerei verewigt." }}</p>
+        <button name="confirm" value="1" class="btn btn-success" type="submit">{{ order.fundable.funding_project.vocabulary_confirmOrderButton|default:"Verbindlich bestätigen" }}</button>
         <a href="/cf">Abbrechen</a>
     </form>
 

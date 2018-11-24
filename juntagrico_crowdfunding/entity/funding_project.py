@@ -13,12 +13,12 @@ class FundingProject(models.Model):
     vocabulary_fundable = models.CharField('Bezeichnung: Unterstützungsart', max_length=200, default='Patenschaft')
     vocabulary_fundables = models.CharField('Bezeichnung: Unterstützungsarten', max_length=200, default='Patenschaften')
     
-    vocabulary_whoIsSponsor = models.TextField('Formular: Patenschaftsnennung', default='Auf wen soll die Patenschaft lauten (Vorname(n))?')
-    vocabulary_confirmOrder = models.TextField('Formular: Kauf bestätigen', default='Bei Bestätigung kaufe ich eine Patenschaft und mache damit eine Schenkung an die Genossenschaft MehalsGmües. Ich kriege eine Patenschaftsbestätigung (Karte - als Geschenk geeignet) per Post. Der Name, auf welchen die Patenschaft lautet, wird auf einer Tafel in der Gärtnerei verewigt.')
-    vocabulary_confirmOrderButton = models.CharField('Formular: Button Verbindlich bestätigen', max_length=200, default='Verbindlich bestätigen')
+    vocabulary_whoIsSponsor = models.TextField('Formular: Patenschaftsnennung', blank=True, null=True)
+    vocabulary_confirmOrder = models.TextField('Formular: Kauf bestätigen', blank=True, null=True)
+    vocabulary_confirmOrderButton = models.CharField('Formular: Button Verbindlich bestätigen', max_length=200, blank=True, null=True)
     
     vocabulary_thankYouTitle = models.CharField('Titel: Dankeschön', max_length=200, default='Vielen Dank')
-    vocabulary_thankYouMessage = models.TextField('Text: Dankeschön', default='ladida')
+    vocabulary_thankYouMessage = models.TextField('Text: Dankeschön', blank=True, null=True)
     
     def __str__(self):
         return self.title

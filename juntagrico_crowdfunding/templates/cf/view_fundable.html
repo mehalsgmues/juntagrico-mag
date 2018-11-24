@@ -34,7 +34,7 @@
 
             <div class="col-md-8">
                 {{ fundForm.sponsor }}
-                <span class="help-inline">Einen oder mehrere Vornamen auf welche die Patenschaft lauten soll. Ein Leeres Feld bedeutet eine anonyme Patenschaft.</span>
+                <span class="help-inline">{{ fundable.funding_project.vocabulary_whoIsSponsor|default:"Einen oder mehrere Vornamen auf welche die Patenschaft lauten soll. Ein leeres Feld bedeutet eine anonyme Patenschaft." }}</span>
                 {% if fundForm.sponsor.errors %}
                     <span class="help-inline">Ungültige Eingabe</span>
                 {% endif %}

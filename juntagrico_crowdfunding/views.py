@@ -23,7 +23,7 @@ def get_menu_dict(request):
     if request.user.is_authenticated:
         if hasattr(request.user,"member"):
             renderdict = juntagrico_get_menu_dict(request)
-            renderdict.update({'is_member': True})
+            renderdict.update({'is_member': True, 'menu': {'crowdfunding': 'active'},})
             return renderdict
         elif hasattr(request.user,"funder"):
             return {'is_funder': True}
