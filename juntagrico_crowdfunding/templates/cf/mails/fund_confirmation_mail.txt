@@ -6,9 +6,7 @@ Vielen Dank für deine Unterstützung.
 Bitte überweise den Betrag von {% config "currency" %} {{ fund.contribution }} auf das folgende Konto:
     {% config "organisation_address" as addr%}
     {{ addr.name }}
-    {% if addr.extra %}
-    {{ addr.extra }}
-    {% endif %}
+    {% if addr.extra %}{{ addr.extra }}{% endif %}
     {{ addr.street }} {{ addr.number }}
     {{ addr.zip }} {{ addr.city }}
     {% config "organisation_bank_connection" as bank%}
@@ -18,14 +16,21 @@ Bitte überweise den Betrag von {% config "currency" %} {{ fund.contribution }} 
     BIC: {{ bank.BIC }}
     Zahlungsgrund: {{ fund.fundable.funding_project.title }} {{ fund.fundable.name }}
 
+Wir bereiten in der Zwischenzeit deine Patenschaftsbestätigung vor und senden diese an:
+    {{ fund.funder.first_name }} {{ fund.funder.last_name }}
+    {{ fund.funder.addr_street }}
+    {{ fund.funder.addr_zipcode }} {{ fund.funder.addr_location }}
+
 {% if password %}
 Mit deiner E-mail-Addresse und folgendem Passwort kannst du dich auf {{serverurl}}/accounts/login/?next=/cf/ anmelden.
 Passwort: {{ password }}
 {% else %}
-Du findest hier eine Übersicht deiner Beiträge {{serverurl}}/cf
+Du findest hier eine Übersicht deiner Beiträge {{serverurl}}/cf/contribution
 {% endif %}
 Bitte beachte, dass es mehrere Tage dauern kann, bis deine Zahlung bestätigt wird.
 
-Bis bald und liebe Grüsse die {% config "organisation_name" %}-Betriebsgruppe
+Bei Fragen helfen wir gerne weiter: it@mehalsgmues.ch
+
+Bis bald und liebe Grüsse die Umbau-Gruppe
 {% endblock %}
 

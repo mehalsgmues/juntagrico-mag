@@ -89,7 +89,6 @@ def view_fundable(request, fundable_id):
     #evaluate form
     if request.method == 'POST':
         # store order
-        print(request.POST)
         fundForm = FundForm(fundable.available, request.POST)
     elif request.session.get('pastorder') is not None: #when changing order
         fundForm = FundForm(fundable.available, request.session.get('pastorder') )
@@ -104,12 +103,10 @@ def view_fundable(request, fundable_id):
     if request.method == 'POST':
         if fundForm.is_valid():
             request.session['order'] = fundForm.cleaned_data
-            print(request.session.get('order'))
             request.session['pastorder'] = None #clear
             return HttpResponseRedirect('/cf/confirm')
 
     renderdict = get_menu_dict(request)
-    print(renderdict)
     renderdict.update({
         'fundable': fundable,
         'public_funds': fundable.fund_set.all,
@@ -194,7 +191,6 @@ def confirm(request):
 
     # process order
     order = request.session.get('order')
-    print(order)
     if order is None:
         return lost_session(request) # session expired
     else:

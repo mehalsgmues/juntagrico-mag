@@ -22,8 +22,6 @@ def send_fund_confirmation_mail(fund, password=None):
 
     content = plaintext.render(d)
 
-    print(content)
-
     msg = EmailMultiAlternatives(Config.organisation_name() + ' - Beitragsbestätigung', content, Config.info_email(),
                                  [fund.funder.email])
     send_mail_multi(msg)

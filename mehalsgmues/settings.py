@@ -44,10 +44,22 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'mehalsgmues.urls'
 
-import dj_database_url
-DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-}
+if os.environ.get('DATABASE_URL'): # on heroku
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    }
+else: # local settings
+    DATABASES = {
+        'default': {
+	    'ENGINE': os.environ.get('JUNTAGRICO_DATABASE_ENGINE','django.db.backends.sqlite3'), 
+	    'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME','mehalsgmues.db'), 
+	    'USER': os.environ.get('JUNTAGRICO_DATABASE_USER'), #''junatagrico', # The following settings are not used with sqlite3:
+	    'PASSWORD': os.environ.get('JUNTAGRICO_DATABASE_PASSWORD'), #''junatagrico',
+	    'HOST': os.environ.get('JUNTAGRICO_DATABASE_HOST'), #'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+	    'PORT': os.environ.get('JUNTAGRICO_DATABASE_PORT', False), #''', # Set to empty string for default.
+        }
+    }
 
 TEMPLATES = [
     {

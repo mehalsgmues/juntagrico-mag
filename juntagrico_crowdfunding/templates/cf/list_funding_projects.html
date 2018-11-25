@@ -1,15 +1,20 @@
 {% extends "cf/public_access_wrapper.html" %}
 {% load config %}
 {% block page_title %}
-    <h3>Unterstützungs-Projekte</h3>
+    <h3>Umbau Gärtnerei</h3>
 {% endblock %}
 
 {% block content %}
 
+    {% if funding_projects.count > 0 %}
     <ul>
         {% for f in funding_projects %}
         <li><a href="/cf/list/{{ f.id }}">{{ f.title }}</a></li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p>Bald ist es soweit.<br>
+    Das Wochenmail hält dich auf dem Laufenden.</p>
+    {% endif %}
 
 {% endblock %}
