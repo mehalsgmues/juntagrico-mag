@@ -19,12 +19,17 @@ import juntagrico_crowdfunding
 from mehalsgmues import views as mehalsgmues
 
 urlpatterns = [
+    # pdf (override)
+    url('^my/pdf/depotlist', mehalsgmues.depot_list),
+    url('^my/pdf/depotoverview', mehalsgmues.depot_overview),
+    url('^my/pdf/amountoverview', mehalsgmues.amount_overview),
+
     url(r'^admin/', admin.site.urls), 
     url(r'^', include('juntagrico.urls')),
     url(r'^$', juntagrico.views.home),
     url(r'^', include('juntagrico_crowdfunding.urls')),
     url(r'^impersonate/', include('impersonate.urls')),
-    
+
     # API
     url(r'^wochenmail/$', mehalsgmues.api_emaillist)
 ]
