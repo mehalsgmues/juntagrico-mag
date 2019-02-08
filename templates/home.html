@@ -2,33 +2,35 @@
 {% load config %}
 
 {% block content %}
-    {% for message in messages %}
-        {{ message }}
-        {% if forloop.last %}
-            <br/><br/>
-        {% endif %}
-    {% endfor %}
-
-    {% autoescape off %}
-        {{ announcement }}
-    {% endautoescape %}
     <h3>Aktuelle Arbeitseinsätze</h3>
-    {% include "snippet_jobs.html" %}
+    <div class="row mb-3">
+        <div class="col-md-12">
+
+            {% include "snippet_jobs.html" %}
+        </div>
+</div>
     <br/>
     <a href="/my/assignments" class="joblink">Hier alle Arbeitseinsätze anzeigen</a>
     <br/><br/><br/>
-    <h4>Zu den Kalendern der einzelnen Tätigkeitsbereiche</h4>
+    <div class="row mb-3">
+            <div class="col-md-12">
+                <h4>Zu den Kalendern der einzelnen Tätigkeitsbereiche</h4>
+            </div>
+    </div>
     <table class="teams">
         {% for team in teams %}
-            <tr>
-                <td><a href="/my/teams/{{ team.id }}" class="{% if team.core %}core {% endif %}">{{ team.name }}</a></td>
-            </tr>
+            <div class="row mb-1">
+                <div class="col-md-12"><a href="/my/teams/{{ team.id }}"
+                                          class="{% if team.core %}core{% endif %}">{{ team.name }}</a>
+                </div>
+            </div>
         {% endfor %}
     </table>
 
 {% endblock %}
 
 {% block scripts %}
-<script type="text/javascript" src="/static/external/datatables.min.js"></script>
-<script type="text/javascript" src="/static/external/require.min.js" data-main="/static/js/initHomeJobs.js"></script>
+    <script type="text/javascript" src="/static/external/datatables.min.js"></script>
+    <script type="text/javascript" src="/static/external/require.min.js"
+            data-main="/static/js/initHomeJobs.js"></script>
 {% endblock %}

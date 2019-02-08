@@ -15,7 +15,7 @@ Du erhältst für deine Anteilscheine separate Emails mit den Informationen wie 
 Gerne darfst du im Garten vorbeikommen – schau dich auf der Online-Plattform {{serverurl}}/my/home um und melde dich für einen Einsatz an, wenn du Lust hast. 
 
 Damit wir dich als Mitglied freischalten können nutze den Bestätigungslink um deine Email zu bestätigen.
-Bestätigungslink: {{ serverurl }}/my/confirm/{{ hash }}
+Bestätigungslink: {{ serverurl }}/my/confirm/{{ onetime_code }}
 Damit bestätigst du, dass du damit einverstanden bist {% config "organisation_name" %}-GenossenschafterIn zu werden, dem Abo beizutreten und die bestellten Anteilscheine zu erwerben.
 Ebenfalls bestätigst du, dass du die Statuten ({% config "bylaws" as bylaws %}{{ bylaws|safe }})
 {% config "business_regulations" as business_regulations %}{% if business_regulations.strip %} und das Betriebsreglement({{ business_regulations|safe }}){% endif %}
