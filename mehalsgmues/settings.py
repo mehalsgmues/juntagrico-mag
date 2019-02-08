@@ -167,10 +167,10 @@ AWS_S3_FILE_OVERWRITE = False
 MEDIA_ROOT = 'media'
 MEDIA_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
-MEMBER_STRING = "Mitglied"
-MEMBERS_STRING = "Mitglieder"
-ASSIGNMENT_STRING = "Mitglied"
-ASSIGNMENTS_STRING = "Arbeitseinsätze"
+VOCABULARY = {
+    'subscription' : 'Ernteanteil',
+    'subscription_pl' : 'Ernteanteile'
+}
 ORGANISATION_NAME = "meh als gmües"
 ORGANISATION_LONG_NAME = "meh als gmües"
 ORGANISATION_ADDRESS = {"name":"Genossenschaft meh als gmües", 
@@ -192,7 +192,6 @@ ADMINPORTAL_SERVER_URL = "my.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 STYLE_SHEET = "/static/css/mehalsgmues.css"
-BOOTSTRAP = "/static/external/bootstrap-3.3.1/css/bootstrap.min.css"
 FAVICON = "/static/img/favicon_mag.ico"
 FAQ_DOC = ""
 EXTRA_SUB_INFO = ""

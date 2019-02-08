@@ -2,7 +2,7 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
 from juntagrico.config import Config
-from juntagrico.mailer import send_mail_multi, get_server
+from juntagrico.mailer import send_mail, get_server
 
 from juntagrico_crowdfunding.config import CrowdfundingConfig
 
@@ -21,7 +21,4 @@ def send_fund_confirmation_mail(fund, password=None):
     }
 
     content = plaintext.render(d)
-
-    msg = EmailMultiAlternatives(Config.organisation_name() + ' - Beitragsbestätigung', content, Config.info_email(),
-                                 [fund.funder.email])
-    send_mail_multi(msg)
+    send_mail(Config.organisation_name() + ' - Beitragsbestätigung', content, Config.info_email(), [fund.funder.email])
