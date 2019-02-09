@@ -7,9 +7,7 @@ from juntagrico.models import Member
 
 from juntagrico.dao.depotdao import DepotDao
 from juntagrico.dao.listmessagedao import ListMessageDao
-from juntagrico.dao.extrasubscriptiontypedao import ExtraSubscriptionTypeDao
 from juntagrico.dao.subscriptionsizedao import SubscriptionSizeDao
-from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.util.pdf import render_to_pdf_http
 from juntagrico.util.temporal import weekdays
 from django.utils import timezone
@@ -22,26 +20,12 @@ def api_emaillist(request):
     return HttpResponse(', '.join( Member.objects.filter(inactive = False).values_list('email', flat=True) ))
 
 # pdf
-def generate_pdf_dict():
+def generate_pdf_dict(forDepotList=False):
     depots = DepotDao.all_depots_order_by_code()
 
     subscription_names = []
     for subscription_size in SubscriptionSizeDao.sizes_for_depot_list():
         subscription_names.append(subscription_size.name)
-
-    categories = []
-    types = []
-    for category in ExtraSubscriptionCategoryDao.all_categories_ordered():
-        cat = {'name': category.name, 'description': category.description}
-        count = 0
-        for extra_subscription in ExtraSubscriptionTypeDao.extra_types_by_category_ordered(category):
-            count += 1
-            es_type = {'name': extra_subscription.name,
-                       'size': extra_subscription.size, 'last': False}
-            types.append(es_type)
-        es_type['last'] = True
-        cat['count'] = count
-        categories.append(cat)
 
     used_weekdays = []
     for item in DepotDao.distinct_weekdays():
@@ -53,7 +37,7 @@ def generate_pdf_dict():
     for weekday in used_weekdays:
         overview[weekday] = None
 
-    count = len(types) + len(subscription_names)
+    count = len(subscription_names)
     for weekday in used_weekdays:
         overview[weekday] = [0] * count
     overview['all'] = [0] * count
@@ -62,7 +46,6 @@ def generate_pdf_dict():
 
     for depot in depots:
         depot.fill_overview_cache()
-        depot.fill_active_subscription_cache()
         row = overview.get(depot.get_weekday_display())
         count = 0
         # noinspection PyTypeChecker
@@ -70,6 +53,9 @@ def generate_pdf_dict():
             row[count] += depot.overview_cache[count]
             all[count] += depot.overview_cache[count]
             count += 1
+        # append sub_size_name
+        if forDepotList:
+            depot.overview_cache = zip( subscription_names, depot.overview_cache )
 
     insert_point = len(subscription_names)
     for weekday in used_weekdays:
@@ -88,10 +74,7 @@ def generate_pdf_dict():
     return {
         'overview': overview,
         'depots': depots,
-        'subscription_names': subscription_names,
         'subscriptioncount': len(subscription_names) + 1,
-        'categories': categories,
-        'types': types,
         'datum': timezone.now(),
         'weekdays': used_weekdays,
         'messages': ListMessageDao.all_active()
@@ -99,7 +82,7 @@ def generate_pdf_dict():
 
 @staff_member_required
 def depot_list(request):
-    return render_to_pdf_http('exports/depotlist.html', generate_pdf_dict(), 'depotlist.pdf')
+    return render_to_pdf_http('exports/depotlist.html', generate_pdf_dict(True), 'depotlist.pdf')
 
 @staff_member_required
 def depot_overview(request):

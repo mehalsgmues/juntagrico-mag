@@ -1,0 +1,128 @@
+{% load depot_extras %}
+{% load util %}
+{% load config %}
+<html>
+<head>
+    <title>{% vocabulary "depot" %}listen</title>
+    <meta charset="utf-8">
+    <style>
+        @page {
+            size: A4;
+            @frame content_frame {
+                left: 1cm;
+                width: 21cm;
+                top: 2cm;
+                height: 29.7cm;
+            }
+            @frame header_frame {
+                -pdf-frame-content:header_content;
+                left: 1cm;
+                width: 21cm;
+                top: 1cm;
+                height: 1cm;
+                text-align: center;
+            }
+
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .full-border {
+            border: 1px black solid;
+        }
+
+        .left-border {
+            border-left: 1px black solid;
+        }
+
+        .top-border {
+            border-top: 1px black solid;
+        }
+
+        .right-border {
+            border-right: 1px black solid;
+        }
+
+        .bottom-border {
+            border-bottom: 1px black solid;
+        }
+
+        th {
+            text-align: left;
+            line-height: 8px;
+        }
+        
+        td {
+            font-size: 14px;
+            line-height: 12px;
+        }
+        
+        table {
+            table-layout:fixed;
+        }
+
+        h2, h3 {
+            margin: 0.2em 0;
+            padding: 0;
+        }
+
+       
+    </style>
+</head>
+
+<body>
+
+<div id="header_content">
+    Erstellt am {{ datum |date:"d.m.Y H:i" }}
+</div>
+
+{% for depot in depots %}
+    {% for subscription in depot.subscription_cache.all %}
+        {% if forloop.first or forloop.counter0|breakFirstPage:45|breakNextPages:50 %}
+            {% if forloop.counter0 > 0 %}
+                </table>
+                <div class="page-break"></div>
+            {% endif %}
+            <h2 style="font-size: 18px;">{{ depot.weekday_name }} - {{ depot.name }}{% if not forloop.first %} Fortsetzung{% endif %}</h2>
+            {% if forloop.first %}
+                <h3 style="font-size: 16px;">{{ depot.addr_street }}, {{ depot.addr_zipcode }} {{ depot.addr_location }}</h3>
+                {% vocabulary "depot" %}betreuung: {{ depot.contact.first_name }} {{ depot.contact.last_name }}
+                <table cellpadding="5" cellspacing="0" style="margin-bottom:5px;" class="full-border">
+                    <tr>
+                        <th style="width: 3cm" class="bottom-border">Grösse</th>
+                        <th style="width: 1.5cm" class="bottom-border">Anzahl</th>
+                    </tr>
+                    {% for subscription_name, value in depot.overview_cache %}
+                    <tr>
+                        <td>{{ subscription_name }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <table cellpadding="2" cellspacing="0" style="margin-bottom:5px;" class="bottom-border">
+                <tr>
+                    <th style="width: 5cm;">Name</th>
+                    <th style="width: 13cm;">mit</th>
+                    <th style="width: 1cm; text-align: right;">abgeholt</th>
+                </tr>
+        {% endif %}
+        <tr style="height: 0.5cm">
+            <td class="top-border left-border" style="width: 5cm;">{{ subscription.primary_member.get_name }}</td>
+            <td class="top-border left-border" style="width: 13cm;">{{ subscription.other_recipients_names }}</td>
+            <td class="top-border left-border right-border" style="width: 1cm;"> </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br/>
+    <div>
+    {% for message in messages %}
+        <div style="width: 100%; text-align: center; font-size: 18pt;">{{ message }}</div>
+    {% endfor %}
+    </div>
+    <div class="page-break"></div>
+{% endfor %}
+</body>
+</html>
