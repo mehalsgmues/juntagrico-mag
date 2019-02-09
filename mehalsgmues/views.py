@@ -53,9 +53,11 @@ def generate_pdf_dict(forDepotList=False):
             row[count] += depot.overview_cache[count]
             all[count] += depot.overview_cache[count]
             count += 1
-        # append sub_size_name
         if forDepotList:
+            # append sub_size_name
             depot.overview_cache = zip( subscription_names, depot.overview_cache )
+            # sort subs by name of primary member
+            depot.subscription_cache = depot.subscription_cache.order_by('primary_member__first_name', 'primary_member__last_name')
 
     insert_point = len(subscription_names)
     for weekday in used_weekdays:
