@@ -76,6 +76,7 @@ def generate_pdf_dict(forDepotList=False):
     return {
         'overview': overview,
         'depots': depots,
+        'subscription_names': subscription_names,
         'subscriptioncount': len(subscription_names) + 1,
         'datum': timezone.now(),
         'weekdays': used_weekdays,
