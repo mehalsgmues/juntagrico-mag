@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^', include('juntagrico_crowdfunding.urls')),
     url(r'^impersonate/', include('impersonate.urls')),
 
+    # report builder
+    url(r'^report_builder/', include('report_builder.urls')),
+
     # API
     url(r'^wochenmail/$', mehalsgmues.api_emaillist)
 ]

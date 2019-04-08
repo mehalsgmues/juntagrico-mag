@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'report_builder',
     'juntagrico',
     'juntagrico_crowdfunding',
     'impersonate',
