@@ -6,7 +6,6 @@ register = template.Library()
 
 @register.filter
 def isRecuring(job):
-    print(type(job))
     return type(job) is RecuringJob
 
 
