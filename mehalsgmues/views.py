@@ -17,7 +17,8 @@ from django.utils import timezone
 def api_emaillist(request):
     """prints comma separated list of member emails"""
     # get emails
-    return HttpResponse(', '.join( Member.objects.filter(inactive = False).values_list('email', flat=True) ))
+    return HttpResponse(', '.join(Member.objects.filter(inactive=False).values_list('email', flat=True)))
+
 
 # pdf
 def generate_pdf_dict(forDepotList=False):
@@ -83,13 +84,16 @@ def generate_pdf_dict(forDepotList=False):
         'messages': ListMessageDao.all_active()
     }
 
+
 @staff_member_required
 def depot_list(request):
     return render_to_pdf_http('exports/depotlist.html', generate_pdf_dict(True), 'depotlist.pdf')
 
+
 @staff_member_required
 def depot_overview(request):
     return render_to_pdf_http('exports/depot_overview.html', generate_pdf_dict(), 'depot_overview.pdf')
+
 
 @staff_member_required
 def amount_overview(request):
