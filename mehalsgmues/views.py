@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from openpyxl import Workbook
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
@@ -9,10 +9,16 @@ from juntagrico.dao.depotdao import DepotDao
 from juntagrico.dao.listmessagedao import ListMessageDao
 from juntagrico.dao.subscriptionsizedao import SubscriptionSizeDao
 from juntagrico.util.pdf import render_to_pdf_http
-from juntagrico.util.temporal import weekdays
+from juntagrico.util.temporal import weekdays, start_of_business_year, end_of_business_year
+from juntagrico.config import Config
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
-# API    
+from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day
+from mehalsgmues.utils.utils import date_from_get
+
+
+# API
 @staff_member_required
 def api_emaillist(request):
     """prints comma separated list of member emails"""
@@ -98,3 +104,63 @@ def depot_overview(request):
 @staff_member_required
 def amount_overview(request):
     return render_to_pdf_http('exports/amount_overview.html', generate_pdf_dict(), 'amount_overview.pdf')
+
+
+@staff_member_required
+def stats(request):
+    start_date = date_from_get(request, 'start_date', start_of_business_year())
+    end_date = date_from_get(request, 'end_date', end_of_business_year())
+
+    filename = '{}_{}_stats.xlsx'.format(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    wb = Workbook()
+
+    # Sheet 1: assignments by subscription
+    ws1 = wb.active
+    ws1.title = "assignments by subscription"
+
+    # header
+    ws1.cell(1, 1, u"{}".format(Config.vocabulary('member_pl')))
+    ws1.column_dimensions['A'].width = 40
+    ws1.cell(1, 2, u"{}".format(_('Arbeitseinsätze')))
+    ws1.column_dimensions['B'].width = 17
+    ws1.cell(1, 3, u"{}".format(_('{}-Grösse').format(Config.vocabulary('subscription'))))
+    ws1.column_dimensions['C'].width = 17
+
+    # data
+    for row, subscription in enumerate(assignments_by_subscription(start_date, end_date), 2):
+        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].members.all()]))
+        ws1.cell(row, 2, subscription['assignments'])
+        ws1.cell(row, 3, subscription['subscription'].totalsize)
+
+    # Sheet 2: assignments per day
+    ws2 = wb.create_sheet(title="assignments per day")
+
+    # header
+    ws2.cell(1, 1, u"{}".format(_('Datum')))
+    ws2.column_dimensions['A'].width = 20
+    ws2.cell(1, 2, u"{}".format(_('Arbeitseinsätze geleistet')))
+    ws2.column_dimensions['B'].width = 17
+
+    # data
+    for row, assignment in enumerate(assignments_by_day(start_date, end_date), 2):
+        ws2.cell(row, 1, assignment['day'])
+        ws2.cell(row, 2, assignment['count'])
+
+    # Sheet 3: slots by day
+    ws3 = wb.create_sheet(title="slots per day")
+
+    # header
+    ws3.cell(1, 1, u"{}".format(_('Datum')))
+    ws3.column_dimensions['A'].width = 20
+    ws3.cell(1, 2, u"{}".format(_('Arbeitseinsätze ausgeschrieben')))
+    ws3.column_dimensions['B'].width = 17
+
+    # data
+    for row, assignment in enumerate(slots_by_day(start_date, end_date), 2):
+        ws3.cell(row, 1, assignment['day'])
+        ws3.cell(row, 2, assignment['available'])
+
+    wb.save(response)
+    return response
