@@ -1,9 +1,10 @@
+from django.utils.safestring import mark_safe
 from openpyxl import Workbook
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 
-from juntagrico.models import Member
+from juntagrico.models import Member, Subscription
 
 from juntagrico.dao.depotdao import DepotDao
 from juntagrico.dao.listmessagedao import ListMessageDao
@@ -15,7 +16,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day
-from mehalsgmues.utils.utils import date_from_get
+from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month
 
 
 # API
@@ -27,7 +28,7 @@ def api_emaillist(request):
 
 
 # pdf
-def generate_pdf_dict(forDepotList=False):
+def generate_pdf_dict(for_depot_list=False):
     depots = DepotDao.all_depots_order_by_code()
 
     subscription_names = []
@@ -60,7 +61,7 @@ def generate_pdf_dict(forDepotList=False):
             row[count] += depot.overview_cache[count]
             all[count] += depot.overview_cache[count]
             count += 1
-        if forDepotList:
+        if for_depot_list:
             # append sub_size_name
             depot.overview_cache = zip( subscription_names, depot.overview_cache )
             # sort subs by name of primary member
@@ -91,9 +92,19 @@ def generate_pdf_dict(forDepotList=False):
     }
 
 
+def other_recipients_names_w_linebreaks(self):
+    members = self.recipients.exclude(email=self.primary_member.email)
+    members = [str(member) for member in members]
+    return mark_safe('<br>'.join([', '.join(members[x:x+6]) for x in range(0, len(members), 6)]))
+
+
 @staff_member_required
 def depot_list(request):
-    return render_to_pdf_http('exports/depotlist.html', generate_pdf_dict(True), 'depotlist.pdf')
+    renderdict = generate_pdf_dict(True)
+    for depot in renderdict['depots']:
+        depot.delivery_dates = list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
+    Subscription.other_recipients_names_w_linebreaks = other_recipients_names_w_linebreaks
+    return render_to_pdf_http('exports/depotlist.html', renderdict, 'depotlist.pdf')
 
 
 @staff_member_required

@@ -104,21 +104,25 @@
             {% endif %}
             <table cellpadding="2" cellspacing="0" style="margin-bottom:5px;" class="bottom-border">
                 <tr>
-                    <th style="width: 1cm; text-align: right;">abgeholt</th>
+                    {% for delivery_date in depot.delivery_dates %}
+                        <th style="width: 1cm;">{{ delivery_date|date:"d.m" }}</th>
+                    {% endfor %}
                     {% for subscription_name in subscription_names %}
                         <th style="width: 1cm;">{{ subscription_name }}</th>
                     {% endfor %}
                     <th style="width: 5cm;">Name</th>
-                    <th style="width: 12cm;">mit</th>
+                    <th style="width: 8cm;">mit</th>
                 </tr>
         {% endif %}
         <tr style="height: 0.5cm">
-            <td class="top-border left-border" style="width: 1cm;"> </td>
+            {% for delivery_date in depot.delivery_dates %}
+                <td class="top-border left-border" style="width: 1cm;"> </td>
+            {% endfor %}
             {% for subscription_name in subscription_names %}
                 <td style="width:1cm;" class="top-border left-border">{% if subscription|subscriptions_amount:subscription_name %}{{ subscription|subscriptions_amount:subscription_name }}{% endif %}</td>
             {% endfor %}
             <td class="top-border left-border" style="width: 5cm;">{{ subscription.primary_member.get_name }}</td>
-            <td class="top-border left-border right-border" style="width: 12cm;">{{ subscription.other_recipients_names }}</td>
+            <td class="top-border left-border right-border" style="width: 8cm;">{{ subscription.other_recipients_names_w_linebreaks }}</td>
         </tr>
     {% endfor %}
     </table>
