@@ -215,7 +215,8 @@ def sso(request):
         'nonce': qs['nonce'][0],
         'email': request.user.member.email,
         'external_id': request.user.id,
-        'username': request.user.member.get_name(),
+        'username': '%s.%s' % (request.user.member.first_name.lower(), request.user.member.last_name.lower()),
+        'name': request.user.member.get_name(),
     }
 
     return_payload = base64.encodebytes(bytes(parse.urlencode(params), 'utf-8'))
