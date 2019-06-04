@@ -25,4 +25,7 @@ urlpatterns = [
 
     # stats
     path('stats/', mehalsgmues.stats),
+
+    # Discourse SSO
+    path('sso/', mehalsgmues.sso),
 ]
