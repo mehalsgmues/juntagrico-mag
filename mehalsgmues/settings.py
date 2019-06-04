@@ -220,3 +220,7 @@ EMAILS = {
     'b_sub': 'mails/bill_sub.txt',
     'b_esub': 'mails/bill_extrasub.txt'
 }
+
+
+DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
+DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
