@@ -221,6 +221,13 @@ EMAILS = {
     'b_esub': 'mails/bill_extrasub.txt'
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'juntagrico_app_cache_table',
+        'TIMEOUT': None,
+    }
+}
 
 DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
