@@ -118,8 +118,8 @@
             {% for delivery_date in depot.delivery_dates %}
                 <td class="top-border left-border" style="width: 1cm;"> </td>
             {% endfor %}
-            {% for subscription_name in subscription_names %}
-                <td style="width:1cm;" class="top-border left-border">{% if subscription|subscriptions_amount:subscription_name %}{{ subscription|subscriptions_amount:subscription_name }}{% endif %}</td>
+            {% for subscription_id in subscription_ids %}
+                <td style="width:1cm;" class="top-border left-border">{{ subscription|subscriptions_amount:subscription_id|default:'' }}</td>
             {% endfor %}
             <td class="top-border left-border" style="width: 5cm;">{{ subscription.primary_member.get_name }}</td>
             <td class="top-border left-border right-border" style="width: 8cm;">{{ subscription.other_recipients_names_w_linebreaks }}</td>

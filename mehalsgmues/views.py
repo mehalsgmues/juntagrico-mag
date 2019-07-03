@@ -39,8 +39,10 @@ def api_emaillist(request):
 def generate_pdf_dict(for_depot_list=False):
     depots = DepotDao.all_depots_order_by_code()
 
+    subscription_ids = []
     subscription_names = []
     for subscription_size in SubscriptionSizeDao.sizes_for_depot_list():
+        subscription_ids.append(subscription_size.id)
         subscription_names.append(subscription_size.name)
 
     used_weekdays = []
@@ -53,7 +55,7 @@ def generate_pdf_dict(for_depot_list=False):
     for weekday in used_weekdays:
         overview[weekday] = None
 
-    count = len(subscription_names)
+    count = len(subscription_ids)
     for weekday in used_weekdays:
         overview[weekday] = [0] * count
     overview['all'] = [0] * count
@@ -71,11 +73,11 @@ def generate_pdf_dict(for_depot_list=False):
             count += 1
         if for_depot_list:
             # append sub_size_name
-            depot.overview_cache = zip( subscription_names, depot.overview_cache )
+            depot.overview_cache = zip( subscription_ids, depot.overview_cache )
             # sort subs by name of primary member
             depot.subscription_cache = depot.subscription_cache.order_by('primary_member__first_name', 'primary_member__last_name')
 
-    insert_point = len(subscription_names)
+    insert_point = len(subscription_ids)
     for weekday in used_weekdays:
         overview[weekday].insert(insert_point, 0)
     overview['all'].insert(insert_point, 0)
@@ -93,7 +95,8 @@ def generate_pdf_dict(for_depot_list=False):
         'overview': overview,
         'depots': depots,
         'subscription_names': subscription_names,
-        'subscriptioncount': len(subscription_names) + 1,
+        'subscription_ids': subscription_ids,
+        'subscriptioncount': len(subscription_ids) + 1,
         'datum': timezone.now(),
         'weekdays': used_weekdays,
         'messages': ListMessageDao.all_active()
