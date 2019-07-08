@@ -1,10 +1,4 @@
-from juntagrico_crowdfunding.admin import *
+from juntagrico.util import addons
 
-def admin_menu_template():
-    return ['cf/crowdfunding_admin_menu.html']
-    
-def fundable_inlines():
-    return [FundableInline]
-    
-def fund_inlines():
-    return [FundInline]
+addons.config.register_admin_menu('cf/crowdfunding_admin_menu.html')
+addons.config.register_user_menu('mag_user_menu.html')
