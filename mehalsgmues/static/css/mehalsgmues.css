@@ -123,7 +123,8 @@ td.details-control, tr.shown td.details-control {
 }
 
 /* make link to jobs big and red */
-#home .content-container a[href="/my/jobs"] {
+#home .content-container a[href="/my/jobs"],
+#juntagrico-views-home .content-container a[href="/my/jobs"]{
     font-size: 20pt;
     font-weight: bold;
     color: #F4441C;
