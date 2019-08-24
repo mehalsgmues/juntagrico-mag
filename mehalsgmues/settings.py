@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'report_builder',
+    'crispy_forms',
     'impersonate',
     'mehalsgmues',
 ]
@@ -220,6 +221,8 @@ EMAILS = {
     'b_sub': 'mails/bill_sub.txt',
     'b_esub': 'mails/bill_extrasub.txt'
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
