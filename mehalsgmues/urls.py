@@ -14,6 +14,7 @@ urlpatterns = [
     path(r'admin/', admin.site.urls),
     path(r'', include('juntagrico.urls')),
     path(r'', juntagrico.views.home),
+    path(r'', include('juntagrico_pg.urls')),
     path(r'', include('juntagrico_crowdfunding.urls')),
     path(r'impersonate/', include('impersonate.urls')),
 

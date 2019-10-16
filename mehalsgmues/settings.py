@@ -29,6 +29,7 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 
 INSTALLED_APPS = [
     'juntagrico',
+    'juntagrico_pg',
     'juntagrico_crowdfunding',
     'django.contrib.auth',
     'django.contrib.contenttypes',
