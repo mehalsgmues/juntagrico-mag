@@ -30,7 +30,6 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 INSTALLED_APPS = [
     'juntagrico',
     'juntagrico_pg',
-    'juntagrico_crowdfunding',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -120,7 +119,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
-    'juntagrico_crowdfunding.middleware.FunderAccess'
 ]
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
