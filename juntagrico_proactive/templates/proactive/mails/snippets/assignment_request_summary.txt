@@ -1,0 +1,5 @@
+    Datum: {{ assignment_request.job_time|date:"d.m.Y" }}
+    Zeit: {{ assignment_request.job_time|date:"H:i" }}
+    Dauer: {{ assignment_request.duration }}h
+    Ort: {{ assignment_request.location|default:"keine Angabe" }}
+    Tätigkeitsbereich: {{ assignment_request.activityarea|default:"keine Angabe" }}

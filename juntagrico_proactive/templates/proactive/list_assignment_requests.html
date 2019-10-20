@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load config %}
+{% load crispy_forms_tags %}
+{% block page_title %}
+    {% vocabulary "assignment_pl" as v_assignment_pl %}
+    <div class="page-title col-md-12">
+        <h3>
+            {% blocktrans %}Angemeldete {{ v_assignment_pl }}{% endblocktrans %}
+        </h3>
+    </div>
+{% endblock %}
+{% block content %}
+    {% if assignment_requests %}
+    <div class="col-md-12 mb-4">
+        <table id="filter-table" class="list table" style="display: table;">
+            <thead>
+                <tr>
+                    <th class="align-top">
+                        {% trans "Einsatz vom" %}
+                    </th>
+                    <th class="align-top">
+                        {% trans "Von" %}
+                    </th>
+                    <th class="align-top">
+                        {% trans "Abgesprochen mit" %}
+                    </th>
+                    <th class="align-top">
+                        {% trans "Status" %}
+                    </th>
+                    <th class="align-top">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment_request in assignment_requests %}
+                    <tr>
+                        <td>
+                            {{ assignment_request.job_time|date:"d.m.Y" }}
+                        </td>
+                        <td>
+                            {{ assignment_request.member }}
+                        </td>
+                        <td>
+                            {{ assignment_request.approver|default:"Niemandem" }}
+                        </td>
+                        <td>
+                            {% if assignment_request.assignment.job %}
+                                <a href="{% url 'job' assignment_request.assignment.job.id %}">{{ assignment_request.get_status_display }}</a>
+                            {% else %}
+                                {{ assignment_request.get_status_display }}
+                            {% endif %}
+                        </td>
+                        <td class="text-nowrap">
+                            {% if not assignment_request.is_confirmed and not assignment_request.is_rejected %}
+                            <a href="{% url 'proactive-respond-assignment-request' assignment_request.id %}" class="btn btn-success">Beantworten</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="proactive-assignment-request-description">
+                        <td colspan="4">
+                            <p>{% trans "Beschreibung" %}: {{ assignment_request.description }}</p>
+                            {% if assignment_request.response %}<p>{% trans "Antwort" %}: {{ assignment_request.response }}</p>{% endif %}
+                        <td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

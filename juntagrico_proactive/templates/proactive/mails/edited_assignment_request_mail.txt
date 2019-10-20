@@ -1,0 +1,21 @@
+{% extends "mails/email.txt" %}
+{% load config %}
+{% block content %}
+Soeben hat {{ assignment_request.member }} die Böhnli-Anfrage bearbeitet:
+"{{ assignment_request.description }}"
+
+    Anzahl: {{ assignment_request.amount }}
+{% include "proactive/mails/snippets/assignment_request_summary.txt" %}
+
+{% if assignment_request.approver %}
+Laut {{ assignment_request.member }} wurde das mit dir abgesprochen.
+{% else %}
+{{ assignment_request.member }} hat keine Referenzperson angegeben.
+{% endif %}
+
+Du kannst {% if assignment_request.amount == 1 %}das{% else %}die{% endif %} Böhnli ohne Kommentar bestätigen
+{{ serverurl }}{% url 'proactive-confirm-assignment-request' assignment_request.id %}
+oder zuerst eine Antwort an {{ assignment_request.member }} schreiben:
+{{ serverurl }}{% url 'proactive-respond-assignment-request' assignment_request.id %}
+{% endblock %}
+

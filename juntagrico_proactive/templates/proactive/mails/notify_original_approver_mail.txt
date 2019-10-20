@@ -1,0 +1,18 @@
+{% extends "mails/email.txt" %}
+{% load config %}
+{% block content %}
+Soeben hat {{ new_approver }} die Böhnli-Anfrage von {{ assignment_request.member }} beantwortet und dir die Arbeit abgenommen.
+{% if assignment_request.response %}
+Entscheidung: {{ assignment_request.get_status_display }}
+Antwort: "{{ assignment_request.response }}"{% endif %}
+
+{{ assignment_request.member }} hatte zuletzt dich als Referenzperson angegeben.
+
+Es geht um folgende/n/s {% vocabulary 'assignment' %}:
+{% include "proactive/mails/snippets/assignment_request_summary.txt" %}
+{% if assignment_request.description %}
+Beschreibung:
+"{{ assignment_request.description }}"
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load config %}
+{% load crispy_forms_tags %}
+{% block page_title %}
+    {% vocabulary "assignment" as v_assignment %}
+    <div class="page-title col-md-12">
+        <h3>
+            {% blocktrans %}{{ v_assignment }} bearbeiten{% endblocktrans %}
+        </h3>
+    </div>
+{% endblock %}
+{% block content %}
+    {% vocabulary "assignment" as v_assignment %}
+    <div class="col-md-12 mb-4">
+        {% blocktrans %}Wenn du einen bereits bestätigten {{ v_assignment }} bearbeitest, muss dieser erneut bestätigt werden.{% endblocktrans %}
+    </div>
+    <div class="col-md-12 mb-4">
+        <form action="" method="post" id="request_assignment">
+            {% crispy form %}
+        </form>
+    </div>
+{% endblock %}
