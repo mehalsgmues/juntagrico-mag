@@ -14,6 +14,11 @@ Du erhältst für deine Anteilscheine separate Emails mit den Informationen wie 
 {% if subscription is not None %}
 Sobald du Mitglied bist, setzen wir dich auf die Warteliste für einen Ernteanteil. Wird einer frei, melden wir uns bei dir.
 
+{% else %}
+ACHTUNG: Du hast KEINEN Ernteanteil bestellt. Das heisst du bist nicht auf der Warteliste.
+Wenn du einen Ernteanteil bestellen möchtest, kannst du dies nach dem einloggen hier nachholen:
+{{serverurl}}{% url 'cs-subscription' %}
+
 {% endif %}
 Gerne darfst du im Garten vorbeikommen – schau dich auf der Online-Plattform {{serverurl}}/my/home um und melde dich für einen Einsatz an, wenn du Lust hast. 
 
