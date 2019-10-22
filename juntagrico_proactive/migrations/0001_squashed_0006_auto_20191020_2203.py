@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('juntagrico', '0018_auto_20191019_1935'),
+        ('juntagrico', '0018_auto_20191019_2031'),
     ]
 
     operations = [
