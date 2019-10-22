@@ -29,6 +29,7 @@ class AssignmentRequestForm(ModelForm):
         self.fields['approver'].queryset = AssignmentRequestDao.all_approvers()
         self.fields['amount'].widget.attrs['min'] = 1
         self.fields['job_time'].input_formats.insert(0, '%d.%m.%Y %H:%M')
+        self.fields['job_time'].widget.attrs['placeholder'] = _('TT.MM.JJJJ HH:MM')
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3'
