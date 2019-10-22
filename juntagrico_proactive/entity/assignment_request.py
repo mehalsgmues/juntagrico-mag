@@ -24,17 +24,19 @@ class AssignmentRequest(models.Model):
         (CONFIRMED, _('Bestätigt')),
     ]
 
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    assignment = models.ForeignKey(Assignment, blank=True, null=True, on_delete=models.PROTECT)
+    member = models.ForeignKey(Member, verbose_name=Config.vocabulary('member'), on_delete=models.CASCADE)
+    assignment = models.OneToOneField(Assignment, verbose_name=Config.vocabulary('assignment'),
+                                      blank=True, null=True, on_delete=models.PROTECT)
     amount = models.PositiveIntegerField(_('Wert'), default=1, validators=[MinValueValidator(1)])
     job_time = models.DateTimeField(_('Geleistet am'), default=datetime.now)
     request_date = models.DateField(_('Beantragt am'), default=date.today, blank=True, null=True)
     response_date = models.DateField(_('Beantwortet am'), blank=True, null=True)
-    approver = models.ForeignKey(Member, related_name=_('Referenz'), blank=True,
-                                 null=True, on_delete=models.SET_NULL)
+    approver = models.ForeignKey(Member, verbose_name=_('Abgesprochen mit'), related_name=_('Referenz'),
+                                 blank=True, null=True, on_delete=models.SET_NULL)
 
     description = models.TextField(_('Beschreibung'), max_length=1000, default='')
-    activityarea = models.ForeignKey(ActivityArea, blank=True, null=True, on_delete=models.SET_NULL)
+    activityarea = models.ForeignKey(ActivityArea, verbose_name=_('Tätigkeitsbereich'),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
     duration = models.PositiveIntegerField(_('Dauer in Stunden'), default=4)
     location = models.CharField(_('Ort'), max_length=100, blank=True, default='')
 
