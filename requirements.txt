@@ -1,4 +1,4 @@
-git+http://github.com/juntagrico/juntagrico.git@628e2f0103465d9b6d20ee74feb528d19ef9b0c1
+git+http://github.com/juntagrico/juntagrico.git
 git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 juntagrico-pg==1.0.0
 boto==2.48.0
