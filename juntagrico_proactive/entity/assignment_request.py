@@ -27,24 +27,34 @@ class AssignmentRequest(models.Model):
         (CONFIRMED, _('Bestätigt')),
     ]
 
-    member = models.ForeignKey(Member, verbose_name=Config.vocabulary('member'), on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, verbose_name=Config.vocabulary('member'), on_delete=models.CASCADE,
+                               help_text=_("Beantragt von"))
     assignment = models.OneToOneField(Assignment, verbose_name=Config.vocabulary('assignment'),
                                       blank=True, null=True, on_delete=models.PROTECT)
-    amount = models.PositiveIntegerField(_('Wert'), default=1, validators=[MinValueValidator(1)])
+    amount = models.PositiveIntegerField(_('Wert'), default=1, validators=[MinValueValidator(1)],
+                                         help_text=_("Wieviele Böhnli?"))
     job_time = models.DateTimeField(_('Geleistet am'), default=datetime.now)
     request_date = models.DateField(_('Beantragt am'), default=date.today, blank=True, null=True)
-    response_date = models.DateField(_('Beantwortet am'), blank=True, null=True)
+    response_date = models.DateField(_('Beantwortet am'), blank=True, null=True,
+                                     help_text=_("Typischerweise heute"))
     approver = models.ForeignKey(Member, verbose_name=_('Abgesprochen mit'), related_name=_('Referenz'),
-                                 blank=True, null=True, on_delete=models.SET_NULL)
+                                 blank=True, null=True, on_delete=models.SET_NULL,
+                                 help_text=_("An wen soll die Anfrage gesendet werden oder wer hat "
+                                             "dich aufgefordert, die Anfrage zu senden?"))
 
-    description = models.TextField(_('Beschreibung'), max_length=1000, default='')
+    description = models.TextField(_('Beschreibung'), max_length=1000, default='',
+                                   help_text=_("Kurze beschreibung was du gemacht hat"))
     activityarea = models.ForeignKey(ActivityArea, verbose_name=_('Tätigkeitsbereich'),
-                                     blank=True, null=True, on_delete=models.SET_NULL)
+                                     blank=True, null=True, on_delete=models.SET_NULL,
+                                     help_text=_("Was am besten passt. Ansonsten leer lassen"))
     duration = models.PositiveIntegerField(_('Dauer in Stunden'), default=4)
-    location = models.CharField(_('Ort'), max_length=100, blank=True, default='')
+    location = models.CharField(_('Ort'), max_length=100, blank=True, default='',
+                                help_text=_("Steht anschliessend so in der Einsatzbeschreibung"))
 
-    status = models.CharField(max_length=2, choices=REQUEST_STATUS, default=REQUESTED)
-    response = models.TextField(_('Antwort'), blank=True, null=True)
+    status = models.CharField(max_length=2, choices=REQUEST_STATUS, default=REQUESTED,
+                              help_text=_('Hier "Bestätigt" auswählen, sonst zählt das Böhnli nicht!'))
+    response = models.TextField(_('Antwort'), blank=True, null=True,
+                                help_text=_("Rückmeldung an Böhnli-beantrager. Kann leer bleiben."))
     
     def __str__(self):
         return _('%s Anfrage #%s') % (Config.vocabulary('assignment'), self.id)
