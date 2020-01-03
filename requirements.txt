@@ -1,7 +1,7 @@
+gunicorn==20.0.4
 git+http://github.com/juntagrico/juntagrico.git
 git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 juntagrico-pg>=1.2.0
-gunicorn==19.7.1
 psycopg2>=2.8.4
-django-report-builder>=6.3.2
-openpyxl>=3.0.2
+# django-report-builder>=6.3.2
+# openpyxl>=3.0.2
