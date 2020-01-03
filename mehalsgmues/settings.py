@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     # 'juntagrico_pg',
     # 'juntagrico_crowdfunding',
-    # 'juntagrico_proactive',
+    'juntagrico_proactive',
     # 'report_builder',
     'crispy_forms',
     'impersonate',
