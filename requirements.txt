@@ -1,4 +1,4 @@
-django==2.2.6
+django==2.2.8
 git+http://github.com/juntagrico/juntagrico.git@375d9d6e04ff42d16a57f3a464febf50eb14e4a5
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 juntagrico-pg==1.0.0
