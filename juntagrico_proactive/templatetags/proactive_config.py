@@ -1,9 +1,9 @@
 from django import template
-from juntagrico_proactive.config import ProactiveConfig
+from juntagrico.config import Config
 
 register = template.Library()
 
 
 @register.simple_tag
 def vocabulary(key):
-    return ProactiveConfig.vocabulary(key)
+    return Config.vocabulary(key)

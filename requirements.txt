@@ -1,5 +1,6 @@
-git+http://github.com/juntagrico/juntagrico.git@34af43434059fb63e8857aa19f11fba09e9f792c
-git+https://github.com/juntagrico/juntagrico-crowdfunding.git
+django==2.2.6
+git+http://github.com/juntagrico/juntagrico.git@375d9d6e04ff42d16a57f3a464febf50eb14e4a5
+# git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 juntagrico-pg==1.0.0
 boto==2.48.0
 django-storages==1.6.5
