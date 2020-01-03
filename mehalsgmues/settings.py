@@ -29,9 +29,6 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 
 INSTALLED_APPS = [
     'juntagrico',
-    'juntagrico_pg',
-    # 'juntagrico_crowdfunding',
-    'juntagrico_proactive',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'juntagrico_pg',
+    # 'juntagrico_crowdfunding',
+    'juntagrico_proactive',
     # 'report_builder',
     'crispy_forms',
     'impersonate',
