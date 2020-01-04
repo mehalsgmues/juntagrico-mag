@@ -2,6 +2,6 @@ gunicorn==20.0.4
 git+https://github.com/juntagrico/juntagrico.git
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 psycopg2>=2.8.4
-# git+https://github.com/juntagrico/juntagrico-pg.git
+git+https://github.com/juntagrico/juntagrico-pg.git
 # django-report-builder>=6.3.2
 openpyxl>=3.0.2  # for excel exports
