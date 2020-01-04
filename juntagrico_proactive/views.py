@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from juntagrico.views import get_menu_dict as juntagrico_get_menu_dict
 
 from juntagrico_proactive.forms import AssignmentRequestForm, AssignmentResponseForm
-from juntagrico_proactive.mailer import MemberNotification, AdminNotification
+from juntagrico_proactive.mailer import *
 from juntagrico_proactive.models import AssignmentRequest
 
 
@@ -31,7 +31,7 @@ def request_assignment(request, sent=False):
         assignment_request = assignment_request_form.instance
         assignment_request.member = member
         assignment_request.save()
-        AdminNotification.request_created(assignment_request)
+        send_request_mail(assignment_request)
         return redirect('proactive-assignment-requested')
 
     assignment_requests = AssignmentRequest.objects.filter(member=member)
@@ -72,7 +72,7 @@ def edit_request_assignment(request, request_id):
         assignment_request = assignment_request_form.instance
         assignment_request.status = AssignmentRequest.REQUESTED
         assignment_request.save()
-        AdminNotification.request_changed(assignment_request)
+        resend_request_mail(assignment_request)
         return redirect('proactive-assignment-requested')
 
     renderdict = get_menu_dict(request)
@@ -111,10 +111,10 @@ def respond_assignment_request(request, request_id):
             assignment_request.status = AssignmentRequest.CONFIRMED
         elif 'reject' in request.POST:
             assignment_request.status = AssignmentRequest.REJECTED
-        AdminNotification.request_handled_by_other_approver(assignment_request, request.user.member)
+        notify_original_approver_mail(assignment_request, request.user.member)
         assignment_request.approver = request.user.member
         assignment_request.save()
-        MemberNotification.request_handled(assignment_request)
+        respond_request_mail(assignment_request)
         return redirect('proactive-list-assignment-requests')
 
     renderdict = get_menu_dict(request)
@@ -135,9 +135,9 @@ def confirm_assignment_request(request, request_id):
         assignment_request.response_date = date.today()
         assignment_request.response = ''
         assignment_request.status = AssignmentRequest.CONFIRMED
-        AdminNotification.request_handled_by_other_approver(assignment_request, request.user.member)
+        notify_original_approver_mail(assignment_request, request.user.member)
         # overwrite approver in any case to actual approver
         assignment_request.approver = request.user.member
         assignment_request.save()
-        MemberNotification.request_handled(assignment_request)
+        respond_request_mail(assignment_request)
     return redirect('proactive-list-assignment-requests')

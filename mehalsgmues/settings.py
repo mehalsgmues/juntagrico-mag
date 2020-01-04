@@ -29,6 +29,9 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 
 INSTALLED_APPS = [
     'juntagrico',
+    'juntagrico_pg',
+    # 'juntagrico_crowdfunding',
+    'juntagrico_proactive',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -36,10 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    # 'juntagrico_pg',
-    # 'juntagrico_crowdfunding',
-    'juntagrico_proactive',
-    # 'report_builder',
+    'report_builder',
     'crispy_forms',
     'impersonate',
     'mehalsgmues',
@@ -92,7 +92,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mehalsgmues.wsgi.application'
 
 
-LANGUAGE_CODE = 'de'
+LANGUAGE_CODE = 'de-ch'
 
 SITE_ID = 1
 
@@ -104,7 +104,6 @@ USE_I18N = True
 # calendars according to the current locale.
 USE_L10N = True
 
-USE_TZ = True
 TIME_ZONE = 'UTC'
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y', ]
@@ -122,6 +121,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
+    # 'juntagrico_crowdfunding.middleware.FunderAccess'
 ]
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
@@ -210,7 +210,18 @@ IMAGES = {
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
     'welcome': 'mag_mails/welcome_mail.txt',
-    'co_welcome': 'mag_mails/welcome_added_mail.txt'
+    'co_welcome': 'mag_mails/welcome_added_mail.txt',
+    'password': 'mails/password_reset_mail.txt',
+    'j_reminder': 'mails/job_reminder_mail.txt',
+    'j_canceled': 'mails/job_canceled_mail.txt',
+    'confirm': 'mails/confirm.txt',
+    'j_changed': 'mails/job_time_changed_mail.txt',
+    'j_signup': 'mails/job_signup_mail.txt',
+    'd_changed': 'mails/depot_changed_mail.txt',
+    's_canceled': 'mails/subscription_canceled_mail.txt',
+    'b_share': 'mails/bill_share.txt',
+    'b_sub': 'mails/bill_sub.txt',
+    'b_esub': 'mails/bill_extrasub.txt'
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

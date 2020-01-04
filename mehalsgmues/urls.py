@@ -20,7 +20,7 @@ urlpatterns = [
     path(r'impersonate/', include('impersonate.urls')),
 
     # report builder
-    #path(r'report_builder/', include('report_builder.urls')),
+    path(r'report_builder/', include('report_builder.urls')),
 
     # API
     path(r'wochenmail/', mehalsgmues.api_emaillist),

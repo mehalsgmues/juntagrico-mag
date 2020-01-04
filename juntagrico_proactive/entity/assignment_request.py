@@ -5,10 +5,10 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.core.validators import MinValueValidator
 
-from juntagrico.entity.member import Member
-from juntagrico.entity.jobs import Assignment, ActivityArea, JobType, RecuringJob
-
+from juntagrico.models import Assignment, Member, ActivityArea, JobType, RecuringJob
 from juntagrico.config import Config
+
+from juntagrico_proactive.mailer import respond_request_mail
 
 
 class AssignmentRequest(models.Model):
