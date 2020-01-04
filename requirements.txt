@@ -4,5 +4,4 @@ git+https://github.com/juntagrico/juntagrico.git
 psycopg2>=2.8.4
 # git+https://github.com/juntagrico/juntagrico-pg.git
 # django-report-builder>=6.3.2
-# openpyxl>=3.0.2
-
+openpyxl>=3.0.2  # for excel exports
