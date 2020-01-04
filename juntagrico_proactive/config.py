@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 from django.conf import settings
-from juntagrico.config import Config
 
 
 class ProactiveConfig:

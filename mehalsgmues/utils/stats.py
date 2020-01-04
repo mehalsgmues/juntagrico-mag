@@ -1,6 +1,6 @@
 from django.db.models.functions import TruncDay
-from django.db.models import Count, Sum
-from juntagrico.models import Assignment, Job, Q
+from django.db.models import Count, Sum, Q
+from juntagrico.entity.jobs import Assignment, Job
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 
 
