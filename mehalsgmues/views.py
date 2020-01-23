@@ -10,7 +10,7 @@ from django.conf import settings
 
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from juntagrico.models import Member, Subscription
 
@@ -33,6 +33,20 @@ def api_emaillist(request):
     """prints comma separated list of member emails"""
     # get emails
     return HttpResponse(', '.join(Member.objects.filter(inactive=False).values_list('email', flat=True)))
+
+
+@login_required
+def nextcloud_profile(request):
+    member = request.user.member
+    membergroups = request.user.groups.values_list('name', flat=True)
+    grouplist = list(membergroups)
+    response = JsonResponse({'id': member.id,
+                             'email': member.email,
+                             'firstName': member.first_name,
+                             'lastName': member.last_name,
+                             'displayName': member.first_name + " " + member.last_name,
+                             'roles': grouplist})
+    return response
 
 
 # pdf
