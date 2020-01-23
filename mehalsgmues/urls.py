@@ -30,4 +30,7 @@ urlpatterns = [
 
     # Discourse SSO
     path('sso/', mehalsgmues.sso),
+
+    # OAuth
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
