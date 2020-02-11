@@ -1,5 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
+from juntagrico.dao.memberdao import MemberDao
+from juntagrico.dao.subscriptiondao import SubscriptionDao
+from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
+from juntagrico.entity.jobs import ActivityArea
 from openpyxl import Workbook
 
 import base64
@@ -22,8 +26,10 @@ from juntagrico.util.temporal import weekdays, start_of_business_year, end_of_bu
 from juntagrico.config import Config
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from openpyxl.utils import get_column_letter
 
-from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day
+from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day, \
+    members_with_assignments
 from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month
 
 
@@ -144,10 +150,16 @@ def amount_overview(request):
 
 @staff_member_required
 def stats(request):
+    activity_area = ActivityArea.objects.filter(pk=request.GET.get('activity_area', None)).first()
+
     start_date = date_from_get(request, 'start_date', start_of_business_year())
     end_date = date_from_get(request, 'end_date', end_of_business_year())
 
-    filename = '{}_{}_stats.xlsx'.format(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+    filename = '{}_{}_{}stats.xlsx'.format(
+        start_date.strftime('%Y-%m-%d'),
+        end_date.strftime('%Y-%m-%d'),
+        str(activity_area.pk) + '_' if activity_area else ''
+    )
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=' + filename
     wb = Workbook()
@@ -165,7 +177,7 @@ def stats(request):
     ws1.column_dimensions['C'].width = 17
 
     # data
-    for row, subscription in enumerate(assignments_by_subscription(start_date, end_date), 2):
+    for row, subscription in enumerate(assignments_by_subscription(start_date, end_date, activity_area), 2):
         ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].members.all()]))
         ws1.cell(row, 2, subscription['assignments'])
         ws1.cell(row, 3, subscription['subscription'].totalsize)
@@ -180,7 +192,7 @@ def stats(request):
     ws2.column_dimensions['B'].width = 17
 
     # data
-    for row, assignment in enumerate(assignments_by_day(start_date, end_date), 2):
+    for row, assignment in enumerate(assignments_by_day(start_date, end_date, activity_area), 2):
         ws2.cell(row, 1, assignment['day'])
         ws2.cell(row, 2, assignment['count'])
 
@@ -194,10 +206,60 @@ def stats(request):
     ws3.column_dimensions['B'].width = 17
 
     # data
-    for row, assignment in enumerate(slots_by_day(start_date, end_date), 2):
+    for row, assignment in enumerate(slots_by_day(start_date, end_date, activity_area), 2):
         ws3.cell(row, 1, assignment['day'])
         ws3.cell(row, 2, assignment['available'])
 
+    # Sheet 4: assignments per member
+    ws4 = wb.create_sheet(title="assignments per member")
+
+    # header
+    ws4.cell(1, 1, u"{}".format(Config.vocabulary('member')))
+    ws4.column_dimensions['A'].width = 40
+    ws4.cell(1, 2, u"{}".format(_('Arbeitseinsätze')))
+    ws4.column_dimensions['B'].width = 17
+
+    # data
+    members = members_with_assignments(start_date, end_date, activity_area)
+    for row, member in enumerate(members, 2):
+        ws4.cell(row, 1, u"{}".format(member))
+        ws4.cell(row, 2, member.assignments)
+
+    wb.save(response)
+    return response
+
+
+@staff_member_required
+def excel_export_subscriptions(request):
+    filename = '{}_{}.xlsx'.format(Config.vocabulary('subscription_pl'), timezone.now())
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    wb = Workbook()
+
+    # Sheet 1: Subscriptions with prices
+    ws1 = wb.active
+    ws1.title = Config.vocabulary('subscription_pl')
+
+    # header
+    ws1.cell(1, 1, u"{}".format(Config.vocabulary('member_pl')))
+    ws1.column_dimensions['A'].width = 40
+    ws1.cell(1, 2, u"{}".format(_('E-Mail')))
+    ws1.column_dimensions['B'].width = 30
+    ws1.cell(1, 3, u"{}".format(_('Gesamtpreis [{}]').format(Config.currency())))
+    ws1.column_dimensions['C'].width = 17
+    for column, subs_type in enumerate(SubscriptionTypeDao.get_all(), 4):
+        ws1.cell(1, column, u"EAT {}".format(subs_type.price))
+        ws1.column_dimensions[get_column_letter(column)].width = 17
+
+    # data
+    for row, subscription in enumerate(SubscriptionDao.all_active_subscritions(), 2):
+        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription.members.all()]))
+        ws1.cell(row, 2, subscription.primary_member.email)
+        ws1.cell(row, 3, subscription.price)
+        for column, subs_type in enumerate(SubscriptionTypeDao.get_all(), 4):
+            ws1.cell(row, column, subscription.types.filter(id=subs_type.id).count())
+
+    ws1.freeze_panes = ws1['A2']
     wb.save(response)
     return response
 
