@@ -231,7 +231,7 @@ def stats(request):
 
 @staff_member_required
 def excel_export_subscriptions(request):
-    filename = '{}_{}.xlsx'.format(Config.vocabulary('subscription_pl'), timezone.now())
+    filename = '{}_{}.xlsx'.format(Config.vocabulary('subscription_pl'), timezone.now().date())
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=' + filename
     wb = Workbook()
