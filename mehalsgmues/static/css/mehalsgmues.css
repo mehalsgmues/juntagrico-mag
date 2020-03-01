@@ -129,3 +129,8 @@ td.details-control, tr.shown td.details-control {
     font-weight: bold;
     color: #F4441C;
 }
+
+/* job calendar */
+.table-bordered td, .table-bordered th {
+    border-color: black;
+}

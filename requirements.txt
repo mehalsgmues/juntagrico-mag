@@ -6,3 +6,4 @@ git+https://github.com/juntagrico/juntagrico-pg.git
 openpyxl>=3.0.3
 django-oauth-toolkit==1.2.0
 django-cors-middleware==1.5.0
+git+https://github.com/mehalsgmues/juntagrico_calendar.git
