@@ -34,7 +34,7 @@ class AdminNotification:
         plaintext = get_template(ProactiveConfig.emails('new_assignment_request_mail'))
 
         content = plaintext.render(d)
-        send_mail(Config.organisation_name() + ' - Neue Böhnli-Anfrage', content, Config.info_email(),
+        send_mail(Config.organisation_name() + ' - Neue Böhnli-Anfrage', content,
                   get_approver_emails(assignment_request))
 
     @staticmethod
@@ -50,8 +50,8 @@ class AdminNotification:
             plaintext = get_template(ProactiveConfig.emails('notify_original_approver_mail'))
 
             content = plaintext.render(d)
-            send_mail(Config.organisation_name()+' - Böhnli-Anfrage erledigt', content, Config.info_email(),
-                      [assignment_request.approver.email])
+            send_mail(Config.organisation_name()+' - Böhnli-Anfrage erledigt', content,
+                      assignment_request.approver.email)
 
     @staticmethod
     def request_changed(assignment_request):
@@ -59,7 +59,7 @@ class AdminNotification:
         plaintext = get_template(ProactiveConfig.emails('edited_assignment_request_mail'))
 
         content = plaintext.render(d)
-        send_mail(Config.organisation_name()+' - Böhnli-Anfrage bearbeitet', content, Config.info_email(),
+        send_mail(Config.organisation_name()+' - Böhnli-Anfrage bearbeitet', content,
                   get_approver_emails(assignment_request))
 
 
@@ -78,5 +78,5 @@ class MemberNotification:
             subject = _('Rückfrage zu deinem/r {}').format(Config.vocabulary('assignment'))
             content = get_template(ProactiveConfig.emails('responded_assignment_request_mail')).render(d)
 
-        send_mail(Config.organisation_name()+' - '+subject, content, Config.info_email(),
-                  [assignment_request.member.email], reply_to_email=assignment_request.approver.email)
+        send_mail(Config.organisation_name()+' - '+subject, content,
+                  assignment_request.member.email, reply_to_email=assignment_request.approver.email)

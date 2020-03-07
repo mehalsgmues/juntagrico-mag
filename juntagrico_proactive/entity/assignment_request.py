@@ -130,8 +130,8 @@ class AssignmentRequest(models.Model):
         else:
             # create new if does not exist
             matching_job = instance.get_matching_job()
-            if matching_job.free_slots() <= 0:
-                matching_job.slots += 1 - matching_job.free_slots()
+            if matching_job.free_slots <= 0:
+                matching_job.slots += 1 - matching_job.free_slots
                 matching_job.save()
             instance.assignment = Assignment.objects.create(member=instance.member,
                                                             job=matching_job, amount=instance.amount)
@@ -148,7 +148,7 @@ class AssignmentRequest(models.Model):
         before_delete()
         if job.occupied_places() == 0:
             job.delete()
-        elif job.free_slots() > 0:  # if job stays, remove emptied slot
+        elif job.free_slots > 0:  # if job stays, remove emptied slot
             job.slots -= 1
 
     class Meta:
