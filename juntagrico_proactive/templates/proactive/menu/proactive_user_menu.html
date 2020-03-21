@@ -1,6 +1,0 @@
-{% load proactive_config %}
-{% load i18n %}
-<li class="nav-item">
-    {% vocabulary "assignment" as v_assignment %}
-    <a class="nav-link {{ menu.request_assignment }}" href="{% url 'proactive-request-assignment' %}">{% blocktrans %}{{ v_assignment }} melden{% endblocktrans %}</a>
-</li>
