@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
+from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.dao.memberdao import MemberDao
 from juntagrico.dao.subscriptiondao import SubscriptionDao
+from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
 from openpyxl import Workbook
@@ -56,69 +58,14 @@ def nextcloud_profile(request):
 
 
 # pdf
-def generate_pdf_dict(for_depot_list=False):
-    depots = DepotDao.all_depots_order_by_code()
-
-    subscription_ids = []
-    subscription_names = []
-    for subscription_size in SubscriptionSizeDao.sizes_for_depot_list():
-        subscription_ids.append(subscription_size.id)
-        subscription_names.append(subscription_size.name)
-
-    used_weekdays = []
-    for item in DepotDao.distinct_weekdays():
-        used_weekdays.append(weekdays[item['weekday']])
-
-    overview = {
-        'all': None
-    }
-    for weekday in used_weekdays:
-        overview[weekday] = None
-
-    count = len(subscription_ids)
-    for weekday in used_weekdays:
-        overview[weekday] = [0] * count
-    overview['all'] = [0] * count
-
-    all = overview.get('all')
-
-    for depot in depots:
-        depot.fill_overview_cache()
-        row = overview.get(depot.get_weekday_display())
-        count = 0
-        # noinspection PyTypeChecker
-        while count < len(row):
-            row[count] += depot.overview_cache[count]
-            all[count] += depot.overview_cache[count]
-            count += 1
-        if for_depot_list:
-            # append sub_size_name
-            depot.overview_cache = zip( subscription_ids, depot.overview_cache )
-            # sort subs by name of primary member
-            depot.subscription_cache = depot.subscription_cache.order_by('primary_member__first_name', 'primary_member__last_name')
-
-    insert_point = len(subscription_ids)
-    for weekday in used_weekdays:
-        overview[weekday].insert(insert_point, 0)
-    overview['all'].insert(insert_point, 0)
-
-    index = 0
-    for subscription_size in SubscriptionSizeDao.sizes_for_depot_list():
-        for weekday in used_weekdays:
-            overview[weekday][insert_point] = overview[weekday][insert_point] + subscription_size.units * \
-                                              overview[weekday][index]
-        overview['all'][insert_point] = overview['all'][insert_point] + subscription_size.units * overview['all'][
-            index]
-        index += 1
-
+def generate_pdf_dict():
     return {
-        'overview': overview,
-        'depots': depots,
-        'subscription_names': subscription_names,
-        'subscription_ids': subscription_ids,
-        'subscriptioncount': len(subscription_ids) + 1,
-        'datum': timezone.now(),
-        'weekdays': used_weekdays,
+        'subscriptions': SubscriptionDao.all_active_subscritions(),
+        'products': SubscriptionProductDao.get_all(),
+        'extra_sub_categories': ExtraSubscriptionCategoryDao.categories_for_depot_list_ordered(),
+        'depots': DepotDao.all_depots_order_by_code(),
+        'weekdays': {weekdays[weekday['weekday']]: weekday['weekday'] for weekday in
+                     DepotDao.distinct_weekdays()},
         'messages': ListMessageDao.all_active()
     }
 
@@ -131,11 +78,11 @@ def other_recipients_names_w_linebreaks(self):
 
 @staff_member_required
 def depot_list(request):
-    renderdict = generate_pdf_dict(True)
-    for depot in renderdict['depots']:
+    depot_dict = generate_pdf_dict()
+    for depot in depot_dict['depots']:
         depot.delivery_dates = list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
     Subscription.other_recipients_names_w_linebreaks = other_recipients_names_w_linebreaks
-    return render_to_pdf_http('exports/depotlist.html', renderdict, 'depotlist.pdf')
+    return render_to_pdf_http('exports/depotlist.html', depot_dict, 'depotlist.pdf')
 
 
 @staff_member_required

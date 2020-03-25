@@ -1,85 +1,22 @@
 {% load depot_extras %}
+{% load i18n %}
 {% load util %}
 {% load config %}
+{% vocabulary "depot" as v_depot %}
 <html>
 <head>
     <title>{% vocabulary "depot" %}listen</title>
     <meta charset="utf-8">
-    <style>
-        @page {
-            size: A4;
-            @frame content_frame {
-                left: 1cm;
-                width: 21cm;
-                top: 2cm;
-                height: 29.7cm;
-            }
-            @frame header_frame {
-                -pdf-frame-content:header_content;
-                left: 1cm;
-                width: 21cm;
-                top: 1cm;
-                height: 1cm;
-                text-align: center;
-            }
-
-        }
-
-        .page-break {
-            page-break-after: always;
-        }
-
-        .full-border {
-            border: 1px black solid;
-        }
-
-        .left-border {
-            border-left: 1px black solid;
-        }
-
-        .top-border {
-            border-top: 1px black solid;
-        }
-
-        .right-border {
-            border-right: 1px black solid;
-        }
-
-        .bottom-border {
-            border-bottom: 1px black solid;
-        }
-
-        th {
-            text-align: left;
-            line-height: 8px;
-        }
-        
-        td {
-            font-size: 14px;
-            line-height: 12px;
-        }
-        
-        table {
-            table-layout:fixed;
-        }
-
-        h2, h3 {
-            margin: 0.2em 0;
-            padding: 0;
-        }
-
-       
-    </style>
+    <style>{% include "./snippets/snippet_depotlist_style.css" %}</style>
 </head>
 
 <body>
-
 <div id="header_content">
-    Erstellt am {{ datum |date:"d.m.Y H:i" }}
+    {% trans "Erstellt am" %} {% now "d.m.Y H:i" %}
 </div>
 
 {% for depot in depots %}
-    {% for subscription in depot.subscription_cache.all %}
+    {% for subscription in depot.active_subscriptions %}
         {% if forloop.first or forloop.counter0|breakFirstPage:45|breakNextPages:50 %}
             {% if forloop.counter0 > 0 %}
                 </table>
@@ -88,17 +25,19 @@
             <h2 style="font-size: 18px;">{{ depot.weekday_name }} - {{ depot.name }}{% if not forloop.first %} Fortsetzung{% endif %}</h2>
             {% if forloop.first %}
                 <h3 style="font-size: 16px;">{{ depot.addr_street }}, {{ depot.addr_zipcode }} {{ depot.addr_location }}</h3>
-                {% vocabulary "depot" %}betreuung: {{ depot.contact.first_name }} {{ depot.contact.last_name }}
+                {% blocktrans %}{{ v_depot }}-Betreuung{% endblocktrans %}: {{ depot.contact.first_name }} {{ depot.contact.last_name }}
                 <table cellpadding="5" cellspacing="0" style="margin-bottom:5px;" class="full-border">
                     <tr>
                         <th style="width: 3cm" class="bottom-border">Grösse</th>
                         <th style="width: 1.5cm" class="bottom-border">Anzahl</th>
                     </tr>
-                    {% for subscription_name, value in depot.overview_cache %}
-                    <tr>
-                        <td>{{ subscription_name }}</td>
-                        <td>{{ value }}</td>
-                    </tr>
+                    {% for product in products %}
+                        {% for size in product.sizes_for_depot_list %}
+                            <tr>
+                                <td>{{ size.name }}</td>
+                                <td>{{ subscriptions|depot:depot|sub_size:size|count }}</td>
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
                 </table>
             {% endif %}
@@ -107,8 +46,10 @@
                     {% for delivery_date in depot.delivery_dates %}
                         <th style="width: 1cm;">{{ delivery_date|date:"d.m" }}</th>
                     {% endfor %}
-                    {% for subscription_name in subscription_names %}
-                        <th style="width: 1cm;">{{ subscription_name }}</th>
+                    {% for product in products %}
+                        {% for size in product.sizes_for_depot_list %}
+                            <th style="width: 1cm;">{{ size.name }}</th>
+                        {% endfor %}
                     {% endfor %}
                     <th style="width: 5cm;">Name</th>
                     <th style="width: 8cm;">mit</th>
@@ -118,8 +59,10 @@
             {% for delivery_date in depot.delivery_dates %}
                 <td class="top-border left-border" style="width: 1cm;"> </td>
             {% endfor %}
-            {% for subscription_id in subscription_ids %}
-                <td style="width:1cm;" class="top-border left-border">{{ subscription|subscriptions_amount:subscription_id|default:'' }}</td>
+            {% for product in products %}
+                {% for size in product.sizes_for_depot_list %}
+                    <td style="width:1cm;" class="top-border left-border">{{ subscription|sub_size:size|count|default:'' }}</td>
+                {% endfor %}
             {% endfor %}
             <td class="top-border left-border" style="width: 5cm;">{{ subscription.primary_member.get_name }}</td>
             <td class="top-border left-border right-border" style="width: 8cm;">{{ subscription.other_recipients_names_w_linebreaks }}</td>
