@@ -16,7 +16,7 @@
 </div>
 
 {% for depot in depots %}
-    {% for subscription in depot.active_subscriptions %}
+    {% for subscription in depot.active_subscriptions|sort_by_name %}
         {% if forloop.first or forloop.counter0|breakFirstPage:45|breakNextPages:50 %}
             {% if forloop.counter0 > 0 %}
                 </table>

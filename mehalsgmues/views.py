@@ -60,7 +60,7 @@ def nextcloud_profile(request):
 # pdf
 def generate_pdf_dict():
     return {
-        'subscriptions': SubscriptionDao.all_active_subscritions().order_by('primary_member__first_name'),
+        'subscriptions': SubscriptionDao.all_active_subscritions(),
         'products': SubscriptionProductDao.get_all(),
         'extra_sub_categories': ExtraSubscriptionCategoryDao.categories_for_depot_list_ordered(),
         'depots': DepotDao.all_depots_order_by_code(),

@@ -31,3 +31,8 @@ def breakNextPages(index, limit):
         return False
     else:
         return index % limit == 0
+
+
+@register.filter
+def sort_by_name(subscriptions):
+    return subscriptions.order_by('primary_member__first_name')
