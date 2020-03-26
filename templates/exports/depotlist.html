@@ -35,7 +35,7 @@
                         {% for size in product.sizes_for_depot_list %}
                             <tr>
                                 <td>{{ size.name }}</td>
-                                <td>{{ subscriptions|depot:depot|sub_size:size|count }}</td>
+                                <td>{{ subscriptions|depot:depot|sub_size:size|count_units }}</td>
                             </tr>
                         {% endfor %}
                     {% endfor %}
@@ -61,7 +61,7 @@
             {% endfor %}
             {% for product in products %}
                 {% for size in product.sizes_for_depot_list %}
-                    <td style="width:1cm;" class="top-border left-border">{{ subscription|sub_size:size|count|default:'' }}</td>
+                    <td style="width:1cm;" class="top-border left-border">{{ subscription|sub_size:size|count_units|default:'' }}</td>
                 {% endfor %}
             {% endfor %}
             <td class="top-border left-border" style="width: 5cm;">{{ subscription.primary_member.get_name }}</td>
