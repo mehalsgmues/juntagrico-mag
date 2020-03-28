@@ -26,6 +26,7 @@ urlpatterns = [
 
     # API
     path(r'wochenmail/', mehalsgmues.api_emaillist),
+    path(r'contacts/', mehalsgmues.api_vcf_contacts),
 
     # exports
     path('my/export/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions'),

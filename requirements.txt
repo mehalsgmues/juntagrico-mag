@@ -1,3 +1,4 @@
+vobject
 gunicorn==20.0.4
 git+https://github.com/juntagrico/juntagrico.git
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git

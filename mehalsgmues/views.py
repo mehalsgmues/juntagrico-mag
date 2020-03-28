@@ -1,3 +1,4 @@
+import vobject
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
 from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
@@ -41,6 +42,42 @@ def api_emaillist(request):
     """prints comma separated list of member emails"""
     # get emails
     return HttpResponse(', '.join(Member.objects.filter(inactive=False).values_list('email', flat=True)))
+
+
+@staff_member_required
+def api_vcf_contacts(request):
+    members = Member.objects.filter(inactive=False)
+    cards = []
+    for member in members:
+        card = vobject.vCard()
+
+        attr = card.add('n')
+        attr.value = vobject.vcard.Name(family=member.last_name, given=member.first_name)
+
+        attr = card.add('fn')
+        attr.value = member.get_name()
+
+        attr = card.add('email')
+        attr.value = member.email
+
+        if member.mobile_phone:
+            attr = card.add('tel')
+            attr.value = member.mobile_phone
+            attr.type_param = 'cell'
+
+        if member.phone:
+            attr = card.add('tel')
+            attr.value = member.phone
+            attr.type_param = 'home'
+
+        attr = card.add('org')
+        attr.value = ["meh als gmües"]
+        cards.append(card)
+
+    response = HttpResponse(content_type='text/x-vcard')
+    response['Content-Disposition'] = 'attachment; filename="members.vcf"'
+    response.write("".join([card.serialize() for card in cards]))
+    return response
 
 
 @login_required
