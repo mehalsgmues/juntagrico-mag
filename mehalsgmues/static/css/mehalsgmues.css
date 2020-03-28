@@ -134,3 +134,14 @@ td.details-control, tr.shown td.details-control {
 .table-bordered td, .table-bordered th {
     border-color: black;
 }
+
+/* flexible job info */
+.flexible-jobs {
+    font-family: "Arial", sans-serif;
+    font-size: 16pt;
+}
+
+.flexible-jobs-table {
+    height: 650px;
+    padding: 0;
+}
