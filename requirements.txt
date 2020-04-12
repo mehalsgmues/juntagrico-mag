@@ -1,11 +1,12 @@
+django-qrcode
 vobject
 gunicorn==20.0.4
 git+https://github.com/juntagrico/juntagrico.git
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
-psycopg2>=2.8.4
+psycopg2>=2.8.5
 git+https://github.com/juntagrico/juntagrico-pg.git
 openpyxl>=3.0.3
-django-oauth-toolkit==1.3.0
+django-oauth-toolkit==1.3.2
 django-cors-middleware==1.5.0
 git+https://github.com/mehalsgmues/juntagrico_calendar.git
 git+https://github.com/juntagrico/juntagrico-assignment-request.git

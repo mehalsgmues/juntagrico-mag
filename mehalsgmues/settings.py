@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'impersonate',
     'oauth2_provider',
     'corsheaders',
+    'qrcode',
     'mehalsgmues',
 ]
 
@@ -171,6 +172,7 @@ VOCABULARY = {
     'subscription_pl': 'Ernteanteile'
 }
 ORGANISATION_NAME = "meh als gmües"
+ORGANISATION_NAME_CONFIG = {"type": "Genossenschaft", "gender": "f"}
 ORGANISATION_LONG_NAME = "meh als gmües"
 ORGANISATION_ADDRESS = {
     "name": "Genossenschaft meh als gmües",
@@ -194,9 +196,9 @@ ADMINPORTAL_NAME = "my.mehalsgmues"
 ADMINPORTAL_SERVER_URL = "my.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
+FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"
 STYLE_SHEET = "/static/css/mehalsgmues.css"
 FAVICON = "/static/img/favicon_mag.ico"
-FAQ_DOC = ""
 EXTRA_SUB_INFO = ""
 ACTIVITY_AREA_INFO = ""
 SHARE_PRICE = "250"
@@ -206,6 +208,7 @@ DEPOT_LIST_GENERATION_DAYS = [1, 2, 3, 4, 5, 6, 7]
 BILLING = False
 BUSINESS_YEAR_START = {"day": 1, "month": 4}
 BUSINESS_YEAR_CANCELATION_MONTH = 1
+MEMBERSHIP_END_MONTH = 3
 IMAGES = {
     'status_100': '/static/img/indicators/status_100.png',
     'status_75': '/static/img/indicators/status_75.png',
@@ -219,11 +222,13 @@ IMAGES = {
 }
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
-    'welcome': 'mag_mails/welcome_mail.txt',
-    'co_welcome': 'mag_mails/welcome_added_mail.txt'
+    'welcome': 'mag_mails/member_welcome.txt',
+    'co_welcome': 'mag_mails/co_member_welcome.txt'
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
+
+TELEGRAM_GROUP_LINK = os.environ.get('TELEGRAM_GROUP_LINK')

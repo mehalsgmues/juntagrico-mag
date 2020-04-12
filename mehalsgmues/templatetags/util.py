@@ -1,6 +1,8 @@
 from django import template
 from juntagrico.entity.jobs import RecuringJob
 
+from django.conf import settings
+
 register = template.Library()
 
 
@@ -36,3 +38,11 @@ def breakNextPages(index, limit):
 @register.filter
 def sort_by_name(subscriptions):
     return subscriptions.order_by('primary_member__first_name')
+
+
+@register.simple_tag
+def telegram_link():
+    group_id = getattr(settings, "TELEGRAM_GROUP_LINK", "")
+    if group_id:
+        return f"https://t.me/joinchat/{group_id}"
+    return "#"
