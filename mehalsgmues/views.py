@@ -40,8 +40,23 @@ from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month
 @staff_member_required
 def api_emaillist(request):
     """prints comma separated list of member emails"""
-    # get emails
-    return HttpResponse(', '.join(Member.objects.filter(inactive=False).values_list('email', flat=True)))
+    sep = request.GET.get('sep', ', ')
+    format = request.GET.get('format', 'plain')
+    emails = sep.join(Member.objects.filter(inactive=False).values_list('email', flat=True))
+    if format == 'plain':
+        # just display for copy
+        return HttpResponse(emails)
+    else:
+        # create file for download
+        if format.find(';') == -1:
+            content_type = f'text/{format}'
+            file_type = format
+        else:
+            content_type, file_type = format.split(';')
+        response = HttpResponse(content_type=content_type)
+        response['Content-Disposition'] = f'attachment; filename="emails.{file_type}"'
+        response.write(emails)
+        return response
 
 
 @staff_member_required
