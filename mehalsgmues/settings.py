@@ -133,6 +133,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
     'nextcloud.mehalsgmues.cyon.site',
+    'cloud.mehalsgmues.ch',
 )
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
