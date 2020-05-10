@@ -24,6 +24,9 @@ urlpatterns = [
     path(r'', include('juntagrico_assignment_request.urls')),
     path(r'impersonate/', include('impersonate.urls')),
 
+    # polling
+    path(r'', include('juntagrico_polling.urls')),
+
     # API
     path(r'wochenmail/', mehalsgmues.api_emaillist),
     path(r'contacts/', mehalsgmues.api_vcf_contacts),

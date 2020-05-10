@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # 'juntagrico_crowdfunding',
     'juntagrico_assignment_request',
     'juntagrico_calendar',
+    'juntagrico_polling',
     # 'report_builder',
     'crispy_forms',
     'impersonate',
