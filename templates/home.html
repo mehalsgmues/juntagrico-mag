@@ -7,11 +7,6 @@
     </h3>
     <div class="row mb-3">
         <div class="col-md-12">
-            {% include "mag_flexible_jobs.html" %}
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-12">
             {% include "snippets/snippet_jobs.html" %}
         </div>
     </div>
@@ -38,6 +33,11 @@
             </div>
         </div>
     {% endfor %}
+    <div class="row mb-3">
+        <div class="col-md-12">
+            {% include "mag_flexible_jobs.html" %}
+        </div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript" src="/static/external/datatables.min.js">
