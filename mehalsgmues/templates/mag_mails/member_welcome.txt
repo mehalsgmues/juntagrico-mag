@@ -17,7 +17,7 @@
 {% trans "Bestätigungslink" %}: {{ serverurl }}{% url 'confirm' member.get_hash %}
 
 Du erhältst für deine Anteilscheine separate Emails mit den Informationen wie du diese bezahlen kannst.
-{% if member.subscription is not None %}
+{% if member.future_subscription is not None %}
 Sobald du Mitglied bist, setzen wir dich auf die Warteliste für einen Ernteanteil. Wird einer frei, melden wir uns bei dir.
 {% else %}
 ACHTUNG: Du hast KEINEN Ernteanteil bestellt. Das heisst du bist nicht auf der Warteliste.
