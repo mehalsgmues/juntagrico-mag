@@ -36,7 +36,7 @@ def members_with_assignments(start_date, end_date, activty_area=None, members=No
 
 def assignments_by_subscription(start_date, end_date, activty_area=None):
     subscriptions_list = []
-    for subscription in SubscriptionDao.all_active_subscritions().annotate(totalsize=Sum('types__size__units')):
+    for subscription in SubscriptionDao.all_active_subscritions().annotate(totalsize=Sum('parts__type__size__units')):
         assignments = 0
         for member in members_with_assignments(start_date, end_date, activty_area, members=subscription.members):
             if member.assignments:
