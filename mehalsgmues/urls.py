@@ -8,9 +8,9 @@ from juntagrico_calendar import views as juntagrico_calendar
 
 urlpatterns = [
     # pdf (override)
-    path('my/pdf/depotlist', mehalsgmues.depot_list),
-    path('my/pdf/depotoverview', mehalsgmues.depot_overview),
-    path('my/pdf/amountoverview', mehalsgmues.amount_overview),
+    path('my/pdf/depotlist', mehalsgmues.depot_list, name='lists-depotlist'),
+    path('my/pdf/depotoverview', mehalsgmues.depot_overview, name='lists-depot-overview'),
+    path('my/pdf/amountoverview', mehalsgmues.amount_overview, name='lists-depot-amountoverview'),
 
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
@@ -28,14 +28,14 @@ urlpatterns = [
     path(r'', include('juntagrico_polling.urls')),
 
     # API
-    path(r'wochenmail/', mehalsgmues.api_emaillist),
-    path(r'contacts/', mehalsgmues.api_vcf_contacts),
+    path(r'wochenmail/', mehalsgmues.api_emaillist, name='mag-mailing-list'),
+    path(r'contacts/', mehalsgmues.api_vcf_contacts, name='mag-contact-list'),
 
     # exports
     path('my/export/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions'),
 
     # stats
-    path('stats/', mehalsgmues.stats),
+    path('stats/', mehalsgmues.stats, name='mag-stats'),
 
     # Discourse SSO
     path('sso/', mehalsgmues.sso),
