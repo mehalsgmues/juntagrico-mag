@@ -43,4 +43,7 @@ urlpatterns = [
     # OAuth
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('nextcloud/profile/', mehalsgmues.nextcloud_profile),
+
+    # short urls
+    path('t/', include('shortener.urls', namespace='shortener')),
 ]

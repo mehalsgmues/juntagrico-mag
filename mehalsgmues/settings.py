@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'corsheaders',
     'qrcode',
+    'shortener',
     'mehalsgmues',
 ]
 
