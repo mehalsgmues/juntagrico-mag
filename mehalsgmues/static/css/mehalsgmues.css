@@ -1,9 +1,23 @@
 /* general overrides of bootstrap */
 @font-face {
     font-family: 'Oxygen';
-    src: url('/static/fonts/Oxygen-Regular.ttf') format('truetype');font-weight: normal; font-style: normal;
-    src: url('/static/fonts/Oxygen-Light.ttf') format('truetype');font-weight: lighter; font-style: normal;
-    src: url('/static/fonts/Oxygen-Bold.ttf') format('truetype');font-weight: bold; font-style: normal;
+    src: url('/static/fonts/Oxygen-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxygen';
+    src: url('/static/fonts/Oxygen-Light.ttf') format('truetype');
+    font-weight: lighter;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxygen';
+    src: url('/static/fonts/Oxygen-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
 }
 
 .btn-success {
@@ -30,9 +44,7 @@ a:hover, a:focus {
 
 html, body {
     font-family: "Oxygen", monospace;
-    background-color: #fffff7;
 	background-image:  url(/static/img/mag_back.jpg);
-	background-repeat: round;
 }
 
 html {
@@ -80,7 +92,7 @@ h1, h2, h3, h4, h5, h6, .main-menu {
     background: url(/static/img/mehalsgmues_logo.png) center center;
     display: inline-block;
     width: 280px;
-    height: 310px;
+    height: 307px;
 }
 
 .jobs .full {
