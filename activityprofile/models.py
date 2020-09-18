@@ -30,6 +30,12 @@ class ActivityProfile(models.Model):
     image = models.URLField('Bild-URL', null=True, blank=True,
                             help_text='Direktlink zu einem Bild')
 
+    image_credits = models.CharField('Bild-Namensnennung', max_length=100, null=True, blank=True,
+                                     help_text='Falls für die Verwendung des Bilds eine Namensnennung erforderlich ist')
+
+    image_credits_url = models.URLField('Bild-Namensnennung-URL', null=True, blank=True,
+                                        help_text='Link zur Lizenz des Bilds (wenn erforderlich)')
+
     learn = RichTextField('Lernen / Vorkenntnisse', max_length=1500, null=True, blank=True,
                           help_text='Was kann das Mitglied in dieser Gruppe lernen? Welche Kenntnisse werden vorausgesetzt?')
     introduction = RichTextField('Einführung', max_length=1000, null=True, blank=True,
@@ -38,7 +44,7 @@ class ActivityProfile(models.Model):
     minimum_size = models.PositiveSmallIntegerField('Mindestgrösse', default=1)
     target_size = models.PositiveSmallIntegerField('Wunschgrösse', default=0, null=True, blank=True)
 
-    wanted = models.CharField('Interessierte Gesucht?', default='no', max_length=256,
+    wanted = models.CharField('Interessierte Gesucht?', default='no', max_length=10,
                               choices=[('no', 'Nein'), ('yes', 'Ja'), ('urgent', 'Dringend')])
 
     wanted_for = models.CharField('Interessierte Gesucht für', max_length=300, default='', null=True, blank=True,

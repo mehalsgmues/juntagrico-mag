@@ -51,7 +51,9 @@ def print_pdf(request, area_id):
 
 
 def iframe(request, area_id):
+    activity_profile = ActivityProfile.objects.get(activity_area_id=area_id)
     render_dict = {
-        'area': getattr(ActivityProfile.objects.get(activity_area_id=area_id), 'activity_area', None)
+        'area': getattr(activity_profile, 'activity_area', None),
+        'area_checked': request.user.member in activity_profile.activity_area.members.all()
     }
     return render(request, 'activityprofile/iframe.html', render_dict)

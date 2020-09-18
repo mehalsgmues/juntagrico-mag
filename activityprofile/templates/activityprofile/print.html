@@ -20,7 +20,22 @@
             <th colspan="12"><h2>{{ activity.activity_area.name }}</h2></th>
         </tr>
         <tr>
-            <td>{% if activity.image %}<img src="{{ activity.image }}" alt="{{ activity.activity_area.name }} Bild"/>{% else %}Beschreibung{% endif %}</td>
+            <td>
+                {% if activity.image %}
+                    <img src="{{ activity.image }}" alt="{{ activity.activity_area.name }} Bild"/>
+                    {% if activity.image_credits %}
+                        <div style="font-size: 6pt; text-align: center">Grafik von
+                            {% if activity.image_credits_url %}
+                                <a href="{{ activity.image_credits_url }}" class="no-link">{{ activity.image_credits }}</a>
+                            {% else %}
+                                {{ activity.image_credits }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    Beschreibung
+                {% endif %}
+            </td>
             <td class="content" colspan="12">{{ activity.activity_area.description|demojize|safe }}</td>
         </tr>
         <tr>
@@ -47,7 +62,7 @@
                     <tr class="centered">
                         <td>Mindestgrösse: {{ activity.minimum_size }}</td>
                         <td>IST: {{ activity.activity_area.members.count }}</td>
-                        <td>Wunschziel: {{ activity.target_size }}</td>
+                        <td>{% if activity.target_size %}Wunschziel: {{ activity.target_size }}{% endif %}</td>
                     </tr>
                 </table>
                 {% if activity.wanted != 'no' %}
@@ -99,9 +114,9 @@
             <td>Informations- & Kommunikations- wege</td>
             <td class="content" colspan="12">
                 {% if activity.group_email %}E-Mail: <a href="mailto:{{ activity.group_email }}">{{ activity.group_email }}</a><br>{% endif %}
-                {% if activity.chat %}Chat: <a href="{{ activity.chat }}" target="_blank">{{ activity.chat }}</a><br>{% endif %}
+                {% if activity.chat %}Chat: {{ activity.chat|simple_link }}<br>{% endif %}
                 {% if activity.other_communication %}{{ activity.other_communication|urlize }}<br>{% endif %}
-                Aktuelle Einsätze: <a href="{{ serverurl }}{% url 'area' activity.activity_area.id %}">{{ serverurl }}{% url 'area' activity.activity_area.id %}</a>
+                Aktuelle Einsätze: <a href="{{ serverurl }}{% url 'area' activity.activity_area.id %}">{{ serverurl|clean_url }}{% url 'area' activity.activity_area.id %}</a>
             </td>
         </tr>
         <tr>

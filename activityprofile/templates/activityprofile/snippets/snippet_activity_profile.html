@@ -62,7 +62,7 @@
     <div class="col-md-9">
         Mindestgrösse: {{ area.profile.minimum_size }}<br>
         IST: {{ area.members.count }}<br>
-        Wunschziel: {{ area.profile.target_size }}<br>
+        {% if area.profile.target_size %}Wunschziel: {{ area.profile.target_size }}<br>{% endif %}
 
         {% if area.profile.wanted != 'no' %}
             <strong{% if area.profile.wanted == 'urgent' %} style="color: #df0000;"{% endif %}>
