@@ -1,0 +1,121 @@
+@font-face {
+    font-family: 'Oxygen';
+    src: url('static/fonts/Oxygen-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxygen';
+    src: url('static/fonts/Oxygen-Light.ttf') format('truetype');
+    font-weight: lighter;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxygen';
+    src: url('static/fonts/Oxygen-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@page {
+    size: A4;
+    @frame content_frame {
+        left: 1cm;
+        width: 19cm;
+        top: 2cm;
+        height: 27.7cm;
+    }
+    @frame header_frame {
+        -pdf-frame-content:header_content;
+        left: 1cm;
+        width: 19cm;
+        top: 1cm;
+        height: 1cm;
+        text-align: center;
+    }
+
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.full-border {
+    border: 0.5px black solid;
+}
+
+.left-border {
+    border-left: 0.5px black solid;
+}
+
+.top-border {
+    border-top: 0.5px black solid;
+}
+
+.right-border {
+    border-right: 0.5px black solid;
+}
+
+.bottom-border {
+    border-bottom: 0.5px black solid;
+}
+
+body {
+    color: #70ad47;
+    font-family: 'Oxygen', monospace;
+}
+
+td, th {
+    text-align: left;
+    font-size: 13pt;
+    line-height: 1.15em;
+}
+
+th {
+    vertical-align: middle;
+}
+
+td {
+    vertical-align: top;
+}
+
+.content {
+    font-size: 12pt;
+}
+
+table {
+    table-layout:fixed;
+}
+
+h2, h3 {
+    margin: 0.2em 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 28pt;
+}
+
+h3 {
+    font-size: 15pt;
+}
+
+.month {
+    text-align: center;
+    vertical-align: center;
+    line-height: 12pt;
+}
+
+.highlight{
+    background-color: #fff200;
+}
+
+.centered * {
+    text-align: center;
+}
+
+li {
+    margin-bottom: 0px;
+}

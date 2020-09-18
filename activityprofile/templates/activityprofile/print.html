@@ -1,0 +1,113 @@
+{% load formatter %}
+{% load i18n %}
+{% load util %}
+{% load config %}
+<html>
+<head>
+    <title>{% blocktrans %}ARBEITSGRUPPEN meh als gmües{% endblocktrans %}</title>
+    <meta charset="utf-8">
+    <style>{% include "activityprofile/snippets/snippet_print_style.css" %}</style>
+</head>
+
+<body>
+    <div id="header_content" style="text-align: right;">
+        {% trans "Erstellt am" %} {% now "d.m.Y H:i" %}
+    </div>
+    <div style="text-align: center; font-size: 10pt">ARBEITSGRUPPEN meh als gmües</div>
+    <table cellpadding="5" cellspacing="0" style="margin-bottom:5px;" class="full-border">
+        <tr>
+            <th style="width:150px;">Du hilfst mit bei:</th>
+            <th colspan="12"><h2>{{ activity.activity_area.name }}</h2></th>
+        </tr>
+        <tr>
+            <td>{% if activity.image %}<img src="{{ activity.image }}" alt="{{ activity.activity_area.name }} Bild"/>{% else %}Beschreibung{% endif %}</td>
+            <td class="content" colspan="12">{{ activity.activity_area.description|demojize|safe }}</td>
+        </tr>
+        <tr>
+            <td>Lernen<br/>Vorkenntnisse</td>
+            <td class="content" colspan="12">{{ activity.learn|demojize|safe }}</td>
+        </tr>
+        <tr>
+            <td>Einführung</td>
+            <td class="content" colspan="12">{{ activity.introduction|demojize|safe }}</td>
+        </tr>
+        <tr>
+            <td>Kontaktperson</td>
+            <td class="content" colspan="12">{{ activity.activity_area.coordinator }}<br>
+                {% if activity.show_phone_number %}
+                Tel: <a href="tel:{{ activity.activity_area.coordinator.phone }}">{{ activity.activity_area.coordinator.phone }}</a><br/>
+                {% endif %}
+                E-Mail: <a href="mailto:{{ activity.activity_area.get_email }}">{{ activity.activity_area.get_email }}</a>
+                </td>
+        </tr>
+        <tr>
+            <td>Gruppe / Mitglieder</td>
+            <td class="content" colspan="12">
+                <table>
+                    <tr class="centered">
+                        <td>Mindestgrösse: {{ activity.minimum_size }}</td>
+                        <td>IST: {{ activity.activity_area.members.count }}</td>
+                        <td>Wunschziel: {{ activity.target_size }}</td>
+                    </tr>
+                </table>
+                {% if activity.wanted != 'no' %}
+                    <div style="text-align: center">
+                        <h3{% if activity.wanted == 'urgent' %} style="color: #df0000;"{% endif %}>
+                            {% if activity.wanted_for %}
+                                {% if activity.wanted == 'urgent' %}Dringend g{% else %}G{% endif %}esucht: {{ activity.wanted_for|demojize|urlize }}
+                            {% else %}
+                                Interessierte {% if activity.wanted == 'urgent' %}dringend{% endif %} gesucht!
+                            {% endif %}
+                        </h3>
+                    </div>
+                {% endif %}
+                {{ activity.group_extras|safe }}
+            </td>
+        </tr>
+        <tr>
+            <td>Kleidung</td>
+            <td class="content" colspan="12">{{ activity.clothing|demojize|safe }}</td>
+        </tr>
+        <tr style="padding-top: 1px; padding-bottom: 1px;">
+            <td>Saison</td>
+            <td class="month {% if '4' in activity.season %}highlight{% endif %}">Apr</td>
+            <td class="month {% if '5' in activity.season %}highlight{% endif %}">Mai</td>
+            <td class="month {% if '6' in activity.season %}highlight{% endif %}">Jun</td>
+            <td class="month {% if '7' in activity.season %}highlight{% endif %}">Jul</td>
+            <td class="month {% if '8' in activity.season %}highlight{% endif %}">Aug</td>
+            <td class="month {% if '9' in activity.season %}highlight{% endif %}">Sep</td>
+            <td class="month {% if '10' in activity.season %}highlight{% endif %}">Oct</td>
+            <td class="month {% if '11' in activity.season %}highlight{% endif %}">Nov</td>
+            <td class="month {% if '12' in activity.season %}highlight{% endif %}">Dez</td>
+            <td class="month {% if '1' in activity.season %}highlight{% endif %}">Jan</td>
+            <td class="month {% if '2' in activity.season %}highlight{% endif %}">Feb</td>
+            <td class="month {% if '3' in activity.season %}highlight{% endif %}">Mär</td>
+        </tr>
+        <tr>
+            <td>Einsätze</td>
+            <td class="content" colspan="12">
+                <ul>
+                    <li><strong>{% if activity.flexible %}Einsätze flexibel möglich!{% endif %}</strong></li>
+                    <li>{% if activity.alone %}Alleine{% endif %}
+                    {% if activity.alone and activity.in_groups %}oder in der Gruppe
+                    {% elif activity.in_groups %}In der Gruppe{% endif %}</li>
+                    <li>{{ activity.days }}</li>
+                {{ activity.jobs_more|close_ul|demojize|safe }}
+            </td>
+        </tr>
+        <tr>
+            <td>Informations- & Kommunikations- wege</td>
+            <td class="content" colspan="12">
+                {% if activity.group_email %}E-Mail: <a href="mailto:{{ activity.group_email }}">{{ activity.group_email }}</a><br>{% endif %}
+                {% if activity.chat %}Chat: <a href="{{ activity.chat }}" target="_blank">{{ activity.chat }}</a><br>{% endif %}
+                {% if activity.other_communication %}{{ activity.other_communication|urlize }}<br>{% endif %}
+                Aktuelle Einsätze: <a href="{{ serverurl }}{% url 'area' activity.activity_area.id %}">{{ serverurl }}{% url 'area' activity.activity_area.id %}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Kinderbegleitung</td>
+            <td class="content" colspan="12">{{ activity.children|demojize|safe }}</td>
+        </tr>
+    </table>
+</body>
+</html>

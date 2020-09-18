@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'qrcode',
     'shortener',
+    'multiselectfield',
+    'ckeditor',
+    'activityprofile',
     'mehalsgmues',
 ]
 
@@ -82,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
+                'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
             ],
             'loaders': [
@@ -235,3 +239,15 @@ DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
 
 TELEGRAM_GROUP_LINK = os.environ.get('TELEGRAM_GROUP_LINK')
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    },
+}

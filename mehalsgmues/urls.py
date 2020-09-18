@@ -46,4 +46,7 @@ urlpatterns = [
 
     # short urls
     path('t/', include('shortener.urls', namespace='shortener')),
+
+    # activity profile url
+    path('activityprofile/', include('activityprofile.urls'))
 ]

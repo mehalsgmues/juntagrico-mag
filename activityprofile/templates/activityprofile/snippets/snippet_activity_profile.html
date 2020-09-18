@@ -1,0 +1,175 @@
+{% load formatter %}
+{% load admin_links %}
+{% load i18n %}
+{% load util %}
+{% load config %}
+
+{% edit_link %}
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>{% trans "Beschreibung" %}</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.description|safe }}
+    </div>
+</div>
+
+{% if area.profile %}
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Lernen / Vorkenntnisse</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.profile.learn|safe }}
+    </div>
+</div>
+
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Einführung</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.profile.introduction|safe }}
+    </div>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <strong>{% trans "Kontaktperson" %}</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.coordinator }}
+        <br/>
+        {% if area.profile.show_phone_number %}
+        Tel: <a href="tel:{{ area.coordinator.phone }}">
+            {{ area.coordinator.phone }}
+        </a><br/>
+        {% endif %}
+        E-Mail: <a href="mailto:{{ area.get_email }}">
+            {{ area.get_email }}
+        </a>
+    </div>
+</div>
+
+{% if area.profile %}
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Gruppe / Mitglieder</strong>
+    </div>
+    <div class="col-md-9">
+        Mindestgrösse: {{ area.profile.minimum_size }}<br>
+        IST: {{ area.members.count }}<br>
+        Wunschziel: {{ area.profile.target_size }}<br>
+
+        {% if area.profile.wanted != 'no' %}
+            <strong{% if area.profile.wanted == 'urgent' %} style="color: #df0000;"{% endif %}>
+                {% if area.profile.wanted_for %}
+                    {% if area.profile.wanted == 'urgent' %}Dringend g{% else %}G{% endif %}esucht: {{ area.profile.wanted_for }}
+                {% else %}
+                    Interessierte {% if area.profile.wanted == 'urgent' %}dringend{% endif %} gesucht!
+                {% endif %}
+            </strong>
+        {% endif %}
+
+        {{ area.profile.group_extras|safe }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Kleidung</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.profile.clothing|safe }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Saison</strong>
+    </div>
+    <div class="col-md-9">
+        <div class="row mb-3">
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '4' in area.profile.season %}background-color: #fff200;{% endif %}">Apr</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '5' in area.profile.season %}background-color: #fff200;{% endif %}">Mai</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '6' in area.profile.season %}background-color: #fff200;{% endif %}">Jun</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '7' in area.profile.season %}background-color: #fff200;{% endif %}">Jul</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '8' in area.profile.season %}background-color: #fff200;{% endif %}">Aug</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '9' in area.profile.season %}background-color: #fff200;{% endif %}">Sep</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '10' in area.profile.season %}background-color: #fff200;{% endif %}">Okt</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '11' in area.profile.season %}background-color: #fff200;{% endif %}">Nov</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '12' in area.profile.season %}background-color: #fff200;{% endif %}">Dez</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '1' in area.profile.season %}background-color: #fff200;{% endif %}">Jan</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '2' in area.profile.season %}background-color: #fff200;{% endif %}">Feb</div>
+            <div class="col-3 col-sm-2 col-lg-1" style="text-align: center; {% if '3' in area.profile.season %}background-color: #fff200;{% endif %}">Mär</div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Einsätze</strong>
+    </div>
+    <div class="col-md-9">
+        <ul>
+            {% if area.profile.flexible %}<li><b>Einsätze flexibel möglich!</b></li>{% endif %}
+            {% if area.profile.alone or area.profile.in_groups %}
+                <li>{% if area.profile.alone %}Alleine{% endif %}
+                {% if area.profile.alone and area.profile.in_groups %}oder in der Gruppe
+                {% elif area.profile.in_groups %}In der Gruppe{% endif %}</li>
+            {% endif %}
+            {% if area.profile.days %}<li>{{ area.profile.days }}</li>{% endif %}
+        {{ area.profile.jobs_more|close_ul|safe }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Informations- & Kommuni&shy;ka&shy;tions&shy;wege</strong>
+    </div>
+    <div class="col-md-9">
+        {% if area.profile.group_email %}E-Mail: <a href="mailto:{{ area.profile.group_email }}">{{ area.profile.group_email }}</a><br>{% endif %}
+        {% if area.profile.chat %}Chat: <a href="{{ area.profile.chat }}" target="_blank">{{ area.profile.chat }}</a><br>{% endif %}
+        {% if area.profile.other_communication %}{{ area.profile.other_communication|urlize }}<br>{% endif %}
+        <span class="switch switch-sm">
+            <input type="checkbox" class="switch" value="{{ area.id }}" id="area{{ area.id }}" name="area{{ area.id }}" {% if area_checked %}checked="checked"{% endif %}/>
+            <label for="area{{ area.id }}">{% trans "Mitmachen" %}</label>
+        </span><br>
+        {% if jobslink %}<a href="{% url 'area' area.id %}">Aktuelle Einsätze</a>{% endif %}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <strong>Kinder&shy;begleitung</strong>
+    </div>
+    <div class="col-md-9">
+        {{ area.profile.children|safe }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a href="{% url 'activityprofile:print' area.id %}" target="_blank">
+            <i class="fas fa-download">
+            </i>
+            Steckbrief als PDF herunterladen
+        </a>
+    </div>
+</div>
+
+{% else %}
+    <div class="row mb-3 no-gutters">
+        <div class="offset-md-3 col-md-9">
+            <span class="switch switch-sm">
+                <input type="checkbox" class="switch" value="{{ area.id }}" id="area{{ area.id }}" name="area{{ area.id }}"{% if area_checked %}checked="checked"{% endif %}/>
+                <label for="area{{ area.id }}">
+                    {% trans "Mitmachen" %}
+                </label>
+            </span>
+        </div>
+    </div>
+{% endif %}
