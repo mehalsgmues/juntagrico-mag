@@ -61,7 +61,7 @@
                 <table>
                     <tr class="centered">
                         <td>Mindestgrösse: {{ activity.minimum_size }}</td>
-                        <td>IST: {{ activity.activity_area.members.count }}</td>
+                        <td>IST: {{ activity.active_members }}</td>
                         <td>{% if activity.target_size %}Wunschziel: {{ activity.target_size }}{% endif %}</td>
                     </tr>
                 </table>
@@ -106,7 +106,7 @@
                     <li>{% if activity.alone %}Alleine{% endif %}
                     {% if activity.alone and activity.in_groups %}oder in der Gruppe
                     {% elif activity.in_groups %}In der Gruppe{% endif %}</li>
-                    <li>{{ activity.days }}</li>
+                    {% if activity.days %}<li>{{ activity.days }}</li>{% endif %}
                 {{ activity.jobs_more|close_ul|demojize|safe }}
             </td>
         </tr>

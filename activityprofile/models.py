@@ -87,6 +87,9 @@ class ActivityProfile(models.Model):
     def group_email(self):
         return self.email if self.email else self.activity_area.get_email()
 
+    def show_phone_number(self):
+        return self.activity_area.show_coordinator_phonenumber
+
     @property
     def output_file(self):
         return f'_activityprofile_pdfs/{self.name}.pdf'
