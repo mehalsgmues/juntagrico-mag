@@ -1,0 +1,93 @@
+.bar {
+    display: flex;
+    width: 100%;
+    height: 25px;
+}
+
+.bar-segment {
+    padding: 0 9px;
+    text-align: right;
+    overflow: hidden;
+}
+
+.bar-labels {
+    display: flex;
+    width: 100%;
+}
+
+.bar-label {
+    position: relative;
+    padding: 0 9px;
+    color: black;
+    font-size: 10pt;
+}
+
+.bar-label-left {
+    overflow: hidden;
+    text-align: right;
+}
+
+.bar-label::after {
+    content: '';
+    height: 7px;
+    display: block;
+    position: absolute;
+}
+
+.bar-label-left::after {
+    border-right: 1px solid black;
+    right: 0;
+}
+
+.bar-label-right::after {
+    border-left: 1px solid black;
+    left: 0;
+}
+
+.bar-labels-top .bar-label::after {
+    bottom: 0;
+}
+
+.bar-labels-bottom .bar-label::after {
+    top: 0;
+}
+
+.bar-active-label {
+    font-weight: bold;
+}
+
+/* bar coloring */
+.bar-required {
+    background-color: #3c7429;
+    color: white
+}
+
+.bar-active {
+    background-color: #4c9434;
+    color: white
+}
+
+.bar-below-required .bar-active {
+    background-color: #792200;
+    color: white
+}
+
+.bar-below-required .bar-required {
+    background: repeating-linear-gradient(-45deg, #efe0e0, #efe0e0 20px, #dcbdbd 20px, #dcbdbd 40px);
+    color: black
+}
+
+.bar-below-required .bar-target, .bar-below-target .bar-target {
+    background: repeating-linear-gradient(-45deg, #fff9e3, #fff9e3 20px, #fff1ca 20px, #fff1ca 40px);
+    font-weight: bold;
+}
+
+.bar-below-target .bar-required {
+    background-color: #ffcb00;
+    color: black
+}
+
+.bar-below-target .bar-active {
+    background-color: #fff200;
+    color: black
+}

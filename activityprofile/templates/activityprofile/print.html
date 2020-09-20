@@ -24,7 +24,7 @@
                 {% if activity.image %}
                     <img src="{{ activity.image }}" alt="{{ activity.activity_area.name }} Bild"/>
                     {% if activity.image_credits %}
-                        <div style="font-size: 6pt; text-align: center">Grafik von
+                        <div style="font-size: 6pt; text-align: right">Grafik von
                             {% if activity.image_credits_url %}
                                 <a href="{{ activity.image_credits_url }}" class="no-link">{{ activity.image_credits }}</a>
                             {% else %}

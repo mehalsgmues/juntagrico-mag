@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 {% load config %}
 {% block page_title %}
@@ -27,4 +28,7 @@
 {% block scripts %}
     <script type="text/javascript" src="/static/external/require.min.js" data-main="/static/js/initArea.js">
     </script>
+{% endblock %}
+{% block styles %}
+    <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
 {% endblock %}

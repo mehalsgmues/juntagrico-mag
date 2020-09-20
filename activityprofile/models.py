@@ -41,6 +41,7 @@ class ActivityProfile(models.Model):
     introduction = RichTextField('Einführung', max_length=1000, null=True, blank=True,
                                  help_text='Ist eine Einführung nötig?')
 
+    active_members = models.PositiveSmallIntegerField('Anzahl aktive Mitglieder', default=1)
     minimum_size = models.PositiveSmallIntegerField('Mindestgrösse', default=1)
     target_size = models.PositiveSmallIntegerField('Wunschgrösse', default=0, null=True, blank=True)
 
