@@ -68,7 +68,8 @@ def bar(name, active, required, target):
     # bottom labels: required & target
     target_label = f'<div class="bar-label bar-target-label bar-label-left"' \
                    f'style="width: {(target - required) / total * 100}%;">Ziel</div>' if target > required and target > active else ''
-    if (required_width := required / total * 100) > 50:
+    required_width = required / total * 100
+    if required_width > 50:
         label = f'<div class="bar-label bar-required-label bar-label-left"' \
                 f'style="width: {required_width}%;">Mindestens</div>'
     else:
@@ -77,7 +78,8 @@ def bar(name, active, required, target):
     labels_bottom = f'<div class="bar-labels bar-labels-bottom">{label}{target_label}</div>'
 
     # top label: active
-    if (active_width := active / total * 100) > 50:
+    active_width = active / total * 100
+    if active_width > 50:
         label = f'<div class="bar-label bar-active-label bar-label-left"' \
                 f'style="width: {active_width}%;">Aktiv</div>'
     else:
