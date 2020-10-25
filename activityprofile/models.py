@@ -106,4 +106,5 @@ def clear_pdf(sender, instance, **kwargs):
         if not hasattr(instance, 'profile'):
             return
         instance = instance.profile
-    default_storage.delete(instance.output_file)
+    if isinstance(instance, ActivityProfile):
+        default_storage.delete(instance.output_file)
