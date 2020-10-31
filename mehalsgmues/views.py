@@ -1,12 +1,14 @@
 import vobject
 from django.contrib.auth.decorators import login_required
+from django.core.management import call_command
 from django.utils.safestring import mark_safe
 from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
-from juntagrico.dao.memberdao import MemberDao
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
+from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
+from juntagrico import views_admin
 from openpyxl import Workbook
 
 import base64
@@ -130,11 +132,11 @@ def other_recipients_names_w_linebreaks(self):
 
 @staff_member_required
 def depot_list(request):
-    depot_dict = generate_pdf_dict()
-    for depot in depot_dict['depots']:
-        depot.delivery_dates = list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
-    Subscription.other_recipients_names_w_linebreaks = other_recipients_names_w_linebreaks
-    return render_to_pdf_http('exports/depotlist.html', depot_dict, 'depotlist.pdf')
+    def delivery_dates(depot):
+        return list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
+    Depot.delivery_dates = delivery_dates
+    call_command('generate_depot_list', force=True, future=True)
+    return views_admin.depotlist(request)
 
 
 @staff_member_required

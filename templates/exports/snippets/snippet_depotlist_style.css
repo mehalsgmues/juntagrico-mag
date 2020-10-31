@@ -2,14 +2,14 @@
     size: A4;
     @frame content_frame {
         left: 1cm;
-        width: 21cm;
+        width: 19cm;
         top: 2cm;
-        height: 29.7cm;
+        height: 26.7cm;
     }
     @frame header_frame {
         -pdf-frame-content:header_content;
         left: 1cm;
-        width: 21cm;
+        width: 19cm;
         top: 1cm;
         height: 1cm;
         text-align: center;
@@ -42,17 +42,72 @@
 }
 
 th {
-    text-align: left;
+    font-size: 14px;
     line-height: 8px;
+    text-align: center;
 }
 
 td {
     font-size: 14px;
-    line-height: 12px;
+    line-height: 14px;
+    text-align: center;
+}
+
+.vert-top {
+    vertical-align: top;
+}
+
+.vert-bottom {
+    vertical-align: bottom;
+}
+
+.horz-left {
+    text-align: left;
+}
+
+.horz-center {
+    text-align: center;
+}
+
+.namecol {
+    width: 14cm;
+}
+
+.checkboxcol {
+    width: 1cm;
+}
+
+.message {
+    width: 100%;
+    text-align: center;
+    font-size: 18pt;
+}
+
+.depot {
+    font-size: 24px;
+    margin: 0px;
+}
+
+.depotaddr {
+    font-size: 14px;
+    margin: 0px;
+}
+
+.fontsmall {
+    font-size:11px
+}
+
+.gendate {
+    text-align: right;
+}
+
+.proddescr {
+    font-size:11px
 }
 
 table {
-    table-layout:fixed;
+    table-layout: fixed;
+    margin-bottom:5px;
 }
 
 h2, h3 {
