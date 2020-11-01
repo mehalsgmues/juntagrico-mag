@@ -48,5 +48,8 @@ urlpatterns = [
     path('t/', include('shortener.urls', namespace='shortener')),
 
     # activity profile url
-    path('activityprofile/', include('activityprofile.urls'))
+    path('activityprofile/', include('activityprofile.urls')),
+
+    # share progress
+    path('shares/preview/', mehalsgmues.share_progress_preview)
 ]

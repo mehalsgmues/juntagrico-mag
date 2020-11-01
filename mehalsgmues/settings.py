@@ -251,3 +251,6 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
+
+SHARE_PROGRESS_GOAL = os.environ.get('SHARE_PROGRESS_GOAL')
+SHARE_PROGRESS_OFFSET = os.environ.get('SHARE_PROGRESS_OFFSET')

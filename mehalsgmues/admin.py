@@ -1,16 +1,6 @@
 from django.contrib import admin
-from juntagrico.util.admin import MyHTMLWidget
-
-from django import forms
-
-from juntagrico.entity.member import Member
-from juntagrico.entity.share import Share
-from juntagrico.admins.member_admin import MemberAdmin
-from juntagrico.admins.forms.member_admin_form import MemberAdminForm
 
 from django.urls import reverse
-from juntagrico.config import Config
-from django.utils.translation import gettext as _
 
 from django.contrib.admin.models import LogEntry, DELETION
 from django.utils.html import escape

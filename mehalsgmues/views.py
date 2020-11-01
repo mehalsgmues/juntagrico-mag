@@ -1,5 +1,6 @@
 import vobject
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.dao.memberdao import MemberDao
@@ -33,7 +34,7 @@ from openpyxl.utils import get_column_letter
 
 from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day, \
     members_with_assignments
-from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month
+from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month, draw_share_progress
 
 
 # API
@@ -304,3 +305,8 @@ def sso(request):
     # Redirect back to Discourse
     url = '%s/session/sso_login' % settings.DISCOURSE_BASE_URL
     return HttpResponseRedirect('%s?%s' % (url, query_string))
+
+
+@login_required
+def share_progress_preview(request):
+    return render(request, 'share_progress_preview.html', {'progress': draw_share_progress()})
