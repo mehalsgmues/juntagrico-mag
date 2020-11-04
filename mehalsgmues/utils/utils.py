@@ -38,23 +38,25 @@ def progress_arc(progress, **options):
     # Draw a shape to fill with the gradient
     color = rgb_to_hex(colorsys.hls_to_rgb((-30 + 100 * progress) / 255, 74 / 255, 1))
     p = draw.Path(fill=color, **options)
+    progress = min(progress, 0.99999)
     p.arc(0, 0, 0.7, 90 - 360 * progress, 90)
     p.arc(0, 0, 0.5, 90, 90 - 360 * progress, cw=True, includeL=True)
     p.Z()
     return p
 
 
-def on_arc(r, prog, side='outer', size=0.03):
+def on_arc(r, prog, side='outer', size=0.047, lines=1):
+    prog = prog - int(prog)
     return {
         'fontSize': size,
         'x': math.sin(prog * 2 * math.pi) * r,
-        'y': math.cos(prog * 2 * math.pi) * r - (size if (side == 'outer') ^ (abs(prog - 0.5) > 0.25) else 0),
+        'y': math.cos(prog * 2 * math.pi) * r + size*((lines-1) - (lines if (side == 'outer') ^ (abs(prog - 0.5) > 0.25) else 0)),
         'text_anchor': 'start' if (side == 'outer') ^ (prog > 0.5) else 'end',
     }
 
 
 def draw_share_progress():
-    goal = int(getattr(settings, "SHARE_PROGRESS_GOAL", "0") or "1524")
+    goal = int(getattr(settings, "SHARE_PROGRESS_GOAL", "0") or "1400")
     offset = int(getattr(settings, "SHARE_PROGRESS_OFFSET", "0") or "0")
     ordered = Share.objects.filter(cancelled_date__isnull=True).count() + offset
     ordered_progress = ordered/goal
@@ -74,16 +76,19 @@ def draw_share_progress():
     d.append(progress_arc(paid_progress))
 
     # text center
-    d.append(draw.Text('Noch', 0.1, 0, 0.3, center=True))
-    d.append(draw.Text(str(goal-ordered), 0.3, 0, 0.1, center=True, font_weight='bold'))
-    d.append(draw.Text('Anteilscheine', 0.1, 0, -0.15, center=True))
-
-    # labels
-    d.append(draw.Text(f'{ordered} Bestellt', **on_arc(0.5, ordered_progress, 'inner')))
-    d.append(draw.Text(f'{paid} Bezahlt', **on_arc(0.7, paid_progress)))
+    if goal > ordered:
+        d.append(draw.Text('Noch', 0.1, 0, 0.3, center=True))
+        d.append(draw.Text(str(goal-ordered), 0.3, 0, 0.12, center=True, font_weight='bold'))
+        d.append(draw.Text('Anteilscheine', 0.09, 0, -0.1, center=True))
+        # labels
+        d.append(draw.Text(f'{ordered}\nbestellt', **on_arc(0.7, ordered_progress, lines=2)))
+        d.append(draw.Text(f'{paid}\nbezahlt', **on_arc(0.5, paid_progress, 'inner', lines=2)))
+    else:
+        d.append(draw.Text('Wir haben es', 0.09, 0, 0.14, center=True))
+        d.append(draw.Text('Geschafft!', 0.18, 0, 0, center=True, font_weight='bold'))
 
     # Display
-    d.setRenderSize(w=600)
+    d.setRenderSize(w='100%', h='100%')
     svg = d.asSvg()
     return svg[:-6] + """<style type="text/css">
         @font-face {
