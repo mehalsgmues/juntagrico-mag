@@ -1,0 +1,119 @@
+{% extends "no_menu_base.html" %}
+{% load i18n %}
+{% load config %}
+{% block all_page_title %}
+    {% vocabulary "share_pl" as v_share_pl %}
+    <div class="page-title offset-md-2 col-md-8">
+        <h3>
+            {% blocktrans %}{{ v_share_pl }} erwerben{% endblocktrans %}
+        </h3>
+    </div>
+{% endblock %}
+{% block allcontent %}
+    {% config "currency" as c_currency %}
+    {% config "share_price" as c_share_price %}
+    {% enriched_organisation "D" as v_d_enriched_organisation %}
+    {% vocabulary "share_pl" as v_share_pl %}
+    {% vocabulary "subscription" as v_subscription %}
+    {% vocabulary "subscription_pl" as v_subscription_pl %}
+    {% vocabulary "member_type" as v_member_type %}
+    {% vocabulary "share" as v_share %}
+    {% vocabulary "co_member_pl" as v_co_member_pl %}
+    <div class="offset-md-2 col-md-8">
+        {% if shares.error %}
+            <div class="alert alert-danger">
+                {# changed text here #}
+                {% blocktrans trimmed %}
+                Du brauchst entweder mehr {{ v_share_pl }} für die von dir gewählten {{ v_subscription_pl }}
+                oder eine deiner Eingaben ist keine postitive Zahl.
+                {% endblocktrans %}
+                (x &#8713; &#8469;)
+            </div>
+        {% endif %}
+        <div class="row mb-4">
+            <div class="col-md-12">
+                {% trans "Infos" %}:
+                {# changed text here #}
+                {% blocktrans trimmed %}
+                Um {{ v_member_type }} bei {{ v_d_enriched_organisation }} zu werden, musst du mindestens
+                1 {{ v_share }} ({{ c_currency }} {{ c_share_price }}) erwerben.
+                Beim Austritt aus {{ v_d_enriched_organisation }} bekommst du deine(n) {{ v_share }}(e)
+                zurückerstattet.
+                {% endblocktrans %}
+                {% if shares.total_required > 0 %}
+                    {# changed text here #}
+                    {% blocktrans trimmed with shares.total_required as st %}
+                    Für die von dir ausgewählten {{ v_subscription_pl }} brauchst du insgesamt {{ st }}
+                    {{ v_share }}(e). Du kannst natürlich noch mehr erwerben.
+                    {% endblocktrans %}
+                    <br/>
+                {% else %}
+                    {% blocktrans trimmed %}
+                    Als {{ v_member_type }} ohne {{ v_subscription }} benötigst du 1
+                    {{ v_share }}. Du kannst natürlich noch mehr erwerben.
+                    {% endblocktrans %}
+                    <br/>
+                {% endif %}
+                {% if co_members|length > 0 %}
+                    {% blocktrans trimmed %}
+                    Teile die restlichen benötigten {{ shares.remaining_required }} {{ v_share }}(e) unter dir und
+                    deinen {{ v_co_member_pl }} auf. Nur Personen mit mindestens 1 {{ v_share }} sind Stimmberechtigt.
+                    {% endblocktrans %}
+                {% endif %}
+            </div>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">
+                    {% blocktrans %}Deine {{ v_share_pl }}{% endblocktrans %}
+                </label>
+                <div class="col-md-3">
+                    <input type="number" name="shares_mainmember" class="form-control" value="{{ member.new_shares|default:shares.total_required }}" min="{% if shares.existing_main_member == 0 %}1{% else %}0{% endif %}"/>
+                </div>
+                <label class="col-md-6 col-form-label">
+                    {% if shares.existing_main_member == 0 %}
+                        {% blocktrans trimmed %}
+                        Du brauchst als HauptbezieherIn mindestens 1 {{ v_share }}.
+                        {% endblocktrans %}
+                    {% else %}
+                        {% blocktrans trimmed with msc=member.active_shares.count%}
+                        Du hast bereits {{ msc }} {{ v_share }}(e)
+                        {% endblocktrans %}
+                    {% endif %}
+                </label>
+            </div>
+            {% for co_member in co_members %}
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">
+                        {{ co_member.first_name }} {{ co_member.last_name }}
+                    </label>
+                    <div class="col-md-3">
+                        <input type="number" name="{{ co_member.email }}" class="form-control" value="{{ co_member.new_shares|default:0 }}" min="0"/>
+                    </div>
+                    <label class="col-md-6 col-form-label">
+                        {% blocktrans trimmed with cac=co_member.active_shares.count %}
+                        besitzt bereits {{ cac }} {{ v_share }}(e)
+                        {% endblocktrans %}
+                    </label>
+                </div>
+            {% endfor %}
+            <div class="form-group row">
+                <div class="offset-md-3 col-md-9">
+                    <button type="submit" class="btn btn-success">
+                        {% trans "Weiter" %}
+                    </button>
+                    <a href="{% url 'cs-cancel' %}" class="btn">
+                        {% trans "Abbrechen" %}
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="/static/external/bootstrap-input-spinner.js">
+    </script>
+    <script type="text/javascript" src="/static/external/require.min.js" data-main="/static/js/initChangeExtra.js">
+    </script>
+{% endblock %}

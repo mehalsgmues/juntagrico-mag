@@ -168,6 +168,8 @@ if DEBUG is True:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+LOCALE_PATHS = ('locale',)
+
 IMPERSONATE = {
     'REDIRECT_URL': '/my/profile',
 }
@@ -230,7 +232,8 @@ IMAGES = {
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
     'welcome': 'mag_mails/member_welcome.txt',
-    'co_welcome': 'mag_mails/co_member_welcome.txt'
+    'co_welcome': 'mag_mails/co_member_welcome.txt',
+    'co_added': 'mag_mails/co_member_added.txt'
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
