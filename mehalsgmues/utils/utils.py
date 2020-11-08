@@ -63,7 +63,7 @@ def draw_share_progress():
     paid = Share.objects.filter(cancelled_date__isnull=True, paid_date__isnull=False).count() + offset
     paid_progress = paid/goal
 
-    d = draw.Drawing(1.8, 1.5, origin='center')
+    d = draw.Drawing(1.8, 1.6, origin='center')
 
     arrow = draw.Marker(-0.2, -0.5, 0.9, 0.5, scale=20, orient='auto')
     arrow.append(draw.Lines(-0.2, -0.5, 0, 0, -0.2, 0.5, 0.9, 0, fill='black', close=True))

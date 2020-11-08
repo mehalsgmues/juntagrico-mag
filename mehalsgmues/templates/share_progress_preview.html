@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="share-progress">
+<div id="share-progress" class="share-progress">
     {{ progress | safe }}
 </div>
+<canvas id="canvas" width="1350" height="1200" style="width:600px"></canvas>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var canvas = document.getElementById("canvas");
+        rasterizeHTML.drawHTML(document.getElementById("share-progress").innerHTML,
+            canvas);
+    });
+</script>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="/static/js/rasterizeHTML.allinone.js">
+    </script>
 {% endblock %}
