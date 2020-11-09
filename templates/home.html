@@ -2,7 +2,13 @@
 {% load i18n %}
 {% load config %}
 {% block content %}
-    {# {% include 'snippets/share_progress_snippet.html' %} #}
+    {% comment %}
+    <h4>
+        <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
+    </h4>
+    {% include 'snippets/share_progress_snippet.html' %}
+    <a name="jobs"></a>
+    {% endcomment %}
     <h3>
         {% trans "Aktuelle Arbeitseinsätze" %}
     </h3>

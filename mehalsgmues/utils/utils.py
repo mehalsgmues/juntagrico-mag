@@ -36,8 +36,9 @@ def rgb_to_hex(rgb):
 
 def progress_arc(progress, **options):
     # Draw a shape to fill with the gradient
-    color = rgb_to_hex(colorsys.hls_to_rgb((-30 + 100 * progress) / 255, 74 / 255, 1))
-    p = draw.Path(fill=color, **options)
+    if 'fill' not in options:
+        options['fill'] = rgb_to_hex(colorsys.hls_to_rgb((-30 + 100 * progress) / 255, 74 / 255, 1))
+    p = draw.Path(**options)
     progress = min(progress, 0.99999)
     p.arc(0, 0, 0.7, 90 - 360 * progress, 90)
     p.arc(0, 0, 0.5, 90, 90 - 360 * progress, cw=True, includeL=True)
@@ -45,19 +46,22 @@ def progress_arc(progress, **options):
     return p
 
 
-def on_arc(r, prog, side='outer', size=0.047, lines=1):
+def on_arc(r, prog, side='outer', size=0.047):
     prog = prog - int(prog)
     return {
         'fontSize': size,
         'x': math.sin(prog * 2 * math.pi) * r,
-        'y': math.cos(prog * 2 * math.pi) * r + size*((lines-1) - (lines if (side == 'outer') ^ (abs(prog - 0.5) > 0.25) else 0)),
+        'y': math.cos(prog * 2 * math.pi) * r,
         'text_anchor': 'start' if (side == 'outer') ^ (prog > 0.5) else 'end',
+        'valign': 'top' if (side == 'outer') ^ (abs(prog - 0.5) > 0.25) else 'bottom'
     }
 
 
 def draw_share_progress():
-    goal = int(getattr(settings, "SHARE_PROGRESS_GOAL", "0") or "1400")
+    goal = int(getattr(settings, "SHARE_PROGRESS_GOAL", "10") or "10")
     offset = int(getattr(settings, "SHARE_PROGRESS_OFFSET", "0") or "0")
+    baseline = int(getattr(settings, "SHARE_PROGRESS_BASELINE", "0") or "0")
+    baseline_progress = baseline/goal
     ordered = Share.objects.filter(cancelled_date__isnull=True).count() + offset
     ordered_progress = ordered/goal
     paid = Share.objects.filter(cancelled_date__isnull=True, paid_date__isnull=False).count() + offset
@@ -72,8 +76,12 @@ def draw_share_progress():
     arc.arc(0, 0, 0.6, 89, 94, cw=True)
     d.append(arc)
 
+    d.append(draw.Text(f'{goal}', **on_arc(0.63, 0.99)))
+
     d.append(progress_arc(ordered_progress, fill_opacity=0.5))
     d.append(progress_arc(paid_progress))
+    if baseline > 0:
+        d.append(progress_arc(baseline_progress, fill='#083c00'))
 
     # text center
     if goal > ordered:
@@ -81,8 +89,10 @@ def draw_share_progress():
         d.append(draw.Text(str(goal-ordered), 0.3, 0, 0.12, center=True, font_weight='bold'))
         d.append(draw.Text('Anteilscheine', 0.09, 0, -0.1, center=True))
         # labels
-        d.append(draw.Text(f'{ordered}\nbestellt', **on_arc(0.7, ordered_progress, lines=2)))
-        d.append(draw.Text(f'{paid}\nbezahlt', **on_arc(0.5, paid_progress, 'inner', lines=2)))
+        d.append(draw.Text(f'{ordered-baseline} neue\nbestellt', **on_arc(0.7, ordered_progress)))
+        d.append(draw.Text(f'{paid-baseline} neue\nbezahlt', **on_arc(0.5, paid_progress, 'inner')))
+        if baseline > 0:
+            d.append(draw.Text(f'{baseline}\nbisher', fill='white', **on_arc(0.5, baseline_progress - 0.025)))
     else:
         d.append(draw.Text('Wir haben es', 0.09, 0, 0.14, center=True))
         d.append(draw.Text('Geschafft!', 0.18, 0, 0, center=True, font_weight='bold'))
