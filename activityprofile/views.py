@@ -1,5 +1,6 @@
 from io import BytesIO
 
+from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseServerError
@@ -50,6 +51,7 @@ def print_pdf(request, area_id):
     return return_pdf_http(filename)
 
 
+@login_required(login_url='activityprofile:external-login')
 def iframe(request, area_id):
     activity_profile = ActivityProfile.objects.get(activity_area_id=area_id)
     render_dict = {
