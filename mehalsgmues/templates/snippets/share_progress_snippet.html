@@ -1,0 +1,25 @@
+{% load widgets %}
+{% load i18n %}
+<h3>
+    {% trans "Betriebsentwicklung 2021" %}
+</h3>
+<div class="row mb-3">
+    <div class="col-md-12">
+        Für die Umsetzung des
+        <a href="https://forum.mehalsgmues.ch/t/projektgruppe-betriebsentwicklungsplan/162/3">Betriebsentwicklungsplans (BEP)</a>
+        sind wichtige Investitionen nötig. Viele davon schon für die nächste Saison.<br>
+        Du kannst diese Investitionen ermöglichen, indem du zusätzliche Anteilscheine zeichnest.
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12 text-center">
+        <a href="{% url 'share-order' %}" class="btn btn-success">Jetzt zusätzliche Anteilscheine bestellen</a>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div id="share-progress" class="share-progress">
+            {% share_progress %}
+        </div>
+    </div>
+</div>

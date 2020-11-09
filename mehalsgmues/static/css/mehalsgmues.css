@@ -158,3 +158,9 @@ td.details-control, tr.shown td.details-control {
     height: 650px;
     padding: 0;
 }
+
+/* share progress bar */
+.share-progress {
+    max-width: 600px;
+    margin: 0 auto;
+}

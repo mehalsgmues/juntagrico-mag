@@ -309,4 +309,4 @@ def sso(request):
 
 @login_required
 def share_progress_preview(request):
-    return render(request, 'share_progress_preview.html', {'progress': draw_share_progress()})
+    return render(request, 'share_progress_preview.html')

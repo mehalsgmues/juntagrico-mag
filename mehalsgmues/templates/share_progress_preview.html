@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div id="share-progress" class="share-progress">
-    {{ progress | safe }}
-</div>
+    {% include 'snippets/share_progress_snippet.html' %}
+
 <canvas id="canvas" width="1350" height="1200" style="width:600px"></canvas>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
