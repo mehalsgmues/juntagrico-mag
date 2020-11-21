@@ -28,3 +28,7 @@ class MagTests(MagTestCase):
         self.assertGet(reverse('mag-mailing-list'), member=self.admin)
         self.assertGet(reverse('mag-contact-list'), 302)
         self.assertGet(reverse('mag-contact-list'), member=self.admin)
+
+    def test_subscription_export(self):
+        self.assertGet(reverse('export-subscriptions'), 302)
+        self.assertGet(reverse('export-subscriptions'), member=self.admin)

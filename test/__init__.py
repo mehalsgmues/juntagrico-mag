@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.test import override_settings, TestCase
+from django.utils.timezone import make_aware
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.member import Member
 from juntagrico.entity.subs import Subscription, SubscriptionPart
@@ -130,14 +133,13 @@ class MagTestCase(TestCase):
         """
         sub_data = {'depot': self.depot,
                     'future_depot': None,
-                    'activation_date': '2017-03-27',
+                    'activation_date': make_aware(datetime(2017, 3, 27)).date(),
                     'deactivation_date': None,
                     'creation_date': '2017-03-27',
                     'start_date': '2018-01-01',
                     }
         self.sub = Subscription.objects.create(**sub_data)
-        self.member.subscription = self.sub
-        self.member.save()
+        self.member.join_subscription(self.sub)
         self.sub.primary_member = self.member
         self.sub.save()
         SubscriptionPart.objects.create(subscription=self.sub, type=self.sub_type)

@@ -45,7 +45,7 @@ def api_emaillist(request):
     """prints comma separated list of member emails"""
     sep = request.GET.get('sep', ', ')
     format = request.GET.get('format', 'plain')
-    emails = sep.join(Member.objects.filter(inactive=False).values_list('email', flat=True))
+    emails = sep.join(Member.objects.filter(deactivation_date__gt=timezone.now().date()).values_list('email', flat=True))
     if format == 'plain':
         # just display for copy
         return HttpResponse(emails)
@@ -64,7 +64,7 @@ def api_emaillist(request):
 
 @staff_member_required
 def api_vcf_contacts(request):
-    members = Member.objects.filter(inactive=False)
+    members = Member.objects.filter(deactivation_date__gt=timezone.now().date())
     cards = []
     for member in members:
         card = vobject.vCard()
@@ -180,7 +180,7 @@ def stats(request):
 
     # data
     for row, subscription in enumerate(assignments_by_subscription(start_date, end_date, activity_area), 2):
-        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].members.all()]))
+        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].recipients]))
         ws1.cell(row, 2, subscription['assignments'])
         ws1.cell(row, 3, subscription['subscription'].totalsize)
 

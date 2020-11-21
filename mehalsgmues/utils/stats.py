@@ -1,8 +1,10 @@
 from django.db.models.functions import TruncDay
 from django.db.models import Count, Sum, Q
+from django.utils import timezone
 from juntagrico.dao.memberdao import MemberDao
 from juntagrico.entity.jobs import Assignment, Job
 from juntagrico.dao.subscriptiondao import SubscriptionDao
+from juntagrico.entity.member import Member
 
 
 def jobs_in_activity_area(activity_area):
@@ -26,7 +28,9 @@ def slots_by_day(start_date, end_date, activity_area=None):
 
 
 def members_with_assignments(start_date, end_date, activty_area=None, members=None):
-    members = members or MemberDao.all_members().filter(inactive=False)
+    members = members or MemberDao.all_members().filter(deactivation_date__gt=timezone.now().date())
+    if type(members) is list:
+        members = Member.objects.filter(pk__in=[m.pk for m in members])
     return members.annotate(assignments=Sum(
         'assignment__amount',
         filter=Q(assignment__job__time__range=(start_date, end_date)) & Q(assignment__job__in=
@@ -38,7 +42,7 @@ def assignments_by_subscription(start_date, end_date, activty_area=None):
     subscriptions_list = []
     for subscription in SubscriptionDao.all_active_subscritions().annotate(totalsize=Sum('parts__type__size__units')):
         assignments = 0
-        for member in members_with_assignments(start_date, end_date, activty_area, members=subscription.members):
+        for member in members_with_assignments(start_date, end_date, activty_area, members=subscription.recipients):
             if member.assignments:
                 assignments += member.assignments
 
