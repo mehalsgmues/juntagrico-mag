@@ -255,11 +255,11 @@ def excel_export_subscriptions(request):
 
     # data
     for row, subscription in enumerate(SubscriptionDao.all_active_subscritions(), 2):
-        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription.members.all()]))
+        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription.recipients]))
         ws1.cell(row, 2, subscription.primary_member.email)
         ws1.cell(row, 3, subscription.price)
         for column, subs_type in enumerate(SubscriptionTypeDao.get_all(), 4):
-            ws1.cell(row, column, subscription.types.filter(id=subs_type.id).count())
+            ws1.cell(row, column, subscription.active_parts.filter(type__id=subs_type.id).count())
 
     ws1.freeze_panes = ws1['A2']
     wb.save(response)
