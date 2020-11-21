@@ -5,6 +5,7 @@ from django.contrib import admin
 import juntagrico
 from mehalsgmues import views as mehalsgmues
 from juntagrico_calendar import views as juntagrico_calendar
+from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
     # pdf (override)
@@ -51,5 +52,8 @@ urlpatterns = [
     path('activityprofile/', include('activityprofile.urls')),
 
     # share progress
-    path('shares/preview/', mehalsgmues.share_progress_preview)
+    path('shares/preview/', mehalsgmues.share_progress_preview),
+
+    # keep working
+    path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
 ]
