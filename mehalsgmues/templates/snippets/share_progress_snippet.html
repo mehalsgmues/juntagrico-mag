@@ -1,0 +1,43 @@
+{% load widgets %}
+{% load i18n %}
+<h3>
+    {% trans "Betriebsentwicklung 2021" %}
+</h3>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <p>
+            Für die Umsetzung des
+            <a href="https://forum.mehalsgmues.ch/t/projektgruppe-betriebsentwicklungsplan/162/3" target="_blank">Betriebsentwicklungsplans (BEP)</a>
+            sind wichtige Investitionen nötig. Viele davon schon für die nächste Saison.
+            <a href="https://forum.mehalsgmues.ch/t/investitionen-2020-21/348" target="_blank">Eine Vorschau der Investitionen findest du hier.</a>
+        </p>
+        <p>
+            Du kannst diese Investitionen ermöglichen, indem du zusätzliche Anteilscheine zeichnest.
+            <a href="https://www.mehalsgmues.ch/mitmachen/faq#was_sind_anteilscheine" target="_blank">Was sind Anteilscheine?</a><br>
+            Die Betriebsgruppe hat sich bewusst gegen eine generelle Erhöhung der benötigten Anteilscheine ausgesprochen, um
+            dem Solidaritätsgedanken gerecht zu werden und Mitglieder nicht anhand ihrer finanziellen Möglichkeiten auszuschliessen.
+        </p>
+        <p>
+            Bitte löse nur dann und nur so viele weitere Anteilscheine, wenn und wie es dir finanziell auch längerfristig möglich ist.
+            Die geplanten Investitionen sind für einen Zeitraum von 10 Jahren ausgelegt und eine vorzeitige Rückzahlung würde
+            die Liquidität der Genossenschaft ins Wanken bringen und die Planungssicherheit beeinträchtigen.
+            Du kannst es als eine längerfristige Investition mit 0% Zins sehen, was in aktuellen Zeiten gar kein schlechter Zinssatz ist. ;-)<br>
+        </p>
+        <p>
+            Vor dem Aufruf hatten alle Mitglieder zusammen 524 Anteilscheine gelöst.
+            Um alle Investitionen zu stemmen müssten 1000 weitere Anteilscheine vergeben werden.
+        </p>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12 text-center">
+        <a href="{% url 'share-order' %}" class="btn btn-success">Jetzt für 10 Jahre in meh als gmües investieren</a>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div id="share-progress" class="share-progress">
+            {% share_progress %}
+        </div>
+    </div>
+</div>

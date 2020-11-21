@@ -1,0 +1,237 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-31 15:03+0200\n"
+"PO-Revision-Date: 2020-11-03 11:42+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+# Pronouns for Mitglied, Ernteanteil, Anteilschein, Depot
+
+#: .\juntagrico\admins\forms\member_admin_form.py:37
+#, python-brace-format
+msgid "Kein/e/n {0}"
+msgstr "Kein {0}"
+
+#: .\juntagrico\admins\forms\member_admin_form.py:52
+#, python-brace-format
+msgid "Zukünftige/r/s {0}"
+msgstr "Zukünftiger {0}"
+
+#: .\juntagrico\admins\member_admin.py:48
+#: .\juntagrico\admins\member_admin.py:86
+msgid "Kein/e/n {}"
+msgstr "Kein {}"
+
+#: .\juntagrico\admins\member_admin.py:53
+msgid "Kein/e/n zukünftige/n/s {}"
+msgstr "Kein zukünftiger {}"
+
+#: .\juntagrico\admins\member_admin.py:54
+msgid "Zukünftige/r/s {}"
+msgstr "Zukünftiger {}"
+
+#: .\juntagrico\lifecycle\member.py:30
+msgid "Diese/r/s {} hat mindestens noch ein/e/n aktive/n/s {}"
+msgstr "Dieses {} hat mindestens noch einen aktiven {}"
+
+#: .\juntagrico\lifecycle\member.py:34 .\juntagrico\lifecycle\member.py:38
+msgid "Diese/r/s {} ist noch HauptbezieherIn in einer/m {}"
+msgstr "Dieses {} ist noch HauptbezieherIn in einem {}"
+
+#: .\juntagrico\lifecycle\sub.py:28
+#, python-brace-format
+msgid "Ein Bezüger hat noch ein/e/n aktive/n/s {0}"
+msgstr "EinE BezügerIn hat noch einen aktiven {0}"
+
+#: .\juntagrico\mailer\adminnotification.py:33
+#: .\juntagrico\mailer\adminnotification.py:49
+msgid "Neue/r/s {} erstellt"
+msgstr "Neuer {} erstellt"
+
+#: .\juntagrico\mailer\adminnotification.py:57
+msgid "Neue/r/s {}"
+msgstr "Neues {}"
+
+#: .\juntagrico\templates\activation_error.html:11
+#, python-format
+msgid "Einer der Bezüger hat noch 1 aktive/s/n %(v_subscription)s!"
+msgstr "1 der BezügerInnen hat noch 1 aktiven %(v_subscription)s!"
+
+#: .\juntagrico\templates\cancelmembership.html:35
+#: .\juntagrico\templates\cancelmembership.html:49
+#, python-format
+msgid "Du wirst bei deinem/r %(v_subscription)s ausgetragen"
+msgstr "Du wirst bei deinem %(v_subscription)s ausgetragen"
+
+#: .\juntagrico\templates\cancelmembership.html:81
+#, python-format
+msgid ""
+"Du bist entweder Hauptabonnent oder ohne deine %(v_share_pl)s hat dein/e "
+"jetztige/r/s %(v_subscription)s nicht genug %(v_share_pl)s um weiter zu "
+"existieren. Falls du Hilfe brauchst um das Problem zu beheben wende dich an "
+"%(c_info_email)s."
+msgstr ""
+"Du bist entweder HauptabonnentIn oder ohne deine %(v_share_pl)s hat dein "
+"jetztiger %(v_subscription)s nicht genug %(v_share_pl)s um weiter zu "
+"existieren. Falls du Hilfe brauchst um das Problem zu beheben wende dich an "
+"%(c_info_email)s."
+
+#: .\juntagrico\templates\cancelsubscription.html:7
+#, python-format
+msgid "Künde dein/e/n %(v_subscription)s"
+msgstr "Künde deinen %(v_subscription)s"
+
+#: .\juntagrico\templates\cancelsubscription.html:14
+#, python-format
+msgid ""
+"Hier kannst du dein/e/n %(v_subscription)s kündigen. Der nächste reguläre "
+"Kündigungstermin ist der <b>%(ed)s</b>."
+msgstr ""
+"Hier kannst du deinen %(v_subscription)s kündigen. Der nächste reguläre "
+"Kündigungstermin ist der <b>%(ed)s</b>."
+
+#: .\juntagrico\templates\depot_change.html:19
+#, python-format
+msgid "Dein/e %(v_depot)s wurde geändert."
+msgstr "Dein %(v_depot)s wurde geändert."
+
+#: .\juntagrico\templates\depot_change.html:21
+#, python-format
+msgid ""
+"!!!Achtung! Dein/e %(v_depot)s änderst erst bei der nächsten %(v_depot)s-"
+"Listen Generierung. Solange keine Email an %(spe)s mit der Bestätigung für "
+"dein/e/n neue/s/n %(v_depot)s gesendet wurde ist noch dein/e/n alte/s/n "
+"%(v_depot)s %(sde)s aktiv!!!"
+msgstr ""
+"!!!Achtung! Dein %(v_depot)s änderst erst bei der nächsten %(v_depot)s-"
+"Listen Generierung. Solange keine Email an %(spe)s mit der Bestätigung für "
+"dein neues %(v_depot)s gesendet wurde ist noch dein altes "
+"%(v_depot)s %(sde)s aktiv!!!"
+
+#: .\juntagrico\templates\depot_change.html:38
+#, python-format
+msgid "Alte/s/r %(v_depot)s"
+msgstr "Altes %(v_depot)s"
+
+#: .\juntagrico\templates\depot_change.html:46
+#, python-format
+msgid "Neue/s/r %(v_depot)s"
+msgstr "Neues %(v_depot)s"
+
+#: .\juntagrico\templates\depot_change.html:66
+#, python-format
+msgid ""
+"Achtung! Dein/e %(v_depot)s änderst erst bei der nächsten %(v_depot)slisten "
+"Generierung. Du wirst darüber informiert wenn dein/e %(v_depot)s ändert."
+msgstr ""
+"Achtung! Dein %(v_depot)s änderst erst bei der nächsten %(v_depot)slisten "
+"Generierung. Du wirst darüber informiert wenn dein %(v_depot)s ändert."
+
+#: .\juntagrico\templates\leavesubscription.html:16
+#, python-format
+msgid ""
+"Hier kannst du dein/e/n %(v_subscription)s verlassen. Dabei bleibst du aber "
+"%(v_member_type)s bei %(v_d_enriched_organisation)s. Unter Personalien "
+"kannst du diese/s/n künden."
+msgstr ""
+"Hier kannst du deinen %(v_subscription)s verlassen. Dabei bleibst du aber "
+"%(v_member_type)s bei %(v_d_enriched_organisation)s. Unter Personalien "
+"kannst du die Mitgliedschaft künden."
+
+#: .\juntagrico\templates\mails\admin\subscription_created.txt:8
+#, python-format
+msgid "Soeben wurde ein/e neue/s/r %(v_subscription)s bestellt"
+msgstr "Soeben wurde ein neuer %(v_subscription)s bestellt"
+
+#: .\juntagrico\templates\mails\member\co_member_left_subscription.txt:8
+#, python-format
+msgid ""
+"\n"
+"Soeben ist %(co_member)s aus eurer/m gemeinsamen %(v_subscription)s "
+"ausgetreten und hat folgende Nachricht hinterlassen:\n"
+msgstr ""
+"\n"
+"Soeben ist %(co_member)s aus eurem gemeinsamen %(v_subscription)s "
+"ausgetreten und hat folgende Nachricht hinterlassen:\n"
+
+#: .\juntagrico\templates\mails\member\co_member_welcome.txt:32
+#, python-format
+msgid "dem/r %(v_subscription)s beizutreten"
+msgstr "dem %(v_subscription)s beizutreten"
+
+#: .\juntagrico\templates\mails\member\depot_changed.txt:9
+#, python-format
+msgid ""
+"Dein/e/n %(c_organisation_name)s-%(v_depot)s hat wie von dir gewünscht "
+"gewechselt."
+msgstr ""
+"Dein %(c_organisation_name)s-%(v_depot)s hat wie von dir gewünscht "
+"gewechselt."
+
+#: .\juntagrico\templates\mails\member\share_created.txt:28
+#, python-format
+msgid ""
+"Um die Arbeit der Buchhaltung zu erleichtern zahle bitte nur 1 %(v_share)s "
+"auf einmal.\n"
+"Gib im Betreff die Systemnummer an und die Emailadresse der Halterin oder "
+"des Halters des/r %(v_share)s an\n"
+"(dies ist vor allem wichtig wenn du diese/n/s %(v_share)s für jemand anderen "
+"bezahlst)"
+msgstr ""
+"Um die Arbeit der Buchhaltung zu erleichtern zahle bitte nur 1 %(v_share)s "
+"auf einmal.\n"
+"Gib im Betreff die Systemnummer an und die Emailadresse der Halterin oder "
+"des Halters des %(v_share)s an\n"
+"(dies ist vor allem wichtig wenn du diesen %(v_share)s für jemand anderen "
+"bezahlst)"
+
+#: .\juntagrico\templates\management_lists\member_canceledlist.html:27
+#, python-format
+msgid "Aktive/r/s %(v_subscription)s"
+msgstr "Aktiver %(v_subscription)s"
+
+#: .\juntagrico\templates\messages\unpaid_shares.html:6
+#, python-format
+msgid "Unbezahlte/r/s %(v_share)s."
+msgstr "Unbezahlter %(v_share)s."
+
+#: .\juntagrico\templates\snippets\snippet_subscription_change_main_member.html:16
+#, python-format
+msgid " Dazu muss sie oder er mindestens 1 bezahlte/n/s %(v_share)s besitzen."
+msgstr " Dazu muss sie oder er mindestens 1 bezahlten %(v_share)s besitzen."
+
+#: .\juntagrico\templates\subscription.html:158
+#, python-format
+msgid "Weitere Infos zu/r/m %(v_depot)s"
+msgstr "Weitere Infos zum %(v_depot)s"
+
+
+# meh als gmües specific
+
+#: .\templates\createsubscription\add_member_cs.html:22
+#, python-format
+msgid ""
+"Du kannst weitere %(v_subscription)s-BezieherInnen als %(v_co_member)s "
+"hinzufügen. Fülle bitte die untenstehenden Felder aus und klicke "
+"anschliessend auf \"%(v_co_member)s hinzufügen\"."
+msgstr ""
+"Du kannst weitere %(v_subscription)s-BezieherInnen als %(v_co_member)s "
+"hinzufügen. MitbezügerInnen erhalten ebenfalls Zugang zur Online-Plattform, "
+"um sich selbst für Einsätze einzutragen und Böhnli/Einsätze einzusehen. "
+"Zudem erhalten sie die Wochenmail (Newsletter).<br><br>"
+"Fülle bitte die untenstehenden Felder aus und klicke "
+"anschliessend auf \"%(v_co_member)s hinzufügen\"."
+
+#: .\templates\welcome.html:15
+#, python-format
+msgid ""
+"Du wurdest als %(v_subscription)s-BezieherIn zur Warteliste hinzugefügt."
+msgstr ""
+"Deine %(v_subscription)s-Bestellung haben wir erhalten."

@@ -15,3 +15,4 @@ git+https://github.com/mehalsgmues/juntagrico_calendar.git
 git+https://github.com/juntagrico/juntagrico-assignment-request.git
 git+https://github.com/nixnuex/juntagrico-polling
 git+https://github.com/pascalfree/django-url-shortener
+drawSvg==1.7.0

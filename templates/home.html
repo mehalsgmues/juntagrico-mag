@@ -2,6 +2,11 @@
 {% load i18n %}
 {% load config %}
 {% block content %}
+    <h4>
+        <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
+    </h4>
+    {% include 'snippets/share_progress_snippet.html' %}
+    <a name="jobs"></a>
     <h3>
         {% trans "Aktuelle Arbeitseinsätze" %}
     </h3>
@@ -33,11 +38,6 @@
             </div>
         </div>
     {% endfor %}
-    <div class="row mb-3">
-        <div class="col-md-12">
-            {% include "mag_flexible_jobs.html" %}
-        </div>
-    </div>
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript" src="/static/external/datatables.min.js">

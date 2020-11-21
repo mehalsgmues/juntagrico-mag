@@ -1,0 +1,74 @@
+{% load static %}
+{% load i18n %}
+{% load util %}
+{% load config %}
+<html>
+<head>
+    <title>{% blocktrans %}ARBEITSGRUPPEN meh als gmües{% endblocktrans %}</title>
+    <meta charset="utf-8">
+    <link href="{% config "bootstrap" %}" rel="stylesheet"/>
+    <link href="/static/external/mid/css/materialdesignicons.min.css" rel="stylesheet"/>
+    <link href="/static/external/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet"/>
+    <link href="/static/external/font-awesome-5.3.1/css/all.min.css" rel="stylesheet"/>
+    <link href="/static/external/cc/cookieconsent.min.css" rel="stylesheet"/>
+    {% block styles %}
+    {% endblock %}
+    <link href="/static/css/juntagrico.css" rel="stylesheet"/>
+    <link href="/static/css/slider.css" rel="stylesheet"/>
+    <link href="{% config "style_sheet" %}" rel="stylesheet"/>
+    <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
+    <style type="text/css">
+        html, body {background:none transparent;}
+    </style>
+    <base target='_parent' />
+</head>
+<body>
+    <div class="offset-md-2 col-md-8">
+        <div class="row">
+            <div class="offset-md-3 col-md-6">
+                <h4>{% trans "Anmeldung erforderlich" %}</h4>
+                <p>Melde dich mit deinem <em>meh als gmües</em>-Konto an.</p>
+            </div>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="control-label col-md-3" for="username">
+                    {% trans "Email" %}
+                </label>
+                <div class="controls col-md-6">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Email-Adresse"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-3"for="password">
+                    {% trans "Passwort" %}
+                </label>
+                <div class="controls col-md-6">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Passwort"/>
+                </div>
+            </div>
+            {% if form.errors %}
+                <div class="offset-md-3 col-md-6 alert alert-danger">
+                    {% trans "Sorry, das ist kein gültiges Login" %}
+                </div>
+            {% endif %}
+            <div class="form-group row">
+                <div class="offset-md-3 col-md-6">
+                    <button type="submit" class="btn btn-success">
+                        {% trans "Anmelden" %}
+                    </button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-md-3 col-md-6">
+                    <a href="/my/newpassword" target="_blank">
+                        {% trans "Neues Passwort anfordern" %}
+                    </a>
+                </div>
+            </div>
+            <input type="hidden" name="next" value="{{ next|escape }}"/>
+        </form>
+    </div>
+</body>
+</html>
