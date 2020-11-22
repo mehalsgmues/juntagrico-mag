@@ -235,3 +235,43 @@ msgid ""
 "Du wurdest als %(v_subscription)s-BezieherIn zur Warteliste hinzugefügt."
 msgstr ""
 "Deine %(v_subscription)s-Bestellung haben wir erhalten."
+
+#: .\juntagrico\entity\jobs.py:49 .\juntagrico\entity\jobs.py:106
+msgid "Tätigkeitsbereich"
+msgstr "Arbeitsgruppe"
+
+#: .\juntagrico\entity\jobs.py:50 .\juntagrico\templates\menu\user_menu.html:43
+msgid "Tätigkeitsbereiche"
+msgstr "Arbeitsgruppen"
+
+#: .\juntagrico\entity\jobs.py:52
+msgid "Benutzer ist TätigkeitsbereichskoordinatorIn"
+msgstr "Benutzer ist ArbeitsgruppenkoordinatorIn"
+
+#: .\juntagrico\templates\areas.html:18
+msgid ""
+"Trage dich für die Tätigkeitsbereiche ein, in denen du regelmässig "
+"Mitarbeiten und Verantwortung übernehmen möchtest."
+msgstr ""
+"Trage dich für die Arbeitsgruppen ein, in denen du regelmässig "
+"Mitarbeiten möchtest."
+
+#: .\juntagrico\templates\areas.html:22
+msgid "Infos zu den Tätigkeitsbereichen erhältst du im"
+msgstr "Infos zu den Arbeitsgruppen erhältst du im"
+
+#: .\juntagrico\templates\home.html:23
+msgid "Zu den Kalendern der einzelnen Tätigkeitsbereiche"
+msgstr "Zu den Kalendern der einzelnen Arbeitsgruppen"
+
+#: .\juntagrico\views_admin.py:294
+msgid "-Kein Tätigkeitsbereich-"
+msgstr "-Keine Arbeitsgruppe-"
+
+#: .\juntagrico\entity\jobs.py:22
+msgid ""
+"Nicht auf der \"Tätigkeitsbereiche\"-Seite anzeigen. Einsätze bleiben "
+"sichtbar."
+msgstr ""
+"Nicht auf der \"Arbeitsguppen\"-Seite anzeigen. Einsätze bleiben "
+"sichtbar."
