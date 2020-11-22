@@ -30,9 +30,12 @@
         {% if c_enable_shares %}
             <div class="row mb-3">
                 <div class="col-md-12">
+                    {# changed text here #}
                     {% blocktrans trimmed %}
                     Die Mitgliedschaft bei {{ v_d_enriched_organisation }} ist geknüpft an den Erwerb von
-                    mindestens einem {{ v_share }} in der Höhe von CHF {{ c_share_price }}. Die {{ v_share_pl }} sind das
+                    {{ v_share_pl }} in der Höhe
+                    von CHF {{ c_share_price }} pro {{ v_share }}. Die Anzahl {{ v_share_pl }}
+                    ist abhängig von den {{ v_subscription }}-Bestandteilen. Die {{ v_share_pl }} sind das
                     Kapital, das vor allem zur Finanzierung von Investitionen – zum Beispiel Infrastruktur – verwendet
                     wird.
                     Beim Austritt werden die {{ v_share_pl }} rückerstattet.
@@ -42,7 +45,6 @@
         {% endif %}
         <div class="row mb-3">
             <div class="col-md-12">
-                {# changed text here #}
                 {% blocktrans trimmed %}
                 Die {{ v_member_type_pl }} tragen im Rahmen ihrer Motivationen, Prioritäten und Möglichkeiten
                 gemeinsam zum Gelingen des Betriebes bei.
