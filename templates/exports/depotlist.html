@@ -68,7 +68,7 @@
                     <td style="width:1cm;" class="top-border left-border">{{ subscription|get_types_by_size:size|count|default:'' }}</td>
                 {% endfor %}
             {% endfor %}
-            <td class="namecol top-border left-border right-border">{{ subscription.nickname_or_recipients_names }}</td>
+            <td class="namecol top-border left-border right-border">{{ subscription.recipients_display_name }}</td>
         </tr>
     {% endfor %}
     </table>
