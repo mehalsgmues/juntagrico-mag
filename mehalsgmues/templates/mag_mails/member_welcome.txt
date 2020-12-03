@@ -17,8 +17,8 @@
 {% trans "Bestätigungslink" %}: {{ serverurl }}{% url 'confirm' member.get_hash %}
 
 Du erhältst für deine Anteilscheine separate Emails mit den Informationen wie du diese bezahlen kannst.
-{% if member.future_subscription is not None %}
-Wir haben die Bestellung {% if member.future_subscription.size > 1 %}deiner {{ member.future_subscription.size }} Ernteanteile{% else %}deines Ernteanteils{% endif %} erhalten und prüfen derzeit die Verfügbarkeit zu deinem gewünschten Startdatum.
+{% if member.subscription_future is not None %}
+Wir haben die Bestellung {% if member.subscription_future.future_parts|length > 1 %}deiner {{ member.subscription_future.future_parts|length }} Ernteanteile{% else %}deines Ernteanteils{% endif %} erhalten und prüfen derzeit die Verfügbarkeit zu deinem gewünschten Startdatum.
 Wir kontaktieren dich, sobald feststeht ab wann du das Gemüse beziehen kannst.
 {% else %}
 ACHTUNG: Du hast KEINEN Ernteanteil bestellt. Das heisst du bist auch nicht auf der Warteliste.
