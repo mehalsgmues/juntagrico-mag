@@ -8,10 +8,11 @@ from juntagrico_calendar import views as juntagrico_calendar
 from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
-    # pdf (override)
-    path('my/pdf/depotlist', mehalsgmues.depot_list, name='lists-depotlist'),
-    path('my/pdf/depotoverview', mehalsgmues.depot_overview, name='lists-depot-overview'),
-    path('my/pdf/amountoverview', mehalsgmues.amount_overview, name='lists-depot-amountoverview'),
+    # depot list management
+    path('my/pdf/manage', mehalsgmues.list_mgmt, name='lists-mgmt'),
+    path('my/pdf/manage/success', mehalsgmues.list_mgmt, {'success': True}, name='lists-mgmt-success'),
+    path('my/pdf/manage/generate', mehalsgmues.list_generate, name='lists-generate'),
+    path('my/pdf/manage/generate/future', mehalsgmues.list_generate, {'future': True}, name='lists-generate-future'),
 
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),

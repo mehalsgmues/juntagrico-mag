@@ -1,7 +1,8 @@
 import vobject
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.management import call_command
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.dao.subscriptiondao import SubscriptionDao
@@ -9,7 +10,7 @@ from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
-from juntagrico import views_admin
+from juntagrico.views import get_menu_dict
 from openpyxl import Workbook
 
 import base64
@@ -22,12 +23,10 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-from juntagrico.models import Member, Subscription
+from juntagrico.models import Member
 
 from juntagrico.dao.depotdao import DepotDao
 from juntagrico.dao.listmessagedao import ListMessageDao
-from juntagrico.dao.subscriptionsizedao import SubscriptionSizeDao
-from juntagrico.util.pdf import render_to_pdf_http
 from juntagrico.util.temporal import weekdays, start_of_business_year, end_of_business_year
 from juntagrico.config import Config
 from django.utils import timezone
@@ -132,22 +131,19 @@ def other_recipients_names_w_linebreaks(self):
 
 
 @staff_member_required
-def depot_list(request):
+def list_mgmt(request, success=False):
+    renderdict = get_menu_dict(request)
+    renderdict['success'] = success
+    return render(request, 'list_mgmt.html', renderdict)
+
+
+@staff_member_required
+def list_generate(request, future=False):
     def delivery_dates(depot):
         return list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
     Depot.delivery_dates = delivery_dates
-    call_command('generate_depot_list', force=True, future=True)
-    return views_admin.depotlist(request)
-
-
-@staff_member_required
-def depot_overview(request):
-    return render_to_pdf_http('exports/depot_overview.html', generate_pdf_dict(), 'depot_overview.pdf')
-
-
-@staff_member_required
-def amount_overview(request):
-    return render_to_pdf_http('exports/amount_overview.html', generate_pdf_dict(), 'amount_overview.pdf')
+    call_command('generate_depot_list', force=True, future=future)
+    return redirect(reverse('lists-mgmt-success'))
 
 
 @staff_member_required

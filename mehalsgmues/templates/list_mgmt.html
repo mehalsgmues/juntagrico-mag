@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load config %}
+{% block page_title %}
+    <h3>
+        Manuelle Depotlistenerzeugung
+    </h3>
+{% endblock %}
+{% block content %}
+    {% vocabulary "member_pl" as v_member_pl %}
+    {% vocabulary "share_pl" as v_share_pl %}
+    {% vocabulary "assignment_pl" as v_assignment_pl %}
+    {% if success %}
+        <div class="alert alert-success">
+            Depotlisten erstellt. <a href="{% url 'lists-depotlist' %}">Herunterladen</a>
+        </div>
+    {% endif %}
+    <div class="row mb-4">
+        <div class="col-md-6">
+            Depotliste neu erzeugen ohne Depotänderungen anzuwenden
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'lists-generate' %}">
+                Ausführen
+            </a>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            Depotänderungen anwenden und entsprechende Mitglieder informieren, dass jetzt das neue Depot gilt und anschliessend die Depotliste neu erzeugen.
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'lists-generate-future' %}">
+                Ausführen
+            </a>
+        </div>
+    </div>
+{% endblock %}
