@@ -233,7 +233,8 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
     'welcome': 'mag_mails/member_welcome.txt',
     'co_welcome': 'mag_mails/co_member_welcome.txt',
-    'co_added': 'mag_mails/co_member_added.txt'
+    'co_added': 'mag_mails/co_member_added.txt',
+    's_created': 'mag_mails/share_created.txt'
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
