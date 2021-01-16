@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
 
 DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True') == 'True'
 
-ALLOWED_HOSTS = ['admin.mehalsgmues.ch', 'localhost', 'my.mehalsgmues.ch', 'mehalsgmues-dev.herokuapp.com']
+ALLOWED_HOSTS = ['.mehalsgmues.ch', 'localhost']
 
 
 # Admin Settings
@@ -259,3 +259,17 @@ CKEDITOR_CONFIGS = {
 SHARE_PROGRESS_GOAL = os.environ.get('SHARE_PROGRESS_GOAL')
 SHARE_PROGRESS_OFFSET = os.environ.get('SHARE_PROGRESS_OFFSET')
 SHARE_PROGRESS_BASELINE = os.environ.get('SHARE_PROGRESS_BASELINE')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
