@@ -51,4 +51,14 @@
             </a>
         </div>
     </div>
+    <div class="row mb-4">
+        <div class="col-md-3">
+            {{ v_subscription_pl }} nach Typ
+        </div>
+        <div class="col-md-9">
+            <a href="{% url 'export-subscriptions-mag' %}">
+                {% trans "exportieren" %}
+            </a>
+        </div>
+    </div>
 {% endblock %}

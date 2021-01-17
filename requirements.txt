@@ -1,7 +1,7 @@
 django-qrcode
 vobject
 gunicorn==20.0.4
-juntagrico~=1.3.0
+juntagrico~=1.3.3
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 psycopg2>=2.8.5
 juntagrico-pg~=1.2.0

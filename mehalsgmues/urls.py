@@ -34,7 +34,7 @@ urlpatterns = [
     path(r'contacts/', mehalsgmues.api_vcf_contacts, name='mag-contact-list'),
 
     # exports
-    path('my/export/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions'),
+    path('my/export/mag/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions-mag'),
 
     # stats
     path('stats/', mehalsgmues.stats, name='mag-stats'),
