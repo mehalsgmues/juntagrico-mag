@@ -44,7 +44,7 @@ def api_emaillist(request):
     """prints comma separated list of member emails"""
     sep = request.GET.get('sep', ', ')
     format = request.GET.get('format', 'plain')
-    emails = sep.join(Member.objects.filter(deactivation_date__gt=timezone.now().date()).values_list('email', flat=True))
+    emails = sep.join(Member.objects.exclude(deactivation_date__lte=timezone.now().date()).values_list('email', flat=True))
     if format == 'plain':
         # just display for copy
         return HttpResponse(emails)
@@ -63,7 +63,7 @@ def api_emaillist(request):
 
 @staff_member_required
 def api_vcf_contacts(request):
-    members = Member.objects.filter(deactivation_date__gt=timezone.now().date())
+    members = Member.objects.exclude(deactivation_date__lte=timezone.now().date())
     cards = []
     for member in members:
         card = vobject.vCard()
