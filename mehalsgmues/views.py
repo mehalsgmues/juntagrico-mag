@@ -305,6 +305,6 @@ def sso(request):
     return HttpResponseRedirect('%s?%s' % (url, query_string))
 
 
-@login_required
+@staff_member_required
 def share_progress_preview(request):
     return render(request, 'share_progress_preview.html')

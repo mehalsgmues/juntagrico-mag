@@ -53,7 +53,7 @@ urlpatterns = [
     path('activityprofile/', include('activityprofile.urls')),
 
     # share progress
-    path('shares/preview/', mehalsgmues.share_progress_preview),
+    path('shares/preview/', mehalsgmues.share_progress_preview, name='shares-preview'),
 
     # keep working
     path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
