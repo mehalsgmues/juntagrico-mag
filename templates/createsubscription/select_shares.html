@@ -32,18 +32,22 @@
         {% endif %}
         <div class="row mb-4">
             <div class="col-md-12">
-                {% trans "Infos" %}:
-                {# changed text here #}
-                {% blocktrans trimmed %}
-                Um {{ v_member_type }} bei {{ v_d_enriched_organisation }} zu werden, musst du mindestens
-                1 {{ v_share }} ({{ c_currency }} {{ c_share_price }}) erwerben.
-                Beim Austritt aus {{ v_d_enriched_organisation }} bekommst du deine(n) {{ v_share }}(e)
-                zurückerstattet.
-                {% endblocktrans %}
+                <div>
+                    {% trans "Infos" %}:
+                    {% blocktrans trimmed %}
+                    Um {{ v_member_type }} bei {{ v_d_enriched_organisation }} zu werden, musst du mindestens
+                    1 {{ v_share }} ({{ c_currency }} {{ c_share_price }}) erwerben.
+                    {% endblocktrans %}
+                </div>
+                <div class="alert alert-primary">
+                    Für eine stabile Entwicklung des Betriebs sollten derzeit im Schnitt 5 AS pro EAT gezeichnet werden,
+                    natürlich sind auch weniger oder mehr ok. Auch kannst du später Zusätzliche erwerben.<br>
+                    Das in Anteilscheinen eingelegte Geld erhältst du im Falle einer Kündigung per Ende der Saison
+                    zurück – <b>es ist also lediglich angelegt und nicht ausgegeben</b>.
+                </div>
                 {% if shares.total_required > 0 %}
-                    {# changed text here #}
                     {% blocktrans trimmed with shares.total_required as st %}
-                    Für die von dir ausgewählten {{ v_subscription_pl }} brauchst du insgesamt {{ st }}
+                    Für die von dir ausgewählten {{ v_subscription_pl }} brauchst du mindestens {{ st }}
                     {{ v_share }}(e). Du kannst natürlich noch mehr erwerben.
                     {% endblocktrans %}
                     <br/>
