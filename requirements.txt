@@ -1,18 +1,18 @@
 django-qrcode
 vobject
 gunicorn==20.0.4
-juntagrico~=1.3.3
+juntagrico~=1.3.10
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 psycopg2>=2.8.5
 juntagrico-pg~=1.2.0
-openpyxl>=3.0.3
-django-oauth-toolkit~=1.3.2
+openpyxl==3.0.7
+django-oauth-toolkit~=1.4.1
 django-cors-middleware==1.5.0
 django-ckeditor==6.0.0
 django-multiselectfield==0.1.12
-emoji==0.6.0
+emoji==1.2.0
 git+https://github.com/mehalsgmues/juntagrico_calendar.git
 juntagrico-assignment-request~=0.3.0
 git+https://github.com/nixnuex/juntagrico-polling
 git+https://github.com/pascalfree/django-url-shortener
-drawSvg==1.7.0
+drawSvg==1.8.1
