@@ -308,3 +308,8 @@ def sso(request):
 @staff_member_required
 def share_progress_preview(request):
     return render(request, 'share_progress_preview.html')
+
+
+@login_required
+def bep(request):
+    return render(request, 'bep.html')

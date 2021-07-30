@@ -57,4 +57,7 @@ urlpatterns = [
 
     # keep working
     path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
+
+    # BEP
+    path('bep/', mehalsgmues.bep, name='bep')
 ]

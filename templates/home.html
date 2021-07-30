@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load config %}
+{% load mag_widgets %}
 {% block content %}
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
-    {% include 'snippets/share_progress_snippet.html' %}
+    <div class="row mb-3">
+        <div class="col-md-12">
+            {% news %}
+        </div>
+    </div>
     <a name="jobs"></a>
     <h3>
         {% trans "Aktuelle Arbeitseinsätze" %}
