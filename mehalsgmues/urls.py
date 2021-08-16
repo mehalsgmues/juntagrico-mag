@@ -37,7 +37,8 @@ urlpatterns = [
     path('my/export/mag/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions-mag'),
 
     # stats
-    path('stats/', mehalsgmues.stats, name='mag-stats'),
+    path('stats', mehalsgmues.stats, name='mag-stats'),
+    path('stats/export', mehalsgmues.stats_export, name='mag-stats-export'),
 
     # Discourse SSO
     path('sso/', mehalsgmues.sso),

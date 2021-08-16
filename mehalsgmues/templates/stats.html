@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load config %}
+{% block body_extra_classes %}wide-layout{% endblock %}
+{% block page_title %}
+    <h2>Wöchentliche Einsätze zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
+{% endblock %}
+{% block content %}
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <a href="{% url "mag-stats-export" %}">Excel Export</a>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [...Array({{count_weeks}}).keys()].map(function(v){return 'KW'+((v+{{start_week}}-1)%53+1).toString()});
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Mobilisierungsrate',
+                    backgroundColor: 'rgb(215,66,36)',
+                    borderColor: 'rgb(215,66,36)',
+                    data: {{ mobilization }},
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y1'
+                },
+                {
+                    label: 'Geleistete Einsätze',
+                    backgroundColor: 'rgb(42,148,57)',
+                    borderColor: 'rgb(42,148,57)',
+                    data: {{ done_jobs }},
+                    fill: true,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Ausgeschriebene Einsätze',
+                    backgroundColor: 'rgb(152,161,91)',
+                    borderColor: 'rgb(152,161,91)',
+                    data: {{ available_slots }},
+                    fill: true,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y'
+                }
+            ]
+        };
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                }
+            }
+        };
+
+        let myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+{% endblock %}

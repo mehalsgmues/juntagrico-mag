@@ -34,6 +34,8 @@ class MagTests(MagTestCase):
     def test_stats(self):
         self.assertGet(reverse('mag-stats'), 302)
         self.assertGet(reverse('mag-stats'), member=self.admin)
+        self.assertGet(reverse('mag-stats-export'), 302)
+        self.assertGet(reverse('mag-stats-export'), member=self.admin)
 
     def test_api(self):
         self.assertGet(reverse('mag-mailing-list'), 302)

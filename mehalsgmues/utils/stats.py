@@ -1,4 +1,4 @@
-from django.db.models.functions import TruncDay
+from django.db.models.functions import TruncDay, TruncWeek
 from django.db.models import Count, Sum, Q
 from django.utils import timezone
 from juntagrico.dao.memberdao import MemberDao
@@ -20,10 +20,25 @@ def assignments_by_day(start_date, end_date, activity_area=None):
         .annotate(count=Count('id'))
 
 
+def assignments_by_week(start_date, end_date):
+    return Assignment.objects.filter(job__time__range=(start_date, end_date))\
+        .annotate(week=TruncWeek('job__time'))\
+        .values('week')\
+        .annotate(count=Count('id'))\
+        .order_by('week')
+
+
 def slots_by_day(start_date, end_date, activity_area=None):
     return jobs_in_activity_area(activity_area).filter(time__range=(start_date, end_date))\
         .annotate(day=TruncDay('time')) \
         .values('day') \
+        .annotate(available=Sum('slots'))
+
+
+def slots_by_week(start_date, end_date, activity_area=None):
+    return jobs_in_activity_area(activity_area).filter(time__range=(start_date, end_date))\
+        .annotate(week=TruncWeek('time')) \
+        .values('week') \
         .annotate(available=Sum('slots'))
 
 

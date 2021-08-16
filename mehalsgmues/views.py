@@ -34,7 +34,7 @@ from django.utils.translation import gettext_lazy as _
 from openpyxl.utils import get_column_letter
 
 from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day, \
-    members_with_assignments
+    members_with_assignments, assignments_by_week, slots_by_week
 from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month, draw_share_progress
 
 
@@ -148,6 +148,46 @@ def list_generate(request, future=False):
 
 @staff_member_required
 def stats(request):
+    start_date = date_from_get(request, 'start_date', start_of_business_year())
+    end_date = date_from_get(request, 'end_date', end_of_business_year())
+
+    done_jobs = []
+    start_week = i = start_date.isocalendar()[1]
+    for assignments_per_week in assignments_by_week(start_date, end_date):
+        week = assignments_per_week['week'].isocalendar()[1]
+        print(week)
+        while (i - 1) % 53 + 1 < week:
+            done_jobs.append(0)
+            i += 1
+        done_jobs.append(assignments_per_week['count'])
+        i += 1
+
+    available_slots = []
+    i = start_date.isocalendar()[1]
+    for slots_per_week in slots_by_week(start_date, end_date):
+        week = slots_per_week['week'].isocalendar()[1]
+        print(week)
+        while (i - 1) % 53 + 1 < week:
+            available_slots.append(0)
+            i += 1
+        available_slots.append(slots_per_week['available'])
+        i += 1
+
+    renderdict = get_menu_dict(request)
+    renderdict.update({
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_week': start_week,
+        'count_weeks': end_date.isocalendar()[1] - start_week + (end_date.year - start_date.year)*53,
+        'done_jobs': done_jobs,
+        'available_slots': available_slots,
+        'mobilization': [i / j if j > 0 else 0 for i, j in zip(done_jobs, available_slots)],
+    })
+    return render(request, 'stats.html', renderdict)
+
+
+@staff_member_required
+def stats_export(request):
     activity_area = ActivityArea.objects.filter(pk=request.GET.get('activity_area', None)).first()
 
     start_date = date_from_get(request, 'start_date', start_of_business_year())
