@@ -1,4 +1,5 @@
 {% load formatter %}
+{% load qr_code %}
 {% load i18n %}
 {% load util %}
 {% load config %}
@@ -112,12 +113,13 @@
         </tr>
         <tr>
             <td>Informations- & Kommunikations- wege</td>
-            <td class="content" colspan="12">
+            <td class="content" colspan="9">
                 {% if activity.group_email %}E-Mail: <a href="mailto:{{ activity.group_email }}">{{ activity.group_email }}</a><br>{% endif %}
                 {% if activity.chat %}Chat: {{ activity.chat|simple_link }}<br>{% endif %}
                 {% if activity.other_communication %}{{ activity.other_communication|urlize }}<br>{% endif %}
                 Aktuelle Einsätze: <a href="{{ serverurl }}{% url 'area' activity.activity_area.id %}">{{ serverurl|clean_url }}{% url 'area' activity.activity_area.id %}</a>
             </td>
+            <td class="content" colspan="3">{% qr_from_text activity.link image_format="png" size="T" border=2 %}</td>
         </tr>
         <tr>
             <td>Kinderbegleitung</td>

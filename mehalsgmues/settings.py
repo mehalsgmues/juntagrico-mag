@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'impersonate',
     'oauth2_provider',
     'corsheaders',
-    'qrcode',
+    'qr_code',
     'shortener',
     'multiselectfield',
     'ckeditor',

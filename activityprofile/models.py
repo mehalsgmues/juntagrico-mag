@@ -1,6 +1,8 @@
 from django.core.files.storage import default_storage
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
+from django.urls import reverse
+from juntagrico.config import Config
 from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
 from django.db import models
@@ -89,6 +91,12 @@ class ActivityProfile(models.Model):
 
     def show_phone_number(self):
         return self.activity_area.show_coordinator_phonenumber
+
+    @property
+    def link(self):
+        if self.chat:
+            return self.chat
+        return Config.server_url() + reverse('area', args=(self.activity_area.id,))
 
     @property
     def output_file(self):
