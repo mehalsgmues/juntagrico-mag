@@ -115,7 +115,7 @@ class TemporalData:
         result = {}
         last_date = self.start_date
         for data_point in data_function(self.trunc, self.start_date, self.end_date):
-            date = data_point[self.trunc]
+            date = data_point[self.trunc].date()
             # fill dates without data
             while last_date < date:
                 result[last_date] = 0
