@@ -3,19 +3,29 @@
 {% load config %}
 {% block body_extra_classes %}wide-layout{% endblock %}
 {% block page_title %}
-    <h2>Wöchentliche Einsätze zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
+    <h2>{{ trunc_name }} Einsätze zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
 {% endblock %}
 {% block content %}
+    <a href="{% url "mag-stats-by" "day" %}?{{ query }}">Täglich</a> |
+    <a href="{% url "mag-stats-by" "week" %}?{{ query }}">Wöchentlich</a> |
+    <a href="{% url "mag-stats-by" "month" %}?{{ query }}">Monatlich</a>
+    <br>
+    <form method="get">
+        {{ date_form }}
+        <input type="submit" value="Anwenden">
+    </form>
+
     <div>
       <canvas id="myChart"></canvas>
     </div>
 
-    <a href="{% url "mag-stats-export" %}">Excel Export</a>
+    <a href="{% url "mag-stats-export" %}?{{ query }}">Excel Export</a>
 {% endblock %}
 {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{ labels|json_script:"labels" }}
     <script>
-        const labels = [...Array({{count_weeks}}).keys()].map(function(v){return 'KW'+((v+{{start_week}}-1)%53+1).toString()});
+        const labels = JSON.parse(document.getElementById('labels').textContent);
         const data = {
             labels: labels,
             datasets: [
@@ -54,20 +64,20 @@
             type: 'line',
             data,
             options: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
                     },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                    }
                 }
             }
         };

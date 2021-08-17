@@ -1,9 +1,12 @@
+import urllib
+
 import vobject
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.management import call_command
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.utils.timezone import make_naive
 from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
@@ -33,8 +36,9 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from openpyxl.utils import get_column_letter
 
-from mehalsgmues.utils.stats import assignments_by_subscription, assignments_by_day, slots_by_day, \
-    members_with_assignments, assignments_by_week, slots_by_week
+from mehalsgmues.forms import DateRangeForm
+from mehalsgmues.utils.stats import assignments_by_subscription, \
+    members_with_assignments, TemporalData, assignments_by, slots_by
 from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month, draw_share_progress
 
 
@@ -147,41 +151,26 @@ def list_generate(request, future=False):
 
 
 @staff_member_required
-def stats(request):
+def stats(request, trunc='week'):
     start_date = date_from_get(request, 'start_date', start_of_business_year())
     end_date = date_from_get(request, 'end_date', end_of_business_year())
 
-    done_jobs = []
-    start_week = i = start_date.isocalendar()[1]
-    for assignments_per_week in assignments_by_week(start_date, end_date):
-        week = assignments_per_week['week'].isocalendar()[1]
-        print(week)
-        while (i - 1) % 53 + 1 < week:
-            done_jobs.append(0)
-            i += 1
-        done_jobs.append(assignments_per_week['count'])
-        i += 1
-
-    available_slots = []
-    i = start_date.isocalendar()[1]
-    for slots_per_week in slots_by_week(start_date, end_date):
-        week = slots_per_week['week'].isocalendar()[1]
-        print(week)
-        while (i - 1) % 53 + 1 < week:
-            available_slots.append(0)
-            i += 1
-        available_slots.append(slots_per_week['available'])
-        i += 1
+    temporal_data = TemporalData(trunc, start_date, end_date)
+    data = temporal_data.data_to_dict(assignments_by)
+    done_jobs = list(data.values())
+    available_slots = list(temporal_data.data_to_dict(slots_by, 'available').values())
 
     renderdict = get_menu_dict(request)
     renderdict.update({
+        'trunc_name': temporal_data.trunc_adjective().capitalize() + 'e',
         'start_date': start_date,
         'end_date': end_date,
-        'start_week': start_week,
-        'count_weeks': end_date.isocalendar()[1] - start_week + (end_date.year - start_date.year)*53,
+        'labels': [temporal_data.date_to_label(date) for date in data.keys()],
         'done_jobs': done_jobs,
         'available_slots': available_slots,
         'mobilization': [i / j if j > 0 else 0 for i, j in zip(done_jobs, available_slots)],
+        'query': urllib.parse.urlencode(request.GET),
+        'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
     })
     return render(request, 'stats.html', renderdict)
 
@@ -230,8 +219,8 @@ def stats_export(request):
     ws2.column_dimensions['B'].width = 17
 
     # data
-    for row, assignment in enumerate(assignments_by_day(start_date, end_date, activity_area), 2):
-        ws2.cell(row, 1, assignment['day'])
+    for row, assignment in enumerate(assignments_by('day', start_date, end_date, activity_area), 2):
+        ws2.cell(row, 1, make_naive(assignment['day']))
         ws2.cell(row, 2, assignment['count'])
 
     # Sheet 3: slots by day
@@ -244,8 +233,8 @@ def stats_export(request):
     ws3.column_dimensions['B'].width = 17
 
     # data
-    for row, assignment in enumerate(slots_by_day(start_date, end_date, activity_area), 2):
-        ws3.cell(row, 1, assignment['day'])
+    for row, assignment in enumerate(slots_by('day', start_date, end_date, activity_area), 2):
+        ws3.cell(row, 1, make_naive(assignment['day']))
         ws3.cell(row, 2, assignment['available'])
 
     # Sheet 4: assignments per member
