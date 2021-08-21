@@ -61,5 +61,8 @@ urlpatterns = [
     path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
 
     # BEP
-    path('bep/', mehalsgmues.bep, name='bep')
+    path('bep/', mehalsgmues.bep, name='bep'),
+
+    # ajax
+    path('ajax/notifications', mehalsgmues.ajax_notifications, name='ajax-notifications')
 ]

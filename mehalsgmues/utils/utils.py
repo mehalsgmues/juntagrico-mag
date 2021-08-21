@@ -3,6 +3,8 @@ import drawSvg as draw
 import colorsys
 import math
 
+import requests
+from django.utils import timezone
 from juntagrico.entity.share import Share
 
 from mehalsgmues import settings
@@ -133,3 +135,40 @@ def draw_share_progress():
     </style>
     </svg>
     """
+
+
+def forum_notifications(user):
+    if cache := forum_notifications.cache.get(user, None):
+        if cache[0] + timedelta(minutes=5) > timezone.now():
+            return str(cache[1])
+
+    base = "https://forum.mehalsgmues.ch/"
+    method = base + "u/by-external/" + str(user.id) + ".json"
+    headers = {
+        'Api-Key': getattr(settings, "DISCOURSE_API_KEY", ""),
+        'Api-Username': 'system'
+    }
+    response = requests.get(method, headers=headers)
+    if response:
+        try:
+            username = response.json()['user']['username']
+        except (ValueError, KeyError):
+            forum_notifications.cache[user] = (timezone.now(), '')
+            return ''
+        # now with the username get notifications
+        method = base + "session/current.json"
+        headers['Api-Username'] = username
+        response = requests.get(method, headers=headers)
+        if response:
+            try:
+                current_user = response.json()['current_user']
+                notifications = current_user['unread_notifications'] + current_user[
+                    'unread_high_priority_notifications']
+                forum_notifications.cache[user] = (timezone.now(), notifications)
+                return notifications
+            except (ValueError, KeyError):
+                forum_notifications.cache[user] = (timezone.now(), '')
+                return ''
+
+
+forum_notifications.cache = {}

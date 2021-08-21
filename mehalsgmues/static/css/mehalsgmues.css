@@ -164,3 +164,20 @@ td.details-control, tr.shown td.details-control {
     max-width: 600px;
     margin: 0 auto;
 }
+
+/* notification bubble */
+.nav-link sup.notify {
+    background-color: #4c9434;
+    display: inline-block;
+    height: 1.2em;
+    border-radius: 0.6em;
+    text-align: center;
+    line-height: 1.2em;
+    font-weight: bold;
+    color: white;
+    padding: 0 0.45em;
+}
+
+.nav-link sup.notify-0 {
+    display: none;
+}

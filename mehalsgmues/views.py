@@ -39,7 +39,7 @@ from openpyxl.utils import get_column_letter
 from mehalsgmues.forms import DateRangeForm
 from mehalsgmues.utils.stats import assignments_by_subscription, \
     members_with_assignments, TemporalData, assignments_by, slots_by
-from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month, draw_share_progress
+from mehalsgmues.utils.utils import date_from_get, get_delivery_dates_of_month, forum_notifications
 
 
 # API
@@ -342,3 +342,8 @@ def share_progress_preview(request):
 @login_required
 def bep(request):
     return render(request, 'bep.html')
+
+
+@login_required
+def ajax_notifications(request):
+    return HttpResponse(forum_notifications(request.user))
