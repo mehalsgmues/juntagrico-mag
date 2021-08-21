@@ -346,4 +346,4 @@ def bep(request):
 
 @login_required
 def ajax_notifications(request):
-    return HttpResponse(forum_notifications(request.user))
+    return HttpResponse(forum_notifications(request.user) or u"\u00A0")

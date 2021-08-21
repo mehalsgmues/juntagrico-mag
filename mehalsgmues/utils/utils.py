@@ -154,7 +154,6 @@ def forum_notifications(user):
             username = response.json()['user']['username']
         except (ValueError, KeyError):
             forum_notifications.cache[user] = (timezone.now(), '')
-            return ''
         # now with the username get notifications
         method = base + "session/current.json"
         headers['Api-Username'] = username
@@ -168,7 +167,6 @@ def forum_notifications(user):
                 return notifications
             except (ValueError, KeyError):
                 forum_notifications.cache[user] = (timezone.now(), '')
-                return ''
 
 
 forum_notifications.cache = {}
