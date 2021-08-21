@@ -138,9 +138,9 @@ def draw_share_progress():
 
 
 def forum_notifications(user):
-    if cache := forum_notifications.cache.get(user, None):
-        if cache[0] + timedelta(minutes=5) > timezone.now():
-            return str(cache[1])
+    cache = forum_notifications.cache.get(user, None)
+    if cache and cache[0] + timedelta(minutes=5) > timezone.now():
+        return str(cache[1])
 
     base = "https://forum.mehalsgmues.ch/"
     method = base + "u/by-external/" + str(user.id) + ".json"
