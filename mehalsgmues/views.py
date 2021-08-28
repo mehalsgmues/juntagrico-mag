@@ -7,13 +7,11 @@ from django.core.management import call_command
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.timezone import make_naive
-from juntagrico.dao.extrasubscriptioncategorydao import ExtraSubscriptionCategoryDao
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
-from juntagrico.views import get_menu_dict
 from openpyxl import Workbook
 
 import base64
@@ -120,7 +118,6 @@ def generate_pdf_dict():
     return {
         'subscriptions': SubscriptionDao.all_active_subscritions(),
         'products': SubscriptionProductDao.get_all(),
-        'extra_sub_categories': ExtraSubscriptionCategoryDao.categories_for_depot_list_ordered(),
         'depots': DepotDao.all_depots_order_by_code(),
         'weekdays': {weekdays[weekday['weekday']]: weekday['weekday'] for weekday in
                      DepotDao.distinct_weekdays()},
@@ -136,9 +133,7 @@ def other_recipients_names_w_linebreaks(self):
 
 @staff_member_required
 def list_mgmt(request, success=False):
-    renderdict = get_menu_dict(request)
-    renderdict['success'] = success
-    return render(request, 'list_mgmt.html', renderdict)
+    return render(request, 'list_mgmt.html', {'success': success})
 
 
 @staff_member_required
@@ -160,8 +155,7 @@ def stats(request, trunc='week'):
     done_jobs = list(data.values())
     available_slots = list(temporal_data.data_to_dict(slots_by, 'available').values())
 
-    renderdict = get_menu_dict(request)
-    renderdict.update({
+    renderdict = {
         'trunc_name': temporal_data.trunc_adjective().capitalize() + 'e',
         'start_date': start_date,
         'end_date': end_date,
@@ -171,7 +165,7 @@ def stats(request, trunc='week'):
         'mobilization': [i / j if j > 0 else 0 for i, j in zip(done_jobs, available_slots)],
         'query': urllib.parse.urlencode(request.GET),
         'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
-    })
+    }
     return render(request, 'stats.html', renderdict)
 
 

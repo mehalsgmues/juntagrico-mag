@@ -1,6 +1,6 @@
 {% extends "no_menu_base.html" %}
 {% load i18n %}
-{% load config %}
+{% load juntagrico.config %}
 {% block all_page_title %}
     {% vocabulary "share_pl" as v_share_pl %}
     <div class="page-title offset-md-2 col-md-8">
@@ -15,7 +15,6 @@
     {% enriched_organisation "D" as v_d_enriched_organisation %}
     {% vocabulary "share_pl" as v_share_pl %}
     {% vocabulary "subscription" as v_subscription %}
-    {% vocabulary "subscription_pl" as v_subscription_pl %}
     {% vocabulary "member_type" as v_member_type %}
     {% vocabulary "share" as v_share %}
     {% vocabulary "co_member_pl" as v_co_member_pl %}
@@ -116,8 +115,8 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" src="/static/external/bootstrap-input-spinner.js">
+    <script type="text/javascript" src="/static/juntagrico/external/bootstrap-input-spinner.js">
     </script>
-    <script type="text/javascript" src="/static/external/require.min.js" data-main="/static/js/initChangeExtra.js">
+    <script type="text/javascript" src="/static/juntagrico/external/require.min.js" data-main="/static/juntagrico/js/initChangeExtra.js">
     </script>
 {% endblock %}

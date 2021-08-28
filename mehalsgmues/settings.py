@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'adminsortable2',
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_assignment_request',

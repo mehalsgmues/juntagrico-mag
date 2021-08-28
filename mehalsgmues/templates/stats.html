@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load config %}
+{% load juntagrico.config %}
 {% block body_extra_classes %}wide-layout{% endblock %}
 {% block page_title %}
     <h2>{{ trunc_name }} Einsätze zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
