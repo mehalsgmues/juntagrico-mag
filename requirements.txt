@@ -15,5 +15,5 @@ git+https://github.com/mehalsgmues/juntagrico_calendar.git@1.4.0
 juntagrico-assignment-request~=1.4.0
 git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
-drawSvg==1.8.2
+#drawSvg==1.8.2  # had to remove it because numpy was not able to install
 requests==2.26.0
