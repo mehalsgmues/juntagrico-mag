@@ -237,6 +237,10 @@ EMAILS = {
     'co_added': 'mag_mails/co_member_added.txt',
     's_created': 'mag_mails/share_created.txt'
 }
+SUB_OVERVIEW_FORMAT = {
+    'delimiter': ', ',
+    'format': '{amount:.0f}\xa0{type}'
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
