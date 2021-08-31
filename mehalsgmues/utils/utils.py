@@ -140,7 +140,7 @@ def draw_share_progress():
 def forum_notifications(user):
     cache = forum_notifications.cache.get(user, None)
     if cache and cache[0] + timedelta(minutes=5) > timezone.now():
-        return str(cache[1])
+        return cache[1]
 
     base = "https://forum.mehalsgmues.ch/"
     method = base + "u/by-external/" + str(user.id) + ".json"
@@ -153,7 +153,7 @@ def forum_notifications(user):
         try:
             username = response.json()['user']['username']
         except (ValueError, KeyError):
-            forum_notifications.cache[user] = (timezone.now(), '')
+            forum_notifications.cache[user] = (timezone.now(), None)
             return None
         # now with the username get notifications
         method = base + "session/current.json"
@@ -167,7 +167,7 @@ def forum_notifications(user):
                 forum_notifications.cache[user] = (timezone.now(), notifications)
                 return notifications
             except (ValueError, KeyError):
-                forum_notifications.cache[user] = (timezone.now(), '')
+                forum_notifications.cache[user] = (timezone.now(), None)
 
 
 forum_notifications.cache = {}
