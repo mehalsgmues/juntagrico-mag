@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: .
+      DJANGO_SETTINGS_MODULE: mehalsgmues.settings
     strategy:
       matrix:
         python-version: [3.8, 3.9]
