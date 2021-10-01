@@ -68,11 +68,11 @@ def draw_share_progress():
     goal = int(getattr(settings, "SHARE_PROGRESS_GOAL", "10") or "10")
     offset = int(getattr(settings, "SHARE_PROGRESS_OFFSET", "0") or "0")
     baseline = int(getattr(settings, "SHARE_PROGRESS_BASELINE", "0") or "0")
-    baseline_progress = baseline/goal
+    baseline_progress = baseline / goal
     ordered = Share.objects.filter(cancelled_date__isnull=True).count() + offset
-    ordered_progress = ordered/goal
+    ordered_progress = ordered / goal
     paid = Share.objects.filter(cancelled_date__isnull=True, paid_date__isnull=False).count() + offset
-    paid_progress = paid/goal
+    paid_progress = paid / goal
 
     d = draw.Drawing(1.8, 1.6, origin='center')
 
@@ -93,7 +93,7 @@ def draw_share_progress():
     # text center
     if goal > ordered:
         d.append(draw.Text('Noch', 0.1, 0, 0.3, center=True))
-        d.append(draw.Text(str(goal-ordered), 0.3, 0, 0.12, center=True, font_weight='bold'))
+        d.append(draw.Text(str(goal - ordered), 0.3, 0, 0.12, center=True, font_weight='bold'))
         d.append(draw.Text('Anteilscheine', 0.09, 0, -0.1, center=True))
         # labels
         d.append(draw.Text(f'{ordered-baseline} neue\nbestellt', **on_arc(0.7, ordered_progress)))
@@ -114,14 +114,14 @@ def draw_share_progress():
             font-weight: normal;
             font-style: normal;
         }
-        
+
         @font-face {
             font-family: 'Quicksand';
             src: url('/static/fonts/Quicksand-Light.ttf') format('truetype');
             font-weight: lighter;
             font-style: normal;
         }
-        
+
         @font-face {
             font-family: 'Quicksand';
             src: url('/static/fonts/Quicksand-Bold.ttf') format('truetype');

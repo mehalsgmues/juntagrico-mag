@@ -128,7 +128,7 @@ def generate_pdf_dict():
 def other_recipients_names_w_linebreaks(self):
     members = self.recipients.exclude(email=self.primary_member.email)
     members = [str(member) for member in members]
-    return mark_safe('<br>'.join([', '.join(members[x:x+6]) for x in range(0, len(members), 6)]))
+    return mark_safe('<br>'.join([', '.join(members[x:x + 6]) for x in range(0, len(members), 6)]))
 
 
 @staff_member_required

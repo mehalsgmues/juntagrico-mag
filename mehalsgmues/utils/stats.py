@@ -12,8 +12,8 @@ from django.template.defaultfilters import date as date_filter
 
 
 def jobs_in_activity_area(activity_area):
-    return Job.objects.filter(Q(OneTimeJob___activityarea=activity_area)
-                              | Q(RecuringJob___type__activityarea=activity_area))
+    return Job.objects.filter(
+        Q(OneTimeJob___activityarea=activity_area) | Q(RecuringJob___type__activityarea=activity_area))
 
 
 def get_trunc(name):
@@ -45,8 +45,8 @@ def members_with_assignments(start_date, end_date, activty_area=None, members=No
         members = Member.objects.filter(pk__in=[m.pk for m in members])
     return members.annotate(assignments=Sum(
         'assignment__amount',
-        filter=Q(assignment__job__time__range=(start_date, end_date)) & Q(assignment__job__in=
-                                                                          jobs_in_activity_area(activty_area))
+        filter=Q(assignment__job__time__range=(start_date, end_date)) & Q(
+            assignment__job__in=jobs_in_activity_area(activty_area))
     )).filter(assignments__gt=0)
 
 
