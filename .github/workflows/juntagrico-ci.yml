@@ -15,6 +15,7 @@ jobs:
     env:
       PYTHONPATH: .
       DJANGO_SETTINGS_MODULE: mehalsgmues.settings
+      JUNTAGRICO_SECRET_KEY: fake
     strategy:
       matrix:
         python-version: [3.8, 3.9]
