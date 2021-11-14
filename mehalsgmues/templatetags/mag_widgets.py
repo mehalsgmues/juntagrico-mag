@@ -15,3 +15,9 @@ def share_progress():
 @register.simple_tag
 def news():
     return mark_safe(get_recent_posts())
+
+
+@register.simple_tag
+def covid_info():
+    return mark_safe('<div class="alert alert-success">Bitte beachte unsere aktuellen '
+                     '<a href="https://mehalsgmues.ch/corona" target="_blank">Corona-Massnamen</a></div>')

@@ -11,12 +11,12 @@
             {% news %}
         </div>
     </div>
-    <a name="jobs"></a>
-    <h3>
+    <h3 id="jobs">
         {% trans "Aktuelle Arbeitseinsätze" %}
     </h3>
     <div class="row mb-3">
         <div class="col-md-12">
+            {% covid_info %}
             {% include "snippets/snippet_jobs.html" %}
         </div>
     </div>
