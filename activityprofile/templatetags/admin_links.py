@@ -11,7 +11,8 @@ def edit_link(context):
     add_url = ''
     edit_url = ''
     if user.is_superuser or \
-            user.has_perm('juntagrico.is_operations_group') or \
+            user.has_perm('activityprofile.change_activityprofile') and \
+            not user.has_perm('juntagrico.is_area_admin') or \
             area.coordinator == user.member:
         try:
             edit_url = reverse('admin:activityprofile_activityprofile_change', args=(area.profile.id,))
