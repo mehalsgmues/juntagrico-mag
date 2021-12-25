@@ -4,6 +4,7 @@ import colorsys
 import math
 
 import requests
+from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 from juntagrico.entity.share import Share
 
@@ -23,11 +24,16 @@ def date_from_get(request, name, default, date_format="%Y-%m-%d"):
 
 
 def get_delivery_dates_of_month(delivery_weekday, relative_month):
+    """
+    yields all delivery dates of a month
+    :param delivery_weekday: 0 = Monday, 6 = Sunday
+    :param relative_month: Select another month, 0 = current month until the 15th otherwise the next month
+    :return:
+    """
     today = datetime.today()
     # get dates of next month if this month is half over.
-    month = (today.month + int(today.day > 15) + relative_month - 1) % 12 + 1
-    date = datetime(today.year, month, 1)
-    next_delivery = date + timedelta(days=(delivery_weekday - 1 - date.weekday()) % 7)
+    next_delivery = today + relativedelta(months=relative_month + int(today.day > 15), day=1, weekday=delivery_weekday)
+    month = next_delivery.month
     yield next_delivery
     while True:
         next_delivery = next_delivery + timedelta(days=7)

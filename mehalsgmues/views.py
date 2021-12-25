@@ -139,7 +139,7 @@ def list_mgmt(request, success=False):
 @staff_member_required
 def list_generate(request, future=False):
     def delivery_dates(depot):
-        return list(get_delivery_dates_of_month(depot.weekday, int(request.GET.get('month', 0))))
+        return list(get_delivery_dates_of_month(depot.weekday - 1, int(request.GET.get('month', 0))))
     Depot.delivery_dates = delivery_dates
     call_command('generate_depot_list', force=True, future=future)
     return redirect(reverse('lists-mgmt-success'))
