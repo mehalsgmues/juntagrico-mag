@@ -30,9 +30,14 @@
             Depotänderungen anwenden und entsprechende Mitglieder informieren, dass jetzt das neue Depot gilt und anschliessend die Depotliste neu erzeugen.
         </div>
         <div class="col-md-6">
+            Funktion temporär deaktiviert.<br>
+            Verwende <a href="{% url 'depot-mgmt-changelist' %}">die Änderungsliste</a> um Änderungen
+            einzeln zu bestätigen und dann die obere Funktion um die Depotliste zu erzeugen.
+            <!--
             <a href="{% url 'lists-generate-future' %}">
                 Ausführen
             </a>
+            -->
         </div>
     </div>
 {% endblock %}

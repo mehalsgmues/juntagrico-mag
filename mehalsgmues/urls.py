@@ -64,5 +64,10 @@ urlpatterns = [
     path('bep/', mehalsgmues.bep, name='bep'),
 
     # ajax
-    path('ajax/notifications', mehalsgmues.ajax_notifications, name='ajax-notifications')
+    path('ajax/notifications', mehalsgmues.ajax_notifications, name='ajax-notifications'),
+
+    # depot changes
+    path('manage/depot/changes', mehalsgmues.depot_changes, name='depot-mgmt-changelist'),
+    path('manage/depot/change/confirm/<int:subscription_id>', mehalsgmues.depot_change_confirm,
+         name='depot-change-confirm'),
 ]

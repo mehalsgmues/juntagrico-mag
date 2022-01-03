@@ -2,7 +2,7 @@ import urllib
 
 import vobject
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.management import call_command
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -12,6 +12,10 @@ from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
+from juntagrico.entity.subs import Subscription
+from juntagrico.mailer import membernotification
+from juntagrico.util import return_to_previous_location
+from juntagrico.util.views_admin import subscription_management_list
 from openpyxl import Workbook
 
 import base64
@@ -344,3 +348,24 @@ def ajax_notifications(request):
     if notifications is None:
         notifications = u"\u00A0"
     return HttpResponse(notifications)
+
+
+@staff_member_required
+def depot_changes(request):
+    render_dict = {'change_date_disabled': True}
+    return subscription_management_list(SubscriptionDao.subscritions_with_future_depots(), render_dict,
+                                        'management_lists/depot_changelist.html', request)
+
+
+@staff_member_required
+def depot_change_confirm(request, subscription_id):
+    # Cheap copy of juntagrico util/subs.py activate_future_depots
+    sub = get_object_or_404(Subscription, id=subscription_id)
+    sub.depot = sub.future_depot
+    sub.future_depot = None
+    sub.save()
+    emails = []
+    for member in sub.recipients:
+        emails.append(member.email)
+    membernotification.depot_changed(emails, sub.depot)
+    return return_to_previous_location(request)

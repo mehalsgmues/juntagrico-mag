@@ -4,6 +4,11 @@
     <a class="nav-link" href="{% url 'lists-mgmt' %}">Depotlisten&shy;erzeugung</a>
 </li>
 {% endif %}
+{% if request.user.is_staff %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'depot-mgmt-changelist' %}">Depotänderungen</a>
+</li>
+{% endif %}
 </ul>
 <hr>
 <ul class="admin-menu nav flex-column">
