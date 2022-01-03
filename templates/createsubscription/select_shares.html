@@ -21,7 +21,6 @@
     <div class="offset-md-2 col-md-8">
         {% if shares.error %}
             <div class="alert alert-danger">
-                {# changed text here #}
                 {% blocktrans trimmed %}
                 Du brauchst entweder mehr {{ v_share_pl }} für die von dir gewählten {{ v_subscription_pl }}
                 oder eine deiner Eingaben ist keine postitive Zahl.
@@ -58,8 +57,8 @@
                     <br/>
                 {% endif %}
                 {% if co_members|length > 0 %}
-                    {% blocktrans trimmed %}
-                    Teile die restlichen benötigten {{ shares.remaining_required }} {{ v_share }}(e) unter dir und
+                    {% blocktrans trimmed with shares.remaining_required as sr %}
+                    Teile die restlichen benötigten {{ sr }} {{ v_share }}(e) unter dir und
                     deinen {{ v_co_member_pl }} auf. Nur Personen mit mindestens 1 {{ v_share }} sind Stimmberechtigt.
                     {% endblocktrans %}
                 {% endif %}
@@ -81,7 +80,7 @@
                         {% endblocktrans %}
                     {% else %}
                         {% blocktrans trimmed with msc=member.active_shares.count%}
-                        Du hast bereits {{ msc }} {{ v_share }}(e)
+                        Du hast bereits {{ msc }} {{ v_share_pl }}
                         {% endblocktrans %}
                     {% endif %}
                 </label>
