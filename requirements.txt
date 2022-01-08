@@ -3,7 +3,7 @@ gunicorn==20.1.0
 # juntagrico~=1.4.1
 git+https://github.com/juntagrico/juntagrico.git@fix_all_temporal
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
-psycopg2-binary==2.8.4
+psycopg2-binary>=2.8.4
 juntagrico-pg~=1.4.0
 openpyxl==3.0.7
 django-oauth-toolkit~=1.4.1
@@ -17,3 +17,4 @@ juntagrico-assignment-request~=1.4.0
 git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
 requests==2.26.0
+drawSvg==1.8.2
