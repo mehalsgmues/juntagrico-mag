@@ -17,4 +17,5 @@ juntagrico-assignment-request~=1.4.0
 git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
 requests==2.26.0
+CairoSVG==2.1.3  # needed for drawSvg - make sure requirements are installed before via docker file
 drawSvg==1.8.2
