@@ -17,6 +17,18 @@
     <div class="row mb-3">
         <div class="col-md-12">
             {% covid_info %}
+            {% if perms.juntagrico.can_create_recuringjob %}
+            <a href="{% url 'admin:juntagrico_recuringjob_add' %}" class="edit">
+                <i class="fas fa-plus"></i>
+                Wiederkehrenden Einsatz ausschreiben
+            </a><br>
+            {% endif %}
+            {% if perms.juntagrico.can_create_onetimejob %}
+            <a href="{% url 'admin:juntagrico_onetimejob_add' %}" class="edit">
+                <i class="fas fa-plus"></i>
+                Einzel-Einsatz ausschreiben
+            </a>
+            {% endif %}
             {% include "snippets/snippet_jobs.html" %}
         </div>
     </div>
