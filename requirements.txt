@@ -11,7 +11,7 @@ django-ckeditor==6.1.0
 django-qr-code==2.2.0
 django-multiselectfield==0.1.12
 emoji==1.4.2
-git+https://github.com/mehalsgmues/juntagrico_calendar.git@1.4.0
+juntagrico-calendar~=1.4.1
 juntagrico-assignment-request~=1.4.0
 git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
