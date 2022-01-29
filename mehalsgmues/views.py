@@ -137,7 +137,7 @@ def other_recipients_names_w_linebreaks(self):
 
 @staff_member_required
 def list_mgmt(request, success=False):
-    return render(request, 'list_mgmt.html', {'success': success})
+    return render(request, 'mag/list_mgmt.html', {'success': success})
 
 
 @staff_member_required
@@ -170,7 +170,7 @@ def stats(request, trunc='week'):
         'query': urllib.parse.urlencode(request.GET),
         'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
     }
-    return render(request, 'stats.html', renderdict)
+    return render(request, 'mag/stats.html', renderdict)
 
 
 @staff_member_required
@@ -334,12 +334,12 @@ def sso(request):
 
 @staff_member_required
 def share_progress_preview(request):
-    return render(request, 'share_progress_preview.html')
+    return render(request, 'mag/share_progress_preview.html')
 
 
 @login_required
 def bep(request):
-    return render(request, 'bep.html')
+    return render(request, 'mag/bep.html')
 
 
 @login_required
@@ -354,7 +354,7 @@ def ajax_notifications(request):
 def depot_changes(request):
     render_dict = {'change_date_disabled': True}
     return subscription_management_list(SubscriptionDao.subscritions_with_future_depots(), render_dict,
-                                        'management_lists/depot_changelist.html', request)
+                                        'mag/management_lists/depot_changelist.html', request)
 
 
 @staff_member_required

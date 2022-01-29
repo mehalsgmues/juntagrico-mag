@@ -77,7 +77,7 @@ else:  # local settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -88,10 +88,6 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader'
             ],
         },
     },
@@ -234,10 +230,10 @@ IMAGES = {
 }
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 EMAILS = {
-    'welcome': 'mag_mails/member_welcome.txt',
-    'co_welcome': 'mag_mails/co_member_welcome.txt',
-    'co_added': 'mag_mails/co_member_added.txt',
-    's_created': 'mag_mails/share_created.txt'
+    'welcome': 'mag/mails/member_welcome.txt',
+    'co_welcome': 'mag/mails/co_member_welcome.txt',
+    'co_added': 'mag/mails/co_member_added.txt',
+    's_created': 'mag/mails/share_created.txt'
 }
 SUB_OVERVIEW_FORMAT = {
     'delimiter': ', ',
