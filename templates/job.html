@@ -1,19 +1,8 @@
-{% extends "base.html" %}
-{% load mag_widgets %}
+{% extends "job.html" %}
 {% load i18n %}
 {% load juntagrico.common %}
 {% load juntagrico.config %}
-{% block page_title %}
-    <h3>
-        {{ job.type.get_name }}
-        {% if edit_url.strip %}
-         <a href="{{ edit_url }}" class="edit">
-            <i class="fas fa-pen">
-            </i>
-        </a>
-        {% endif %}
-    </h3>
-{% endblock %}
+{% load mag_widgets %}
 {% block content %}
     {% vocabulary "assignment_pl" as v_assignment_pl %}
     <div class="row">
@@ -222,6 +211,4 @@
             </div>
         </div>
     {% endif %}
-{% endblock %}
-{% block scripts %}
 {% endblock %}

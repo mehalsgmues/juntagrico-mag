@@ -1,6 +1,6 @@
 vobject
 gunicorn==20.1.0
-juntagrico~=1.4.6
+juntagrico~=1.4.7
 # git+https://github.com/juntagrico/juntagrico-crowdfunding.git
 psycopg2-binary>=2.8.4
 juntagrico-pg~=1.4.0

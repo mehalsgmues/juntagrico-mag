@@ -1,6 +1,5 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {% load i18n %}
-{% load juntagrico.config %}
 {% load mag_widgets %}
 {% block content %}
     <h4>
@@ -55,10 +54,4 @@
             </div>
         </div>
     {% endfor %}
-{% endblock %}
-{% block scripts %}
-    <script type="text/javascript" src="/static/juntagrico/external/datatables.min.js">
-    </script>
-    <script type="text/javascript" src="/static/juntagrico/external/require.min.js" data-main="/static/juntagrico/js/initHomeJobs.js">
-    </script>
 {% endblock %}

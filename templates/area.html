@@ -1,8 +1,12 @@
-{% extends "base.html" %}
+{% extends "area.html" %}
 {% load static %}
 {% load i18n %}
 {% load juntagrico.common %}
 {% load juntagrico.config %}
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
+{% endblock %}
 {% block page_title %}
     <h3>
         {{ area.name }}
@@ -12,9 +16,9 @@
     {% include "activityprofile/snippets/snippet_activity_profile.html" %}
     <div class="row mb-3">
         <div class="col-md-12">
-            <a name="upcoming"><h4>
+            <a id="upcoming"><h4>
                 {% trans "Kommende Termine" %}
-            </h4></a>
+            </h4>
         </div>
     </div>
     <div class="row mb-3">
@@ -25,13 +29,4 @@
             {% endif %}
         </div>
     </div>
-{% endblock %}
-{% block scripts %}
-    <script type="text/javascript" src="{% static 'juntagrico/external/datatables.min.js' %}">
-    </script>
-    <script type="text/javascript" src="{% static 'juntagrico/external/require.min.js' %}" data-main="{% static 'juntagrico/js/initArea.js' %}">
-    </script>
-{% endblock %}
-{% block styles %}
-    <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
 {% endblock %}

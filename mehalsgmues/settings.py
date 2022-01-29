@@ -26,6 +26,13 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 # Application definition
 
 INSTALLED_APPS = [
+    'mehalsgmues',
+    'activityprofile',
+    'juntagrico_pg',
+    # 'juntagrico_crowdfunding',
+    'juntagrico_assignment_request',
+    'juntagrico_calendar',
+    'juntagrico_polling',
     'juntagrico',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,11 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'adminsortable2',
-    'juntagrico_pg',
-    # 'juntagrico_crowdfunding',
-    'juntagrico_assignment_request',
-    'juntagrico_calendar',
-    'juntagrico_polling',
     # 'report_builder',
     'crispy_forms',
     'impersonate',
@@ -49,8 +51,6 @@ INSTALLED_APPS = [
     'shortener',
     'multiselectfield',
     'ckeditor',
-    'activityprofile',
-    'mehalsgmues',
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'
@@ -169,6 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static_override")]
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 LOCALE_PATHS = ('locale',)
 
