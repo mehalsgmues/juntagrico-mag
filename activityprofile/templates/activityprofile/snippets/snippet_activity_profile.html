@@ -41,16 +41,9 @@
         <strong>{% trans "Kontaktperson" %}</strong>
     </div>
     <div class="col-md-9">
-        {{ area.coordinator }}
-        <br/>
-        {% if area.profile.show_phone_number %}
-        Tel: <a href="tel:{{ area.coordinator.phone }}">
-            {{ area.coordinator.phone }}
-        </a><br/>
-        {% endif %}
-        E-Mail: <a href="mailto:{{ area.get_email }}">
-            {{ area.get_email }}
-        </a>
+        {% for contact in area.contacts %}
+            {{ contact.to_html }}
+        {% endfor %}
     </div>
 </div>
 

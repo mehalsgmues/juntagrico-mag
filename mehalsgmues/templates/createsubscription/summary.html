@@ -1,15 +1,7 @@
-{% extends "no_menu_base.html" %}
+{% extends "createsubscription/summary.html" %}
 {% load i18n %}
 {% load juntagrico.config %}
 {% load crispy_forms_tags %}
-{% block all_page_title %}
-    {% vocabulary "subscription" as v_subscription %}
-    <div class="offset-md-3 col-md-9 juntagrico">
-        <h3>
-            {% blocktrans %}Zusammenfassung{% endblocktrans %}
-        </h3>
-    </div>
-{% endblock %}
 {% block allcontent %}
     {% config "organisation_name" as c_organisation_name %}
     {% config "share_price" as c_share_price %}
@@ -61,8 +53,7 @@
             <p>{{ depot.name }}
                 {# bending the rules of physics here #}
                 <br>{% trans 'Abholung jeweils am' %} Freitag und Samstag
-                {% if depot.addr_street %}<br>{{ depot.addr_street }}{% endif %}
-                {% if depot.addr_zipcode or depot.addr_location %}<br>{{ depot.addr_zipcode }} {{ depot.addr_location }}{% endif %}
+                {% if depot.location.address %}<br>{{ depot.location.address_html|safe }}{% endif %}
             </p>
 
             <h4>{% trans "Gewünschtes Startdatum" %} <a href="{% url 'cs-start' %}" class="edit"><i class="fas fa-pen"></i></a></h4>
@@ -88,6 +79,18 @@
                     {% blocktrans %}{{ v_co_member_pl }} hinzufügen{% endblocktrans %}
                 {% endif %}
             </a></p>
+        {% endif %}
+
+        {% if activity_areas %}
+            <h4>{% trans "Tätigkeitsbereiche" %}</h4>
+            <p>{% blocktrans %}Du wirst automatisch in folgende Tätigkeitsbereiche eingetragen.{% endblocktrans %}</p>
+            <ul>
+                {% for area in activity_areas %}
+                    <li><strong>{{ area.name }}</strong> {{ area.description |safe }}</li>
+                {% endfor %}
+            </ul>
+
+            <p>{% blocktrans %}Du kannst das jederzeit unter dem Menupunkt Tätigkeitsbereiche ändern.{% endblocktrans %}</p>
         {% endif %}
 
         {% if c_enable_shares %}

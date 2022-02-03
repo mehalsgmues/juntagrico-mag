@@ -49,12 +49,11 @@
         </tr>
         <tr>
             <td>Kontaktperson</td>
-            <td class="content" colspan="12">{{ activity.activity_area.coordinator }}<br>
-                {% if activity.show_phone_number %}
-                Tel: <a href="tel:{{ activity.activity_area.coordinator.phone }}">{{ activity.activity_area.coordinator.phone }}</a><br/>
-                {% endif %}
-                E-Mail: <a href="mailto:{{ activity.activity_area.get_email }}">{{ activity.activity_area.get_email }}</a>
-                </td>
+            <td class="content" colspan="12">
+                {% for contact in area.contacts %}
+                    {{ contact.to_html }}
+                {% endfor %}
+            </td>
         </tr>
         <tr>
             <td>Gruppe / Mitglieder</td>

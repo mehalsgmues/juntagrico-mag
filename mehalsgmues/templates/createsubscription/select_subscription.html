@@ -1,5 +1,6 @@
-{% extends "no_menu_base.html" %}
+{% extends "createsubscription/select_subscription.html" %}
 {% load i18n %}
+{% load static %}
 {% load juntagrico.config %}
 {% load crispy_forms_tags %}
 {% block all_page_title %}
@@ -21,13 +22,5 @@
     </div>
     <div class="allcontent row">
     {# until here here #}
-        <div class="offset-md-2 col-md-8">
-            {% crispy form %}
-        </div>
-{% endblock %}
-{% block scripts %}
-    <script type="text/javascript" src="/static/juntagrico/external/bootstrap-input-spinner.js">
-    </script>
-    <script type="text/javascript" src="/static/juntagrico/external/require.min.js" data-main="/static/juntagrico/js/initCreateSubscription.js">
-    </script>
+    {{ block.super }}
 {% endblock %}

@@ -1,14 +1,6 @@
-{% extends "no_menu_base.html" %}
+{% extends "createsubscription/select_shares.html" %}
 {% load i18n %}
 {% load juntagrico.config %}
-{% block all_page_title %}
-    {% vocabulary "share_pl" as v_share_pl %}
-    <div class="page-title offset-md-2 col-md-8">
-        <h3>
-            {% blocktrans %}{{ v_share_pl }} erwerben{% endblocktrans %}
-        </h3>
-    </div>
-{% endblock %}
 {% block allcontent %}
     {% config "currency" as c_currency %}
     {% config "share_price" as c_share_price %}
@@ -112,10 +104,4 @@
             </div>
         </form>
     </div>
-{% endblock %}
-{% block scripts %}
-    <script type="text/javascript" src="/static/juntagrico/external/bootstrap-input-spinner.js">
-    </script>
-    <script type="text/javascript" src="/static/juntagrico/external/require.min.js" data-main="/static/juntagrico/js/initChangeExtra.js">
-    </script>
 {% endblock %}

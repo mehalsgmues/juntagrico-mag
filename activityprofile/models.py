@@ -7,6 +7,7 @@ from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
 from django.db import models
 from juntagrico.entity.jobs import ActivityArea
+from django.utils.translation import gettext as _
 
 
 SEASON = ((1, 'Januar'),
@@ -81,16 +82,16 @@ class ActivityProfile(models.Model):
     other_communication = models.CharField('Andere Kommunikationsmethoden', max_length=200, null=True, blank=True,
                                            help_text='Andere Links oder Beschreibungen, wie Mitglieder interagieren können.')
 
+    def get_absolute_url(self):
+        return reverse('area', args=[self.activity_area.pk])
+
     @property
     def name(self):
         return self.activity_area.name
 
     @property
-    def group_email(self):
-        return self.email if self.email else self.activity_area.get_email()
-
-    def show_phone_number(self):
-        return self.activity_area.show_coordinator_phonenumber
+    def group_emails(self):
+        return self.email if self.email else self.activity_area.get_emails()[0]
 
     @property
     def link(self):
@@ -104,6 +105,10 @@ class ActivityProfile(models.Model):
 
     def __str__(self):
         return f'{self.name} Steckbrief'
+
+    class Meta:
+        verbose_name = _('Steckbrief')
+        verbose_name_plural = _('Steckbriefe')
 
 
 @receiver(post_save, sender=ActivityProfile)

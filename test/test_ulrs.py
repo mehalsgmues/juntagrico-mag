@@ -5,10 +5,6 @@ from test import MagTestCase
 
 class MagTests(MagTestCase):
 
-    def setUp(self):
-        super().setUp()
-        self.admin = self.admin()
-
     def test_template_override(self):
         self.assertGet(reverse('home'), member=self.admin)
         self.assertGet(reverse('jobs'), member=self.admin)

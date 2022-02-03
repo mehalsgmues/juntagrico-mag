@@ -29,7 +29,7 @@
             {% endif %}
             <h2 style="font-size: 18px;">{{ depot.weekday_name }} - {{ depot.name }}{% if not forloop.first %} Fortsetzung{% endif %}</h2>
             {% if forloop.first %}
-                <h3 style="font-size: 16px;">{{ depot.addr_street }}, {{ depot.addr_zipcode }} {{ depot.addr_location }}</h3>
+                <h3 style="font-size: 16px;">{{ depot.location.address }}</h3>
                 {% blocktrans %}{{ v_depot }}-Betreuung{% endblocktrans %}: {{ depot.contact.first_name }} {{ depot.contact.last_name }}
                 <table cellpadding="5" cellspacing="0" style="margin-bottom:5px;" class="full-border">
                     <tr>

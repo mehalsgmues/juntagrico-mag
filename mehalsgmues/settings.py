@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'shortener',
     'multiselectfield',
     'ckeditor',
+    'polymorphic',
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'
@@ -129,13 +130,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-    'nextcloud.mehalsgmues.cyon.site',
-    'cloud.mehalsgmues.ch',
+    'https://cloud.mehalsgmues.ch',
 )
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
@@ -164,8 +165,7 @@ if DEBUG is True:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static_override")]
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 LOCALE_PATHS = ('locale',)
 
@@ -200,13 +200,11 @@ ORGANISATION_BANK_CONNECTION = {
 }
 INFO_EMAIL = "info@mehalsgmues.ch"
 SERVER_URL = "www.mehalsgmues.ch"
-ADMINPORTAL_NAME = "my.mehalsgmues"
-ADMINPORTAL_SERVER_URL = "my.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"
-STYLE_SHEET = "/static/css/mehalsgmues.css"
-FAVICON = "/static/img/favicon_mag.ico"
+STYLES = {'static': ['css/mehalsgmues.css']}
+SCRIPTS = {'template': 'mag/js/page.html'}
 EXTRA_SUB_INFO = ""
 ACTIVITY_AREA_INFO = ""
 SHARE_PRICE = "250"
@@ -217,24 +215,25 @@ BILLING = False
 BUSINESS_YEAR_START = {"day": 1, "month": 4}
 BUSINESS_YEAR_CANCELATION_MONTH = 1
 MEMBERSHIP_END_MONTH = 3
-IMAGES = {
-    'status_100': '/static/img/indicators/status_100.png',
-    'status_75': '/static/img/indicators/status_75.png',
-    'status_50': '/static/img/indicators/status_50.png',
-    'status_25': '/static/img/indicators/status_25.png',
-    'status_0': '/static/img/indicators/single_empty.png',
-    'single_full': '/static/img/indicators/single_full.png',
-    'single_empty': '/static/img/indicators/single_empty.png',
-    'single_core': '/static/img/indicators/single_full.png',
-    'core': '/static/img/indicators/single_full.png'
-}
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-EMAILS = {
-    'welcome': 'mag/mails/member_welcome.txt',
-    'co_welcome': 'mag/mails/co_member_welcome.txt',
-    'co_added': 'mag/mails/co_member_added.txt',
-    's_created': 'mag/mails/share_created.txt'
-}
+
+# FAVICON = "/static/img/favicon_mag.ico"
+# IMAGES = {
+#     'status_100': '/static/img/indicators/status_100.png',
+#     'status_75': '/static/img/indicators/status_75.png',
+#     'status_50': '/static/img/indicators/status_50.png',
+#     'status_25': '/static/img/indicators/status_25.png',
+#     'status_0': '/static/img/indicators/single_empty.png',
+#     'single_full': '/static/img/indicators/single_full.png',
+#     'single_empty': '/static/img/indicators/single_empty.png',
+#     'single_core': '/static/img/indicators/single_full.png',
+#     'core': '/static/img/indicators/single_full.png'
+# }
+# EMAILS = {
+#     'welcome': 'mag/mails/member_welcome.txt',
+#     'co_welcome': 'mag/mails/co_member_welcome.txt',
+#     'co_added': 'mag/mails/co_member_added.txt',
+#     's_created': 'mag/mails/share_created.txt'
+# }
 SUB_OVERVIEW_FORMAT = {
     'delimiter': ', ',
     'format': '{amount:.0f}\xa0{type}'
@@ -276,4 +275,12 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'WARNING',
     },
+}
+
+MAILER_RICHTEXT_OPTIONS = {
+    'valid_styles': {
+        '*': 'color,text-align,font-size,font-weight,font-style,font-family,text-decoration'
+    },
+    'toolbar': "undo redo | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | "
+               "bullist numlist | link | fontselect fontsizeselect",
 }
