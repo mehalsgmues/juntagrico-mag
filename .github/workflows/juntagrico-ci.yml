@@ -32,6 +32,7 @@ jobs:
     - name: run tests
       run: |
         python -m django makemigrations --noinput
+        python -m django collectstatic -c --noinput
         python -m manage test
     - name: flake 8
       run: |
