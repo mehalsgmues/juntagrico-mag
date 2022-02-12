@@ -239,6 +239,11 @@ SUB_OVERVIEW_FORMAT = {
     'format': '{amount:.0f}\xa0{type}'
 }
 
+FROM_FILTER = {
+    'filter_expression': r'.*@mehalsgmues\.ch',
+    'replacement_from': 'server@mehalsgmues.ch'
+}
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DISCOURSE_BASE_URL = os.environ.get('DISCOURSE_BASE_URL')
