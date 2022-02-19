@@ -1,2 +1,3 @@
 -r requirements.txt
 flake8
+reportlab==3.6.6
