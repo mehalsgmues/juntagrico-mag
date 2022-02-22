@@ -5,8 +5,12 @@ import math
 
 import requests
 from dateutil.relativedelta import relativedelta
+from django.db.models import Sum
 from django.utils import timezone
+from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.share import Share
+from juntagrico.entity.subs import SubscriptionPart
+from juntagrico.util.models import q_cancelled, q_deactivated
 
 from mehalsgmues import settings
 
@@ -177,3 +181,13 @@ def forum_notifications(user):
 
 
 forum_notifications.cache = {}
+
+
+def get_available_subscriptions():
+    goal = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "10") or "10")
+    target = SubscriptionPart.objects.filter(
+        ~q_cancelled() & ~q_deactivated(),
+        type__size__product__is_extra=False,
+        subscription__in=SubscriptionDao.future_subscriptions()
+    ).aggregate(total=Sum('type__size__units'))['total']
+    return goal - target

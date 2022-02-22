@@ -216,24 +216,6 @@ BUSINESS_YEAR_START = {"day": 1, "month": 4}
 BUSINESS_YEAR_CANCELATION_MONTH = 1
 MEMBERSHIP_END_MONTH = 3
 
-# FAVICON = "/static/img/favicon_mag.ico"
-# IMAGES = {
-#     'status_100': '/static/img/indicators/status_100.png',
-#     'status_75': '/static/img/indicators/status_75.png',
-#     'status_50': '/static/img/indicators/status_50.png',
-#     'status_25': '/static/img/indicators/status_25.png',
-#     'status_0': '/static/img/indicators/single_empty.png',
-#     'single_full': '/static/img/indicators/single_full.png',
-#     'single_empty': '/static/img/indicators/single_empty.png',
-#     'single_core': '/static/img/indicators/single_full.png',
-#     'core': '/static/img/indicators/single_full.png'
-# }
-# EMAILS = {
-#     'welcome': 'mag/mails/member_welcome.txt',
-#     'co_welcome': 'mag/mails/co_member_welcome.txt',
-#     'co_added': 'mag/mails/co_member_added.txt',
-#     's_created': 'mag/mails/share_created.txt'
-# }
 SUB_OVERVIEW_FORMAT = {
     'delimiter': ', ',
     'format': '{amount:.0f}\xa0{type}'
@@ -289,3 +271,5 @@ MAILER_RICHTEXT_OPTIONS = {
     'toolbar': "undo redo | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | "
                "bullist numlist | link | fontselect fontsizeselect",
 }
+
+SUBSCRIPTION_PROGRESS_GOAL = 320
