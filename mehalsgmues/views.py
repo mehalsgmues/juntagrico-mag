@@ -259,7 +259,6 @@ def stats_export(request):
 
 @staff_member_required
 def indexes(request):
-    all_active_subs = SubscriptionDao().all_active_subscritions()
     active_parts = SubscriptionPart.objects.filter(
         type__size__product__is_extra=False).filter(q_isactive()).filter(
         subscription__in=SubscriptionDao().all_active_subscritions()
@@ -270,9 +269,9 @@ def indexes(request):
 
     renderdict = dict(
         subscription_types=types,
-        average_sub_price=all_active_subs.aggregate(avg=Avg('parts__type__price'))['avg'],
-        average_paid_sub_price=all_active_subs.filter(
-            parts__type__price__gt=0).aggregate(avg=Avg('parts__type__price'))['avg'],
+        average_sub_price=active_parts.aggregate(avg=Avg('type__price'))['avg'],
+        average_paid_sub_price=active_parts.filter(
+            type__price__gt=0).aggregate(avg=Avg('type__price'))['avg'],
     )
     return render(request, 'mag/stats/indexes.html', renderdict)
 
