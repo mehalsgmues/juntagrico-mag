@@ -12,13 +12,15 @@ def required_for_subscription(share, index):
     subscription = member.subscription_future or member.subscription_current
     if subscription:
         remaining = subscription.required_shares - subscription.paid_shares
-        if remaining >= index:
+        if index <= remaining:
             other_unpaid = subscription.recipients_qs.exclude(member=member).filter(
                 member__share__isnull=False, member__share__paid_date__isnull=True
             ).annotate(
                 member_name=Concat('member__first_name', Value(' '), 'member__last_name')
             ).values('member_name')
-            if other_unpaid:
-                return _("Ja. Oder ") + ", ".join(o['member_name'] for o in other_unpaid)
+            if index > remaining - other_unpaid.count():
+                return _("Ja. Oder ") + ", ".join(
+                    o['member_name'] for o in other_unpaid.distinct()
+                ) + ". " + _("({} insgesamt)").format(remaining)
             return _("Ja")
     return _("Nein")
