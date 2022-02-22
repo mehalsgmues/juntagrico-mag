@@ -2,6 +2,7 @@ import urllib
 
 import vobject
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.management import call_command
 from django.urls import reverse
@@ -253,6 +254,22 @@ def stats_export(request):
 
     wb.save(response)
     return response
+
+
+@staff_member_required
+def indexes(request):
+    all_active_subs = SubscriptionDao().all_active_subscritions()
+    types = SubscriptionTypeDao.get_all().filter(
+        subscription_parts__subscription__in=all_active_subs
+    ).annotate(num=Count('id')).order_by('-price')
+
+    renderdict = dict(
+        subscription_types=types,
+        average_sub_price=all_active_subs.aggregate(avg=Avg('parts__type__price'))['avg'],
+        average_paid_sub_price=all_active_subs.filter(
+            parts__type__price__gt=0).aggregate(avg=Avg('parts__type__price'))['avg'],
+    )
+    return render(request, 'mag/stats/indexes.html', renderdict)
 
 
 @staff_member_required

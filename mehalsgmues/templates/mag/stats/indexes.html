@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block page_title %}
+    <h2>{% trans "Kennzahlen" %}</h2>
+{% endblock %}
+{% block content %}
+    {% vocabulary "subscription_pl" as v_subscription_pl %}
+    <h3>{% blocktrans %}Aktive {{ v_subscription_pl }} nach Typ{% endblocktrans %}</h3>
+    {% for type in subscription_types %}
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4">
+                {{ type.name }}
+            </div>
+            <div class="col-2 col-sm-1 col-md-1">
+                {{ type.num }}
+            </div>
+            <div class="col-10 col-sm-5 col-md-4">
+                {% config "currency" %} {{ type.price }}
+            </div>
+        </div>
+    {% endfor %}
+    <br><br>
+    <h3>{% trans "Durchschnittspreise" %}</h3>
+    <p>{% blocktrans %}Gerechnet auf alle derzeit aktiven {{ v_subscription_pl }}{% endblocktrans %}</p>
+    <div class="row">
+        <div class="col-md-4">
+            {% trans "Durschnittlicher Preis" %}:
+        </div>
+        <div class="col-md-8">
+            {% config "currency" %} {{ average_sub_price|floatformat:2 }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {% trans "Ohne Verschenkte" %}:
+        </div>
+        <div class="col-md-8">
+            {% config "currency" %} {{ average_paid_sub_price|floatformat:2 }}
+        </div>
+    </div>
+{% endblock %}

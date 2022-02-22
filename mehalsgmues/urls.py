@@ -40,6 +40,7 @@ urlpatterns = [
     path('my/export/mag/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions-mag'),
 
     # stats
+    path('stats/indexes', mehalsgmues.indexes, name='mag-indexes'),
     path('stats', mehalsgmues.stats, name='mag-stats'),
     path('stats/export', mehalsgmues.stats_export, name='mag-stats-export'),
     path('stats/<slug:trunc>', mehalsgmues.stats, name='mag-stats-by'),
