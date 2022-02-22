@@ -1,7 +1,7 @@
 import urllib
 
 import vobject
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.management import call_command
 from django.urls import reverse
@@ -12,6 +12,7 @@ from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
+from juntagrico.entity.share import Share
 from juntagrico.entity.subs import Subscription
 from juntagrico.mailer import membernotification
 from juntagrico.util import return_to_previous_location
@@ -369,3 +370,10 @@ def depot_change_confirm(request, subscription_id):
         emails.append(member.email)
     membernotification.depot_changed(emails, sub.depot)
     return return_to_previous_location(request)
+
+
+@permission_required('juntagrico.view_share')
+def share_unpaidlist(request):
+    render_dict = {'change_date_disabled': True}
+    return subscription_management_list(Share.objects.filter(paid_date__isnull=True), render_dict,
+                                        'mag/management_lists/share_unpaidlist.html', request)

@@ -14,6 +14,9 @@ urlpatterns = [
     path('my/pdf/manage/generate', mehalsgmues.list_generate, name='lists-generate'),
     path('my/pdf/manage/generate/future', mehalsgmues.list_generate, {'future': True}, name='lists-generate-future'),
 
+    # /manage/share
+    path('manage/share/canceledlist', mehalsgmues.share_unpaidlist, name='share-mgmt-unpaid'),
+
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
 
