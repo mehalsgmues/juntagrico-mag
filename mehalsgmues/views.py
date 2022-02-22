@@ -14,9 +14,10 @@ from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.depot import Depot
 from juntagrico.entity.jobs import ActivityArea
 from juntagrico.entity.share import Share
-from juntagrico.entity.subs import Subscription
+from juntagrico.entity.subs import Subscription, SubscriptionPart
 from juntagrico.mailer import membernotification
 from juntagrico.util import return_to_previous_location
+from juntagrico.util.models import q_isactive
 from juntagrico.util.views_admin import subscription_management_list
 from openpyxl import Workbook
 
@@ -259,8 +260,12 @@ def stats_export(request):
 @staff_member_required
 def indexes(request):
     all_active_subs = SubscriptionDao().all_active_subscritions()
+    active_parts = SubscriptionPart.objects.filter(
+        type__size__product__is_extra=False).filter(q_isactive()).filter(
+        subscription__in=SubscriptionDao().all_active_subscritions()
+    )
     types = SubscriptionTypeDao.get_all().filter(
-        subscription_parts__subscription__in=all_active_subs
+        subscription_parts__in=active_parts
     ).annotate(num=Count('id')).order_by('-price')
 
     renderdict = dict(
