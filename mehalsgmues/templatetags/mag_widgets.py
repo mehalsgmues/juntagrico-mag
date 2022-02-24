@@ -31,5 +31,8 @@ def available_subscriptions():
 
 @register.simple_tag
 def member_and_phone(member):
-    member = Member.objects.get(id=member)
-    return f"{member.get_name()} {member.get_phone()}"
+    try:
+        member = Member.objects.get(id=member)
+        return f"{member.get_name()} {member.get_phone()}"
+    except Member.DoesNotExist:
+        return "(Unbekannter Benutzer)"
