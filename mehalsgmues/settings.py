@@ -27,6 +27,7 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 
 INSTALLED_APPS = [
     'juntagrico_assignment_request',  # keep on top until new menu override is implemented
+    'juntagrico_godparent',
     'mehalsgmues',
     'activityprofile',
     'juntagrico_pg',
@@ -273,3 +274,6 @@ MAILER_RICHTEXT_OPTIONS = {
 }
 
 SUBSCRIPTION_PROGRESS_GOAL = 320
+
+GODPARENT_CONTACT = 'neu@mehalsgmues.ch'
+GODPARENT_SHOW_MENU = False

@@ -74,4 +74,7 @@ urlpatterns = [
     path('manage/depot/changes', mehalsgmues.depot_changes, name='depot-mgmt-changelist'),
     path('manage/depot/change/confirm/<int:subscription_id>', mehalsgmues.depot_change_confirm,
          name='depot-change-confirm'),
+
+    # godparents
+    path('', include('juntagrico_godparent.urls')),
 ]

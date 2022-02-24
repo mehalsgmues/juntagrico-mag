@@ -275,3 +275,7 @@ msgid ""
 msgstr ""
 "Nicht auf der \"Arbeitsguppen\"-Seite anzeigen. Einsätze bleiben "
 "sichtbar."
+
+
+msgid "Passende Tätigkeitsbereiche"
+msgstr "Passende Arbeitsgruppen"
