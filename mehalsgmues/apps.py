@@ -13,7 +13,9 @@ class GodparentConfig(AppConfig):
         )
         GodparentForm.override_help_texts = dict(
             languages='In dieser Sprache/diesen Sprachen könnte ich mich mit dem Neumitglied verständigen.',
-            areas='Aktuell bist du in diesen Arbeitsgruppen eingetragen. Bitte prüfe ob dies noch stimmt.'
+            areas='Aktuell bist du in diesen Arbeitsgruppen eingetragen. '
+                  'Bitte prüfe ob dies noch stimmt.<br>'
+                  'Wenn du die Auswahl hier änderst, wirst du in die entsprechenden Arbeitsgruppen eingetragen.'
         )
         GodparentForm.override_labels = dict(
             areas='Arbeitsgruppen'
