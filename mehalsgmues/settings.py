@@ -4,8 +4,11 @@ Django settings for mehalsgmues project.
 """
 
 import os
+from datetime import timedelta
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
@@ -80,6 +83,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -277,3 +281,4 @@ SUBSCRIPTION_PROGRESS_GOAL = 320
 
 GODPARENT_CONTACT = 'neu@mehalsgmues.ch'
 GODPARENT_SHOW_MENU = False
+GODPARENT_MEMBERSHIP_DURATION_LIMIT = timedelta(weeks=52)
