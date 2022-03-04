@@ -279,3 +279,6 @@ msgstr ""
 
 msgid "Passende Tätigkeitsbereiche"
 msgstr "Passende Arbeitsgruppen"
+
+msgid "Gemeinsame Tätigkeitsbereiche"
+msgstr "Gemeinsame Arbeitsgruppen"
