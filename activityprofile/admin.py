@@ -48,8 +48,8 @@ class ActivityProfileAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
         fields.remove('description')
-        fields.remove('activity_area')
         if obj:
+            fields.remove('activity_area')
             fields.insert(0, 'activity_area')
             fields.insert(1, 'description')
         return fields
