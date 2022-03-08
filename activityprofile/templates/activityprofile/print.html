@@ -50,7 +50,7 @@
         <tr>
             <td>Kontaktperson</td>
             <td class="content" colspan="12">
-                {% for contact in area.contacts %}
+                {% for contact in activity.activity_area.contacts %}
                     {{ contact.to_html }}
                 {% endfor %}
             </td>
