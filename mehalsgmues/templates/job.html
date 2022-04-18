@@ -161,6 +161,15 @@
     </div>
     {% if can_subscribe %}
         {% covid_info %}
+        {% if request.user.member in job.participants %}
+            <div class="alert alert-warning">Du bist bereits für diesen Einsatz angemeldet.
+                Unten kannst du noch weitere Personen anmelden, die mit dir an den Einsatz kommen.<br>
+                Hast du dich zu oft eingetragen?<br>
+                <a href="mailto:{{ job.get_emails|join:',' }}?cc={% email_of 157 %}&subject=Einsatzabmeldung:%20{{ job.type.get_name|urlencode }}%20{{ job.start_time|date:'SHORT_DATE_FORMAT'|urlencode }}">
+                    Melde das gleich per E-Mail.
+                </a>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-3">
                 {% trans "Ich trage mich ein" %}:

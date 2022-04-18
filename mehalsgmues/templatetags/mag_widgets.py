@@ -39,3 +39,12 @@ def member_and_phone(member):
         return f"{member.get_name()} {member.get_phone()}"
     except Member.DoesNotExist:
         return "(Unbekannter Benutzer)"
+
+
+@register.simple_tag
+def email_of(member):
+    try:
+        member = Member.objects.get(id=member)
+        return member.email
+    except Member.DoesNotExist:
+        return ""
