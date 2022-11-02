@@ -189,5 +189,5 @@ def get_available_subscriptions():
         ~q_cancelled() & ~q_deactivated(),
         type__size__product__is_extra=False,
         subscription__in=SubscriptionDao.future_subscriptions()
-    ).aggregate(total=Sum('type__size__units'))['total']
+    ).aggregate(total=Sum('type__size__units'))['total'] or 0
     return goal - target
