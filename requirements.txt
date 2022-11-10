@@ -19,3 +19,4 @@ git+https://github.com/mehalsgmues/juntagrico-godparent.git
 requests==2.26.0
 CairoSVG==2.5.1  # needed for drawSvg - make sure requirements are installed before via docker file
 drawSvg==1.8.2
+django-admin-shell==1.1.0

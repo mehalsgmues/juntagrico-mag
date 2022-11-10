@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'ckeditor',
     'polymorphic',
+    'django_admin_shell',
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'
@@ -282,3 +283,5 @@ SUBSCRIPTION_PROGRESS_GOAL = 320
 GODPARENT_CONTACT = os.environ.get('GODPARENT_CONTACT')
 GODPARENT_SHOW_MENU = True
 GODPARENT_MEMBERSHIP_DURATION_LIMIT = timedelta(weeks=52)
+
+ADMIN_SHELL_ONLY_DEBUG_MODE = False
