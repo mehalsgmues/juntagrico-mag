@@ -1,4 +1,7 @@
 from django.apps import AppConfig
+from django.conf import settings
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
 
 class GodparentConfig(AppConfig):
@@ -20,3 +23,13 @@ class GodparentConfig(AppConfig):
         GodparentForm.override_labels = dict(
             areas='Arbeitsgruppen'
         )
+
+        def contact_admin_link(text):
+            return mark_safe(
+                escape(
+                    text
+                ).format('<a href="mailto:{0}">{0}</a>'.format(settings.IT_EMAIL))
+            )
+
+        from juntagrico.forms import MemberProfileForm
+        MemberProfileForm.contact_admin_link = staticmethod(contact_admin_link)

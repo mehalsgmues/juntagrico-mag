@@ -205,6 +205,7 @@ ORGANISATION_BANK_CONNECTION = {
     "ESR": ""
 }
 INFO_EMAIL = "info@mehalsgmues.ch"
+IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', INFO_EMAIL)
 SERVER_URL = "www.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
