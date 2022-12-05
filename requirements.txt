@@ -5,7 +5,7 @@ juntagrico~=1.5.0
 psycopg2-binary>=2.8.4
 juntagrico-pg~=1.5.0
 openpyxl==3.0.7
-django-oauth-toolkit~=1.4.1
+django-oauth-toolkit~=2.2.0
 django-cors-headers==3.11.0
 django-ckeditor==6.1.0
 django-qr-code==2.2.0
