@@ -166,7 +166,7 @@ td.details-control, tr.shown td.details-control {
 }
 
 /* notification bubble */
-.nav-link sup.notify {
+.nav-link sup.notify, .nav-link sup.bubble {
     background-color: #4c9434;
     display: inline-block;
     height: 1.2em;
