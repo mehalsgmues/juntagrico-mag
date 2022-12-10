@@ -1,0 +1,5 @@
+{% if sub.primary_member.email != request.user.member.email%}
+    <p>Melde dich als "<strong>{{ sub.primary_member }}</strong>" an, um die Änderungen durchzuführen.</p>
+{% else %}
+    <p><a href="{% url 'size-change' sub.id %}" class="btn btn-warning">Ernteanteile anpassen</a></p>
+{% endif %}

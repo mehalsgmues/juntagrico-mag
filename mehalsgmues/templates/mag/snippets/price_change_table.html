@@ -8,11 +8,13 @@
     </thead>
     <tbody>
         {% for part in sub.parts.all %}
-            <tr>
-                <th scope="row">{{ part }}</th>
-                <td>{% if part.active %}{{ part.type.old_price }}{% else %}Noch nicht aktiv{% endif %}</td>
-                <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price }}{% endif %}</td>
-            </tr>
+            {% if not part.inactive %}
+                <tr>
+                    <th scope="row">{{ part }}</th>
+                    <td>{% if part.active %}{{ part.type.old_price }}{% else %}Noch nicht aktiv{% endif %}</td>
+                    <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price }}{% endif %}</td>
+                </tr>
+            {% endif %}
         {% endfor %}
         <tr>
             <th scope="row">Total</th>

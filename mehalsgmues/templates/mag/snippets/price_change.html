@@ -15,11 +15,11 @@
                 {% include 'mag/snippets/price_change_table.html' with sub=future_sub %}
             {% endif %}
             {% if sub or future_sub %}
-                <p>Du kannst deine Ernteanteile bis Ende Januar anpassen.</p>
-                {% if sub %}
-                    <p><a href="{% url 'size-change' sub.id %}" class="btn btn-warning">Ernteanteile anpassen</a></p>
+                <p>Du kannst deine Ernteanteile bis am 31. Januar 2023 anpassen.</p>
+                {% if future_sub %}
+                    {% include 'mag/snippets/price_change_button.html' with sub=future_sub %}
                 {% else %}
-                    <p><a href="{% url 'size-change' future_sub.id %}" class="btn btn-warning">Ernteanteile anpassen</a></p>
+                    {% include 'mag/snippets/price_change_button.html' with sub=sub %}
                 {% endif %}
             {% else %}
                 <p>Du hast keine Ernteanteile oder wirst nächste Saison keine mehr haben.</p>
