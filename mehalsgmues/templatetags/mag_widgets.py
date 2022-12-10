@@ -2,6 +2,7 @@ from django import template
 from django.utils.safestring import mark_safe
 from juntagrico.entity.member import Member
 
+from mehalsgmues import settings
 from mehalsgmues.utils.utils import draw_share_progress, get_available_subscriptions
 from mehalsgmues.utils.news import get_recent_posts
 
@@ -48,3 +49,7 @@ def email_of(member):
         return member.email
     except Member.DoesNotExist:
         return ""
+
+@register.simple_tag
+def member_admin_email():
+    return settings.MEMBER_ADMIN_EMAIL

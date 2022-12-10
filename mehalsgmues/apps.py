@@ -33,3 +33,26 @@ class GodparentConfig(AppConfig):
 
         from juntagrico.forms import MemberProfileForm
         MemberProfileForm.contact_admin_link = staticmethod(contact_admin_link)
+
+        # patch price calculations
+        def part_old_price(self):
+            if self.price == 1200:
+                return 1000.00
+            elif self.price == 1000:
+                return 900.00
+            else:
+                return self.price
+
+        from juntagrico.entity.subtypes import SubscriptionType
+        SubscriptionType.old_price = property(part_old_price)
+
+        def sub_old_price(self):
+            return sum(part.type.old_price for part in self.active_parts.all())
+
+        from juntagrico.entity.subs import Subscription
+        Subscription.old_price = property(sub_old_price)
+
+        def sub_future_price(self):
+            return sum(part.type.price for part in self.future_parts.all())
+
+        Subscription.future_price = property(sub_future_price)

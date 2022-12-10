@@ -363,6 +363,9 @@ def share_progress_preview(request):
 def bep(request):
     return render(request, 'mag/bep.html')
 
+@login_required
+def price_change(request):
+    return render(request, 'mag/price_change.html')
 
 @login_required
 def ajax_notifications(request):
