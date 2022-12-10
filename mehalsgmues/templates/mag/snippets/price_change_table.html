@@ -11,15 +11,15 @@
             {% if not part.inactive %}
                 <tr>
                     <th scope="row">{{ part }}</th>
-                    <td>{% if part.active %}{{ part.type.old_price }}{% else %}Noch nicht aktiv{% endif %}</td>
-                    <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price }}{% endif %}</td>
+                    <td>{% if part.active %}{{ part.type.old_price|floatformat:0 }}{% else %}Noch nicht aktiv{% endif %}</td>
+                    <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price|floatformat:0  }}{% endif %}</td>
                 </tr>
             {% endif %}
         {% endfor %}
         <tr>
             <th scope="row">Total</th>
-            <td>{{ sub.old_price }}</td>
-            <td class="bg-primary">{{ sub.future_price }}</td>
+            <td>{{ sub.old_price|floatformat:0  }}</td>
+            <td class="bg-primary">{{ sub.future_price|floatformat:0  }}</td>
         </tr>
     </tbody>
 </table>
