@@ -225,7 +225,8 @@ MEMBERSHIP_END_MONTH = 3
 
 SUB_OVERVIEW_FORMAT = {
     'delimiter': ', ',
-    'format': '{amount:.0f}\xa0{type}'
+    'format': '{amount:.0f}\xa0{type}',
+    'part_format': '{type} - CHF {price}'
 }
 
 FROM_FILTER = {
