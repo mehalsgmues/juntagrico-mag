@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.apps import AppConfig
 from django.conf import settings
 from django.utils.html import escape
@@ -37,9 +39,9 @@ class GodparentConfig(AppConfig):
         # patch price calculations
         def part_old_price(self):
             if self.price == 1200:
-                return 1000.00
+                return Decimal('1000.00')
             elif self.price == 1000:
-                return 900.00
+                return Decimal('900.00')
             else:
                 return self.price
 
