@@ -1,0 +1,23 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Ernteanteile</th>
+            <th scope="col">Bisher [CHF]</th>
+            <th scope="col">Ab 1. April 2023 [CHF]</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for part in sub.parts.all %}
+            <tr>
+                <th scope="row">{{ part }}</th>
+                <td>{% if part.active %}{{ part.type.old_price }}{% else %}Noch nicht aktiv{% endif %}</td>
+                <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th scope="row">Total</th>
+            <td>{{ sub.old_price }}</td>
+            <td class="bg-primary">{{ sub.future_price }}</td>
+        </tr>
+    </tbody>
+</table>

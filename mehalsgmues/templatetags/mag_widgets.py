@@ -50,6 +50,7 @@ def email_of(member):
     except Member.DoesNotExist:
         return ""
 
+
 @register.simple_tag
 def member_admin_email():
     return settings.MEMBER_ADMIN_EMAIL
