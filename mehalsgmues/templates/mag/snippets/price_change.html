@@ -4,14 +4,14 @@
     <div class="col-md-12">
         <h3>Anpassung der Betriebsbeiträge</h3>
         <p class="lead">
-            Wie an der GV vom 29.11.2022 entschieden, werden die Betriebsbeiträge auf die nächste Saison 2023/2024 angepasst.
+            Wie an der <a href="https://forum.mehalsgmues.ch/t/a-o-gv-vom-29-11-2022/470/6">GV vom 29.11.2022 entschieden</a>, werden die Betriebsbeiträge auf die nächste Saison 2023/2024 angepasst.
         </p>
         {% with sub=request.user.member.subscription_current future_sub=request.user.member.subscription_future %}
             {% if sub %}
                 {% include 'mag/snippets/price_change_table.html' with sub=sub %}
             {% endif %}
             {% if future_sub %}
-                <p>Du startest nächste Saison neu oder wechselst du zu einer neuen Ernteanteilgruppe:</p>
+                <p>Du startest nächste Saison neu oder du wechselst zu einer neuen Ernteanteilgruppe:</p>
                 {% include 'mag/snippets/price_change_table.html' with sub=future_sub %}
             {% endif %}
             {% if sub or future_sub %}
