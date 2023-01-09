@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'juntagrico_godparent',
     'mehalsgmues',
     'activityprofile',
+    'mapjob',
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
