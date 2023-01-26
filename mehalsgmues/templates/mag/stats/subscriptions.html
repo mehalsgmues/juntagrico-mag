@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block body_extra_classes %}wide-layout{% endblock %}
+{% block page_title %}
+    <h2>EAT-Anzahl zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
+{% endblock %}
+{% block content %}
+    <form method="get">
+        {{ date_form }}
+        <input type="submit" value="Anwenden">
+    </form>
+
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{ labels|json_script:"labels" }}
+    <script>
+        const labels = JSON.parse(document.getElementById('labels').textContent);
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Aktiv',
+                    backgroundColor: 'rgb(42,148,57)',
+                    borderColor: 'rgb(42,148,57)',
+                    data: {{ active }},
+                    fill: true,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Kündigungen',
+                    backgroundColor: 'rgb(215,66,36)',
+                    borderColor: 'rgb(215,66,36)',
+                    data: {{ cancelled }},
+                    fill: true,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Bestellungen',
+                    backgroundColor: 'rgb(152,161,91)',
+                    borderColor: 'rgb(152,161,91)',
+                    data: {{ created }},
+                    fill: true,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    yAxisID: 'y'
+                }
+            ]
+        };
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                scales: {
+                    y: {
+                        min: 0,
+                        stacked: true,
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    }
+                }
+            }
+        };
+
+        let myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+{% endblock %}

@@ -43,6 +43,7 @@ urlpatterns = [
 
     # stats
     path('stats/indexes', stats.indexes, name='mag-indexes'),
+    path('stats/subscriptions', stats.subscription_stats, name='mag-stats-subscription'),
     path('stats', stats.stats, name='mag-stats'),
     path('stats/export', stats.stats_export, name='mag-stats-export'),
     path('stats/<slug:trunc>', stats.stats, name='mag-stats-by'),

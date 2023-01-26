@@ -1,7 +1,10 @@
 import urllib
+from datetime import timedelta
+from itertools import accumulate
 
+from dateutil.rrule import rrule, DAILY
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, Avg
+from django.db.models import Count, Avg, F
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.timezone import make_naive
@@ -142,3 +145,47 @@ def indexes(request):
             type__price__gt=0).aggregate(avg=Avg('type__price'))['avg'],
     )
     return render(request, 'mag/stats/indexes.html', renderdict)
+
+
+@staff_member_required
+def subscription_stats(request):
+    start_date = date_from_get(request, 'start_date', start_of_business_year())
+    end_date = date_from_get(request, 'end_date', end_of_business_year())
+
+    labels = [start_date.strftime('%d.%m')]
+    created = [SubscriptionPart.objects.filter(creation_date__lte=start_date).exclude(activation_date__lte=start_date).count()]
+    active = [SubscriptionPart.objects.filter(activation_date__lte=start_date).exclude(cancellation_date__lte=start_date).count()]
+    cancelled = [SubscriptionPart.objects.filter(cancellation_date__lte=start_date).exclude(deactivation_date__lte=start_date).count()]
+    creations = dict(SubscriptionPart.objects.filter(creation_date__range=(start_date, end_date)).exclude(creation_date__gt=F('activation_date')).
+                     values('creation_date').annotate(count=Count('id')).values_list('creation_date', 'count'))
+    activations = dict(SubscriptionPart.objects.filter(activation_date__range=(start_date, end_date)).exclude(creation_date__gt=F('activation_date')).
+                       values('activation_date').annotate(count=Count('id')).values_list('activation_date', 'count'))
+    # because activation date may be set before creation, these are count separately: they count as +1 on actives but don't reduce created
+    early_activations = dict(SubscriptionPart.objects.filter(creation_date__gt=F('activation_date'),activation_date__range=(start_date, end_date)).
+                       values('activation_date').annotate(count=Count('id')).values_list('activation_date', 'count'))
+    cancellations = dict(SubscriptionPart.objects.filter(cancellation_date__range=(start_date, end_date)).values('cancellation_date').annotate(count=Count('id')).values_list('cancellation_date', 'count'))
+    deactivations = dict(SubscriptionPart.objects.filter(deactivation_date__range=(start_date, end_date)).values('deactivation_date').annotate(count=Count('id')).values_list('deactivation_date', 'count'))
+    for day in rrule(DAILY, start_date + timedelta(1), until=end_date):
+        day = day.date()
+        labels.append(day.strftime('%d.%m'))
+        a = activations.get(day, 0)
+        c = cancellations.get(day, 0)
+        created.append(creations.get(day, 0) - a)
+        active.append(a + early_activations.get(day, 0) - c)
+        cancelled.append(c - deactivations.get(day, 0))
+
+    created = list(accumulate(created))
+    active = list(accumulate(active))
+    cancelled = list(accumulate(cancelled))
+    print(creations)
+
+    renderdict = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'labels': labels,
+        'active': active,
+        'cancelled': cancelled,
+        'created': created,
+        'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
+    }
+    return render(request, 'mag/stats/subscriptions.html', renderdict)
