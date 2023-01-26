@@ -3,19 +3,20 @@
 from django.urls import path, include
 from django.contrib import admin
 import juntagrico
-from mehalsgmues import views as mehalsgmues
+
+from mehalsgmues.views import api, home_widgets, list_mgmt, other, sso, stats
 from juntagrico_calendar import views as juntagrico_calendar
 from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
     # depot list management
-    path('my/pdf/manage', mehalsgmues.list_mgmt, name='lists-mgmt'),
-    path('my/pdf/manage/success', mehalsgmues.list_mgmt, {'success': True}, name='lists-mgmt-success'),
-    path('my/pdf/manage/generate', mehalsgmues.list_generate, name='lists-generate'),
-    path('my/pdf/manage/generate/future', mehalsgmues.list_generate, {'future': True}, name='lists-generate-future'),
+    path('my/pdf/manage', list_mgmt.list_mgmt, name='lists-mgmt'),
+    path('my/pdf/manage/success', list_mgmt.list_mgmt, {'success': True}, name='lists-mgmt-success'),
+    path('my/pdf/manage/generate', list_mgmt.list_generate, name='lists-generate'),
+    path('my/pdf/manage/generate/future', list_mgmt.list_generate, {'future': True}, name='lists-generate-future'),
 
     # /manage/share
-    path('manage/share/canceledlist', mehalsgmues.share_unpaidlist, name='share-mgmt-unpaid'),
+    path('manage/share/canceledlist', other.share_unpaidlist, name='share-mgmt-unpaid'),
 
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
@@ -34,24 +35,24 @@ urlpatterns = [
     path(r'', include('juntagrico_polling.urls')),
 
     # API
-    path(r'wochenmail/', mehalsgmues.api_emaillist, name='mag-mailing-list'),
-    path(r'contacts/', mehalsgmues.api_vcf_contacts, name='mag-contact-list'),
+    path(r'wochenmail/', api.api_emaillist, name='mag-mailing-list'),
+    path(r'contacts/', api.api_vcf_contacts, name='mag-contact-list'),
 
     # exports
-    path('my/export/mag/subscriptions', mehalsgmues.excel_export_subscriptions, name='export-subscriptions-mag'),
+    path('my/export/mag/subscriptions', other.excel_export_subscriptions, name='export-subscriptions-mag'),
 
     # stats
-    path('stats/indexes', mehalsgmues.indexes, name='mag-indexes'),
-    path('stats', mehalsgmues.stats, name='mag-stats'),
-    path('stats/export', mehalsgmues.stats_export, name='mag-stats-export'),
-    path('stats/<slug:trunc>', mehalsgmues.stats, name='mag-stats-by'),
+    path('stats/indexes', stats.indexes, name='mag-indexes'),
+    path('stats', stats.stats, name='mag-stats'),
+    path('stats/export', stats.stats_export, name='mag-stats-export'),
+    path('stats/<slug:trunc>', stats.stats, name='mag-stats-by'),
 
     # Discourse SSO
-    path('sso/', mehalsgmues.sso),
+    path('sso/', sso.sso),
 
     # OAuth
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('nextcloud/profile/', mehalsgmues.nextcloud_profile),
+    path('nextcloud/profile/', sso.nextcloud_profile),
 
     # short urls
     path('t/', include('shortener.urls', namespace='shortener')),
@@ -60,27 +61,27 @@ urlpatterns = [
     path('activityprofile/', include('activityprofile.urls')),
 
     # share progress
-    path('shares/preview/', mehalsgmues.share_progress_preview, name='shares-preview'),
+    path('shares/preview/', home_widgets.share_progress_preview, name='shares-preview'),
 
     # keep working
     path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
 
     # BEP
-    path('bep/', mehalsgmues.bep, name='bep'),
+    path('bep/', home_widgets.bep, name='bep'),
 
     # ajax
-    path('ajax/notifications', mehalsgmues.ajax_notifications, name='ajax-notifications'),
+    path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
 
     # depot changes
-    path('manage/depot/changes', mehalsgmues.depot_changes, name='depot-mgmt-changelist'),
-    path('manage/depot/change/confirm/<int:subscription_id>', mehalsgmues.depot_change_confirm,
+    path('manage/depot/changes', list_mgmt.depot_changes, name='depot-mgmt-changelist'),
+    path('manage/depot/change/confirm/<int:subscription_id>', list_mgmt.depot_change_confirm,
          name='depot-change-confirm'),
 
     # godparents
     path('', include('juntagrico_godparent.urls')),
 
     # price change
-    path('2023/', mehalsgmues.price_change, name='price_change'),
+    path('2023/', home_widgets.price_change, name='price_change'),
 
     # map job
     path('', include('mapjob.urls'))

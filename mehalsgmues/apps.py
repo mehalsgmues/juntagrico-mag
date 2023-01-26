@@ -6,7 +6,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 
-class GodparentConfig(AppConfig):
+class MehAlsGmuesConfig(AppConfig):
     name = 'mehalsgmues'
     verbose_name = "meh als gmües"
 
