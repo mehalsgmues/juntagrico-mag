@@ -161,8 +161,8 @@ def subscription_stats(request):
     activations = dict(SubscriptionPart.objects.filter(activation_date__range=(start_date, end_date)).exclude(creation_date__gt=F('activation_date')).
                        values('activation_date').annotate(count=Count('id')).values_list('activation_date', 'count'))
     # because activation date may be set before creation, these are count separately: they count as +1 on actives but don't reduce created
-    early_activations = dict(SubscriptionPart.objects.filter(creation_date__gt=F('activation_date'),activation_date__range=(start_date, end_date)).
-                       values('activation_date').annotate(count=Count('id')).values_list('activation_date', 'count'))
+    early_activations = dict(SubscriptionPart.objects.filter(creation_date__gt=F('activation_date'), activation_date__range=(start_date, end_date)).
+                             values('activation_date').annotate(count=Count('id')).values_list('activation_date', 'count'))
     cancellations = dict(SubscriptionPart.objects.filter(cancellation_date__range=(start_date, end_date)).values('cancellation_date').annotate(count=Count('id')).values_list('cancellation_date', 'count'))
     deactivations = dict(SubscriptionPart.objects.filter(deactivation_date__range=(start_date, end_date)).values('deactivation_date').annotate(count=Count('id')).values_list('deactivation_date', 'count'))
     for day in rrule(DAILY, start_date + timedelta(1), until=end_date):
