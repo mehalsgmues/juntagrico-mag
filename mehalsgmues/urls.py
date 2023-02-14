@@ -85,5 +85,5 @@ urlpatterns = [
     path('2023/', home_widgets.price_change, name='price_change'),
 
     # map job
-    path('', include('mapjob.urls'))
+    path('map/', include('mapjob.urls'))
 ]

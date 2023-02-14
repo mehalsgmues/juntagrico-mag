@@ -4,7 +4,7 @@ function onEachFeature(feature, layer) {
     }
 }
 
-define([], function () {
+$(document).ready(function () {
     $('#map-container').append('<div id="job-map">')
     let map = L.map('job-map', {fullscreenControl: true}).setView([48, 2], 11);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

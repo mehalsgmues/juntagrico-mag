@@ -13,6 +13,12 @@
     {% if not job|is_map_job %}
         {{ block.super }}
     {% else %}
+        <div class="alert alert-warning">
+            Weitere Flyergebiete findest du
+            <a href="{% url "mapjob:map" %}" style="text-decoration: underline">
+                auf der Karte
+            </a>.
+        </div>
         {% vocabulary "assignment_pl" as v_assignment_pl %}
         {% if job.free_slots > -1 %}
         <div class="row pb-4">

@@ -1,10 +1,21 @@
 {% extends "home.html" %}
+{% load mapjob %}
 {% load i18n %}
 {% load mag_widgets %}
 {% block content %}
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <h3 id="mapjobs">
+                {% trans "Flyereinsätze" %}
+            </h3>
+            <p>Es ist wieder Flyerzeit. Eine gute Gelegenheit das Böhnli-Konto aufzufüllen.</p>
+            <a href="{% url "mapjob:map" %}" class="btn btn-primary">Erfahre wie es funktioniert</a>
+        </div>
+    </div>
+    {% include "mapjob/snippets/snippet_job_map.html" %}
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">
@@ -56,4 +67,13 @@
             </div>
         </div>
     {% endfor %}
+{% endblock %}
+{% block styles %}
+    {{ block.super }}
+    {% include 'mapjob/snippets/snippet_job_map_styles.html' %}
+{% endblock %}
+{% block scripts %}
+    {% job_map_data request.user.member %}
+    {% include 'mapjob/snippets/snippet_job_map_scripts.html' %}
+    {{ block.super }}
 {% endblock %}
