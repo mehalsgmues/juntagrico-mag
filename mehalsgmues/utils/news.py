@@ -8,6 +8,6 @@ def get_recent_posts():
     if response:
         html = ''
         for post in response.json():
-            html += "<h2>" + post['title']['rendered'] + "</h2>"
+            html += '<h2 class="wp-title">' + post['title']['rendered'] + "</h2>"
             html += post['content']['rendered']
         return html

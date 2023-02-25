@@ -11,11 +11,10 @@
             <h3 id="mapjobs">
                 {% trans "Flyereinsätze" %}
             </h3>
-            <p>Es ist wieder Flyerzeit. Eine gute Gelegenheit das Böhnli-Konto aufzufüllen.</p>
-            <a href="{% url "mapjob:map" %}" class="btn btn-primary">Erfahre wie es funktioniert</a>
+            <p>Es sind derzeit alle Flyereinsätze besetzt. Danke für euren Einsatz.<br>Flyerst du? <a href="{% url "mapjob:map" %}" class="btn btn-primary">Hier findest du alle Infos</a></p>
         </div>
     </div>
-    {% include "mapjob/snippets/snippet_job_map.html" %}
+    {#% include "mapjob/snippets/snippet_job_map.html" %#}
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">

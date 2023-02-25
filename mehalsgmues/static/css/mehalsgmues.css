@@ -181,3 +181,15 @@ td.details-control, tr.shown td.details-control {
 .nav-link sup.notify-0 {
     display: none;
 }
+
+/* wordpress */
+.wp-title {
+    margin-top: 1.5em;
+    color: #4c9434;
+}
+
+.wp-block-image img {
+  height: auto;
+  max-width: 100%;
+  vertical-align: bottom;
+}
