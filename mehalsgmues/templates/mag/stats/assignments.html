@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block body_extra_classes %}wide-layout{% endblock %}
+{% block page_title %}
+    <h2>Geleistete Einsätze zwischen {{ start_date|date:"d.m.Y" }} und {{ end_date|date:"d.m.Y" }}</h2>
+    <p>
+        Gezählt werden alle Ernteanteilgruppen, die in der gewählten Periode mindestens 1 Böhnli leisten mussten.<br>
+        Jene, die vor Ende dieser Periode gekündigt haben, werden separat gezählt und mit roten Balken angezeigt.
+    </p>
+{% endblock %}
+{% block content %}
+    <form method="get">
+        {{ date_form }}
+        <input type="submit" value="Anwenden">
+    </form>
+
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const data = {
+            labels: ['<20%', '20% bis <40%', '40% bis <60%', '60% bis <80%', '80% bis <100%', '100%+'],
+            datasets: [
+                {
+                    label: 'Aktiv',
+                    backgroundColor: 'rgb(42,148,57)',
+                    borderColor: 'rgb(42,148,57)',
+                    data: {{ total }},
+                    fill: true,
+                },
+                {
+                    label: 'Gekündigt',
+                    backgroundColor: 'rgb(215,66,36)',
+                    borderColor: 'rgb(215,66,36)',
+                    data: {{ total_cancelled }},
+                    fill: true,
+                },
+            ]
+        };
+        const config = {
+            type: 'bar',
+            data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stacked: true
+                    },
+                    x: {
+                        stacked: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            footer: function(context) {
+                                let c = context[0]
+                                if (c.datasetIndex == 1) {
+                                    return ((c.raw/({{ total }}[c.dataIndex] + c.raw))*100).toFixed(2) + '% gekündigt'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        let myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+{% endblock %}

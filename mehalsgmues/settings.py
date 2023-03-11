@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'polymorphic',
     'django_admin_shell',
+    'import_export'
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'

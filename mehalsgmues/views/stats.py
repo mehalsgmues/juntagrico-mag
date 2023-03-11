@@ -1,6 +1,8 @@
 import urllib
+from collections import Counter
 from datetime import timedelta
 from itertools import accumulate
+from math import floor
 
 from dateutil.rrule import rrule, DAILY
 from django.contrib.admin.views.decorators import staff_member_required
@@ -13,7 +15,7 @@ from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
-from juntagrico.entity.subs import SubscriptionPart
+from juntagrico.entity.subs import SubscriptionPart, Subscription
 from juntagrico.util.models import q_isactive
 from juntagrico.util.temporal import start_of_business_year, end_of_business_year
 from openpyxl import Workbook
@@ -189,3 +191,23 @@ def subscription_stats(request):
         'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
     }
     return render(request, 'mag/stats/subscriptions.html', renderdict)
+
+
+@staff_member_required
+def assignments(request):
+    start_date = date_from_get(request, 'start_date', start_of_business_year())
+    end_date = date_from_get(request, 'end_date', end_of_business_year())
+
+    progresses = Subscription.objects.exclude(deactivation_date__lt=start_date).annotate_assignments_progress(start_date, end_date)\
+        .exclude(required_assignments=0).values('assignments_progress', 'cancellation_date')
+
+    end = end_date + timedelta(1)
+    t = Counter((floor(min(p['assignments_progress'], 100) / 20) + 6 * ((p['cancellation_date'] or end) < end) for p in progresses))
+
+    return render(request, 'mag/stats/assignments.html', {
+        'start_date': start_date,
+        'end_date': end_date,
+        'total': [t[k] for k in range(0,6)],
+        'total_cancelled': [t[k] for k in range(6,12)],
+        'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
+    })
