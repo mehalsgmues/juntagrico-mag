@@ -1,5 +1,7 @@
 import calendar
 import datetime
+from collections import Counter
+from math import floor
 
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count, Sum, Q, functions
@@ -9,6 +11,7 @@ from juntagrico.entity.jobs import Assignment, Job
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.member import Member
 from django.template.defaultfilters import date as date_filter
+from juntagrico.entity.subs import Subscription
 
 
 def jobs_in_activity_area(activity_area):
@@ -127,3 +130,15 @@ class TemporalData:
             result[last_date] = 0
             last_date += self.increment_by_trunc()
         return result
+
+
+def get_assignment_progress(start_date, end_date, normalize=False):
+    progresses = Subscription.objects.exclude(deactivation_date__lt=start_date).annotate_assignments_progress(start_date, end_date) \
+        .exclude(required_assignments=0).values('assignments_progress', 'cancellation_date')
+
+    end = end_date + datetime.timedelta(1)
+
+    t = Counter((floor(min(p['assignments_progress'], 100) / 20) + 6 * ((p['cancellation_date'] or end) < end) for p in progresses))
+    norm = len(progresses) / 100 if normalize else 1
+    data = [t[k]/norm for k in range(0, 12)]
+    return {'active': data[:6], 'cancelled': data[6:], 'year': start_date.year}

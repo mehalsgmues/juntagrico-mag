@@ -8,3 +8,8 @@ class DateRangeForm(forms.Form):
 
     start_date = forms.DateField(label='Startdatum', widget=SelectDateWidget(years=YEARS))
     end_date = forms.DateField(label='Enddatum', widget=SelectDateWidget(years=YEARS))
+
+
+class CompareForm(forms.Form):
+    compare = forms.IntegerField(label='Vergleich mit Vorjahren', initial=0)
+    normalize = forms.BooleanField(label='Normalisieren', required=False)

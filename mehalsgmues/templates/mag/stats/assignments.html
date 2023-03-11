@@ -12,6 +12,7 @@
 {% block content %}
     <form method="get">
         {{ date_form }}
+        {{ compare_form }}
         <input type="submit" value="Anwenden">
     </form>
 
@@ -25,20 +26,24 @@
         const data = {
             labels: ['<20%', '20% bis <40%', '40% bis <60%', '60% bis <80%', '80% bis <100%', '100%+'],
             datasets: [
-                {
-                    label: 'Aktiv',
-                    backgroundColor: 'rgb(42,148,57)',
-                    borderColor: 'rgb(42,148,57)',
-                    data: {{ total }},
-                    fill: true,
-                },
-                {
-                    label: 'Gekündigt',
-                    backgroundColor: 'rgb(215,66,36)',
-                    borderColor: 'rgb(215,66,36)',
-                    data: {{ total_cancelled }},
-                    fill: true,
-                },
+                {% for year in data %}
+                    {
+                        label: 'Aktiv {{ year.year }}',
+                        backgroundColor: 'rgba(42,148,57,' + (1-{{ forloop.revcounter0 }}*0.2) + ')',
+                        borderColor: 'rgba(42,148,57,' + (1-{{ forloop.revcounter0 }}*0.2) + ')',
+                        data: {{ year.active }},
+                        fill: true,
+                        stack: 'stack' + {{ forloop.counter0 }}
+                    },
+                    {
+                        label: 'Gekündigt {{ year.year }}',
+                        backgroundColor: 'rgba(215,66,36,' + (1-{{ forloop.revcounter0 }}*0.2) + ')',
+                        borderColor: 'rgba(215,66,36,' + (1-{{ forloop.revcounter0 }}*0.2) + ')',
+                        data: {{ year.cancelled }},
+                        fill: true,
+                        stack: 'stack' + {{ forloop.counter0 }}
+                    },
+                {% endfor %}
             ]
         };
         const config = {
@@ -59,8 +64,8 @@
                         callbacks: {
                             footer: function(context) {
                                 let c = context[0]
-                                if (c.datasetIndex == 1) {
-                                    return ((c.raw/({{ total }}[c.dataIndex] + c.raw))*100).toFixed(2) + '% gekündigt'
+                                if (c.datasetIndex % 2 == 1) {
+                                    return ((c.raw/({{ data|safe }}[(c.datasetIndex-1)/2]['active'][c.dataIndex] + c.raw))*100).toFixed(2) + '% gekündigt'
                                 }
                             }
                         }
