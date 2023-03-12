@@ -200,7 +200,7 @@ def assignments(request):
     normalize = request.GET.get('normalize')
 
     data = []
-    for i in range(0, compare_years+1):
+    for i in range(0, compare_years + 1):
         data.insert(0, get_assignment_progress(start_date - relativedelta(years=i), end_date - relativedelta(years=i), normalize))
 
     return render(request, 'mag/stats/assignments.html', {

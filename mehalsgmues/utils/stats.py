@@ -140,5 +140,5 @@ def get_assignment_progress(start_date, end_date, normalize=False):
 
     t = Counter((floor(min(p['assignments_progress'], 100) / 20) + 6 * ((p['cancellation_date'] or end) < end) for p in progresses))
     norm = len(progresses) / 100 if normalize else 1
-    data = [t[k]/norm for k in range(0, 12)]
+    data = [t[k] / norm for k in range(0, 12)]
     return {'active': data[:6], 'cancelled': data[6:], 'year': start_date.year}
