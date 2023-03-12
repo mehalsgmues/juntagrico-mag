@@ -21,6 +21,9 @@ urlpatterns = [
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
 
+    # member list override
+    path('my/filters/active', other.filters_active, name='filters-active'),
+
     path(r'admin/shell/', include('django_admin_shell.urls')),
     path(r'admin/', admin.site.urls),
     path(r'', include('juntagrico.urls')),

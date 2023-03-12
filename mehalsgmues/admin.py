@@ -1,10 +1,30 @@
+from datetime import date
+
 from django.contrib import admin
+from django.db.models import Q
 
 from django.urls import reverse, NoReverseMatch
 
 from django.contrib.admin.models import LogEntry, DELETION
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+
+
+class IsMemberFilter(admin.SimpleListFilter):
+    title = 'Mitgliedschaft'
+    parameter_name = 'is_member'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Ja'),
+            ('no', 'Nein'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.exclude(share=None).filter(Q(share__payback_date__gte=date.today()) | Q(share__payback_date__isnull=True)).distinct()
+        if self.value() == 'no':
+            return queryset.filter(Q(share__payback_date__lt=date.today()) | Q(share=None)).distinct()
 
 
 class LogEntryAdmin(admin.ModelAdmin):

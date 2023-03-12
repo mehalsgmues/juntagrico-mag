@@ -1,7 +1,10 @@
+from datetime import date
 from decimal import Decimal
 
 from django.apps import AppConfig
+from django.contrib import admin
 from django.conf import settings
+from django.db.models import Exists, OuterRef
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
@@ -58,3 +61,20 @@ class MehAlsGmuesConfig(AppConfig):
             return sum(part.type.price for part in self.future_parts.all())
 
         Subscription.future_price = property(sub_future_price)
+
+        # tune people admin
+        from juntagrico.entity.share import Share
+
+        @admin.display(
+            boolean=True,
+            ordering=Exists(Share.objects.filter(member=OuterRef('pk')).exclude(payback_date__lt=date.today())),
+            description='Mitglied'
+        )
+        def is_member(self, obj):
+            return obj.share_set.exclude(payback_date__lt=date.today()).exists()
+
+        from juntagrico.admin import MemberAdminWithShares
+        from mehalsgmues.admin import IsMemberFilter
+        MemberAdminWithShares.is_member = is_member
+        MemberAdminWithShares.list_display[-1] = 'is_member'
+        MemberAdminWithShares.list_filter.insert(0, IsMemberFilter)

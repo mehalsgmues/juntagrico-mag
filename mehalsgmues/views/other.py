@@ -1,13 +1,19 @@
+from datetime import date
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
+from juntagrico.entity.member import Member
 from juntagrico.entity.share import Share
 from juntagrico.util.views_admin import subscription_management_list
+from juntagrico.view_decorators import any_permission_required
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
@@ -62,3 +68,12 @@ def share_unpaidlist(request):
     render_dict = {'change_date_disabled': True}
     return subscription_management_list(Share.objects.filter(paid_date__isnull=True).order_by('member'), render_dict,
                                         'mag/management_lists/share_unpaidlist.html', request)
+
+
+@any_permission_required('juntagrico.can_filter_members', 'juntagrico.change_member')
+def filters_active(request):
+    renderdict = {
+        'members': Member.objects.exclude(share=None).filter(Q(share__payback_date__gte=date.today()) | Q(share__payback_date__isnull=True)).distinct(),
+        'title': 'Alle Mitglieder'
+    }
+    return render(request, 'members.html', renderdict)

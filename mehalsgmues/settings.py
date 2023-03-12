@@ -185,7 +185,9 @@ LOGIN_REDIRECT_URL = "/my/home"
 
 VOCABULARY = {
     'subscription': 'Ernteanteil',
-    'subscription_pl': 'Ernteanteile'
+    'subscription_pl': 'Ernteanteile',
+    'member': 'Person',
+    'member_pl': 'Personen'
 }
 ORGANISATION_NAME = "meh als gmües"
 ORGANISATION_NAME_CONFIG = {"type": "Genossenschaft", "gender": "f"}
