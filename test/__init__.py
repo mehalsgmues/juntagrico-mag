@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.core import mail
 
 from juntagrico.entity.depot import Depot
+from juntagrico.entity.jobs import JobType, RecuringJob, OneTimeJob, Assignment, ActivityArea
 from juntagrico.entity.location import Location
 from juntagrico.entity.member import Member
 from juntagrico.entity.subs import Subscription, SubscriptionPart
@@ -18,6 +19,8 @@ class MagTestCase(TestCase):
         self.set_up_depots()
         self.set_up_sub_types()
         self.set_up_sub()
+        self.set_up_area()
+        self.set_up_job()
         mail.outbox.clear()
 
     @staticmethod
@@ -138,6 +141,81 @@ class MagTestCase(TestCase):
         self.sub.primary_member = self.member
         self.sub.save()
         SubscriptionPart.objects.create(subscription=self.sub, type=self.sub_type)
+
+    def set_up_area(self):
+        """
+        area
+        """
+        area_data = {'name': 'name',
+                     'coordinator': self.member,
+                     'auto_add_new_members': True}
+        area_data2 = {'name': 'name2',
+                      'coordinator': self.member,
+                      'hidden': True}
+        self.area = ActivityArea.objects.create(**area_data)
+        self.area2 = ActivityArea.objects.create(**area_data2)
+        self.member.areas.add(self.area)
+        self.member.save()
+
+    def set_up_job(self):
+        """
+        job_type
+        """
+        job_type_data = {'name': 'nameot',
+                         'activityarea': self.area,
+                         'default_duration': 2,
+                         'location': self.location_depot}
+        self.job_type = JobType.objects.create(**job_type_data)
+        job_type_data2 = {'name': 'nameot2',
+                          'activityarea': self.area2,
+                          'default_duration': 4,
+                          'location': self.location_depot}
+        self.job_type2 = JobType.objects.create(**job_type_data2)
+        """
+        jobs
+        """
+        time = timezone.now() + timezone.timedelta(hours=2)
+        job_data = {'slots': 1,
+                    'time': time,
+                    'type': self.job_type}
+        job_data2 = {'slots': 6,
+                     'time': time,
+                     'type': self.job_type}
+        self.job1 = RecuringJob.objects.create(**job_data)
+        self.job2 = RecuringJob.objects.create(**job_data)
+        self.job3 = RecuringJob.objects.create(**job_data)
+        self.job4 = RecuringJob.objects.create(**job_data2)
+        self.job5 = RecuringJob.objects.create(**job_data)
+        self.past_job = RecuringJob.objects.create(
+            slots=1,
+            time=timezone.now() - timezone.timedelta(hours=2),
+            type=self.job_type
+        )
+        self.infinite_job = RecuringJob.objects.create(**{
+            'infinite_slots': True,
+            'time': time,
+            'type': self.job_type
+        })
+        """
+        one time jobs
+        """
+        time = timezone.now() + timezone.timedelta(hours=2)
+        one_time_job_data = {'name': 'name',
+                             'activityarea': self.area,
+                             'default_duration': 2,
+                             'slots': 1,
+                             'time': time,
+                             'location': self.location_depot}
+        self.one_time_job1 = OneTimeJob.objects.create(**one_time_job_data)
+        one_time_job_data.update(name='name2', time=timezone.now() - timezone.timedelta(hours=2))
+        self.past_one_time_job = OneTimeJob.objects.create(**one_time_job_data)
+        """
+        assignment
+        """
+        assignment_data = {'job': self.job2,
+                           'member': self.member,
+                           'amount': 1}
+        self.assignment = Assignment.objects.create(**assignment_data)
 
     def assertGet(self, url, code=200, member=None):
         login_member = member or self.member

@@ -4,7 +4,9 @@ from .models import MapJob
 
 
 class MapJobAdmin(JobAdmin):
-    pass
+    def get_urls(self):
+        # don't mess with the urls of the JobAdmin
+        return super(JobAdmin, self).get_urls()
 
 
 admin.site.register(MapJob, MapJobAdmin)

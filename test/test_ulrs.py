@@ -50,3 +50,6 @@ class MagTests(MagTestCase):
     def test_subscription_export(self):
         self.assertGet(reverse('export-subscriptions-mag'), 302)
         self.assertGet(reverse('export-subscriptions-mag'), member=self.admin)
+
+    def test_job_admin(self):
+        self.assertGet(reverse('admin:action-mass-copy-job', args=[self.job1.id]), member=self.admin)
