@@ -14,6 +14,7 @@ class MehAlsGmuesConfig(AppConfig):
     verbose_name = "meh als gmües"
 
     def ready(self):
+        # godparent tuning
         from juntagrico_godparent.forms import GodparentForm
         GodparentForm.append_help_texts = dict(
             max_godchildren='<br>Bei Möglichkeit versucht die Patenschaftskoordination dir Neumitglieder zuzuteilen, '
@@ -29,6 +30,7 @@ class MehAlsGmuesConfig(AppConfig):
             areas='Arbeitsgruppen'
         )
 
+        # contact IT on signup
         def contact_admin_link(text):
             return mark_safe(
                 escape(

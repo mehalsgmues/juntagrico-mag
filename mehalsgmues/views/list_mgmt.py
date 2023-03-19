@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.management import call_command
 from django.shortcuts import render, redirect, get_object_or_404
@@ -19,10 +21,13 @@ def list_mgmt(request, success=False):
 
 @staff_member_required
 def list_generate(request, future=False):
+    month = int(request.GET.get('month', 0))
+
     def delivery_dates(depot):
-        return list(get_delivery_dates_of_month(depot.weekday - 1, int(request.GET.get('month', 0))))
+        return list(get_delivery_dates_of_month(depot.weekday - 1, month))
+
     Depot.delivery_dates = delivery_dates
-    call_command('generate_depot_list', force=True, future=future)
+    call_command('generate_depot_list', force=True, future=month > 0 or int(datetime.date.today().day > 15))
     return redirect(reverse('lists-mgmt-success'))
 
 

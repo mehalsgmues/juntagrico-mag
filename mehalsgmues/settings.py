@@ -296,3 +296,5 @@ ADMIN_SHELL_ONLY_DEBUG_MODE = False
 OAUTH2_PROVIDER = {
     "PKCE_REQUIRED": False
 }
+
+DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_generation']
