@@ -38,6 +38,9 @@ def get_delivery_dates_of_month(delivery_weekday, relative_month):
     # get dates of next month if this month is half over.
     next_delivery = today + relativedelta(months=relative_month + int(today.day > 15), day=1, weekday=delivery_weekday)
     month = next_delivery.month
+    # a special year
+    if next_delivery.date() == datetime(2023, 4, 7).date():
+        next_delivery = next_delivery - timedelta(days=7)
     yield next_delivery
     while True:
         next_delivery = next_delivery + timedelta(days=7)
