@@ -19,6 +19,6 @@ git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
 git+https://github.com/mehalsgmues/juntagrico-godparent.git
 requests==2.26.0
-CairoSVG==2.5.1  # needed for drawSvg - make sure requirements are installed before via docker file
+CairoSVG==2.7.0  # needed for drawSvg - make sure requirements are installed before via docker file
 drawSvg==1.8.2
 django-admin-shell==1.1.0
