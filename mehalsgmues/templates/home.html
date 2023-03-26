@@ -6,15 +6,6 @@
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <h3 id="mapjobs">
-                {% trans "Flyereinsätze" %}
-            </h3>
-            <p>Es sind derzeit alle Flyereinsätze besetzt. Danke für euren Einsatz.<br>Flyerst du? <a href="{% url "mapjob:map" %}" class="btn btn-primary">Hier findest du alle Infos</a></p>
-        </div>
-    </div>
-    {#% include "mapjob/snippets/snippet_job_map.html" %#}
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">
