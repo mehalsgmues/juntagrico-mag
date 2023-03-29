@@ -19,7 +19,7 @@ def mag_depot_list_generation(*args, **options):
     print(date)
 
     depot_dict = {
-        'subscriptions': Subscription.objects.filter(activation_date__lte=date).exclude(deactivation_date__lt=date),
+        'subscriptions': Subscription.objects.filter(activation_date__lte=date).exclude(deactivation_date__lt=date).order_by('primary_member__first_name', 'primary_member__last_name'),
         'products': SubscriptionProductDao.get_all_for_depot_list(),
         'depots': DepotDao.all_depots_for_list(),
 
