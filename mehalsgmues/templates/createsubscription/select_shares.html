@@ -29,11 +29,16 @@
                     1 {{ v_share }} ({{ c_currency }} {{ c_share_price }}) erwerben.
                     {% endblocktrans %}
                 </div>
-                <div class="alert alert-primary">
+                <div>
                     Für eine stabile Entwicklung des Betriebs sollten derzeit im Schnitt 5 AS pro EAT gezeichnet werden,
                     natürlich sind auch weniger oder mehr ok. Auch kannst du später Zusätzliche erwerben.<br>
                     Das in Anteilscheinen eingelegte Geld erhältst du im Falle einer Kündigung per Ende der Saison
                     zurück – <b>es ist also lediglich angelegt und nicht ausgegeben</b>.
+                </div>
+                <div class="alert alert-primary">
+                    <strong>Wichtig</strong>: Wenn du einen <strong>Schnupper-EAT</strong> ausgewählt hast, werden die Anteilscheine noch nicht ausgestellt.
+                    Aus technischen Gründen musst du hier trotzdem 1 Anteilschein auswählen.<br>
+                    <strong>Bitte bezahle diesen erst, wenn du nach dem Schnupper-EAT definitiv weitermachst.</strong>
                 </div>
                 {% if shares.total_required > 0 %}
                     {% blocktrans trimmed with shares.total_required as st %}

@@ -15,7 +15,9 @@
 {% blocktrans with sc=shares|length%}Du hast bei {{ v_d_enriched_organisation }} {{sc}} {{ v_share_pl }} bestellt{% endblocktrans %}:
 {% for share in shares %}{% blocktrans with sid=share.id %}{{ v_share }} mit Systemnummer {{ sid }}{% endblocktrans %}
 {% endfor %}
-{% blocktrans with sc=shares|length %}Bitte überweise {{sc}} Mal den Betrag von {{ c_currency }} {{ c_share_price }} auf das folgende Konto{% endblocktrans %}:
+
+Wichtig: Wenn du einen Schnupper-EAT bestellt hast, wird der Anteilschein erst gültigt, wenn du definitiv weitermachst. Bitte bezahle ihn NOCH NICHT jetzt.
+{% blocktrans with sc=shares|length %}Andernfalls überweise Bitte {{sc}} Mal den Betrag von {{ c_currency }} {{ c_share_price }} auf das folgende Konto{% endblocktrans %}:
     {{ c_addr.name }}
     {% if c_addr.extra %}{{ c_addr.extra }}{% endif %}
     {{ c_addr.street }} {{ c_addr.number }}
