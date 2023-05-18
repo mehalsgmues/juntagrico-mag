@@ -39,7 +39,7 @@
 {% endif %}
 {% if request.user.is_staff %}
 <li class="nav-item">
-    <a class="nav-link" href="{% url 'depot-mgmt-changelist' %}">Depotänderungen</a>
+    <a class="nav-link" href="{% url 'manage-sub-depot-changes' %}">Depotänderungen</a>
 </li>
 {% endif %}
 {% if perms.juntagrico.view_shares %}

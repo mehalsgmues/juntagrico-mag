@@ -78,7 +78,7 @@ urlpatterns = [
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
 
     # depot changes
-    path('manage/depot/changes', list_mgmt.depot_changes, name='depot-mgmt-changelist'),
+    path('manage/depot/changes', list_mgmt.depot_changes, name='manage-sub-depot-changes'),
     path('manage/depot/change/confirm/<int:subscription_id>', list_mgmt.depot_change_confirm,
          name='depot-change-confirm'),
 

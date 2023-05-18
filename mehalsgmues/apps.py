@@ -14,6 +14,8 @@ class MehAlsGmuesConfig(AppConfig):
     verbose_name = "meh als gmües"
 
     def ready(self):
+        from . import signals
+
         # godparent tuning
         from juntagrico_godparent.forms import GodparentForm
         GodparentForm.append_help_texts = dict(
