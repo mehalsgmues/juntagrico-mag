@@ -14,7 +14,7 @@ class MehAlsGmuesConfig(AppConfig):
     verbose_name = "meh als gmües"
 
     def ready(self):
-        from . import signals
+        from . import signals  # noqa: F401
 
         # godparent tuning
         from juntagrico_godparent.forms import GodparentForm
