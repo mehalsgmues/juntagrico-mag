@@ -1,0 +1,19 @@
+{% extends "mails/email.txt" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block content %}
+Danke, dass du dich für die Arbeitsgruppe {{ area.name }} interessierst.
+
+Bitte lies die Beschreibung der Arbeitsgruppe unten gut durch, damit du weisst, wann und wie du in der Gruppe aktiv werden kannst.
+Falls du Fragen hast, die nicht beantwortet werden, wende dich direkt an {{ area.coordinator }}: {{ area.get_emails|join:' oder ' }}
+
+Beschreibung der Arbeitsgruppe:
+{{ area.description|safe|striptags }}
+
+{% if area.profile.group_email or area.profile.chat or area.profile.other_communication %}Kontaktmöglichkeiten:{% endif %}
+{% if area.profile.group_email %}E-Mail: {{ area.profile.group_email }}{% endif %}
+{% if area.profile.chat %}Chat: {{ area.profile.chat }}{% endif %}
+{% if area.profile.other_communication %}{{ area.profile.other_communication }}{% endif %}
+
+Bis bald und liebe Grüsse aus der Arbeitsgruppe
+{% endblock %}
