@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Kampagnen</h2>
+    <ul>
+        {% for mapjobtype in object_list %}
+            <li><a href="{% url 'mapjob:map_by_type' mapjobtype.id %}">{{ mapjobtype.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
