@@ -1,23 +1,13 @@
-Juntagrico Heroku Template for cookiecutter
+Juntagrico Template for cookiecutter
 ===========
 
-This template sets up a project to be used with heroku as hosting.
+This template sets up a project.
 
 # Setting up locally to test setup
 
 On any environment install Python 3, and add it to your path
 
 ## UNIX
-
-### Set your environment variables
-
-This should do it for your local setup:
-
-``` bash
-    export JUNTAGRICO_AWS_KEY_ID=
-    export JUNTAGRICO_AWS_KEY=
-    export JUNTAGRICO_AWS_BUCKET_NAME=
-```
 
 ### Installing requirements
 
@@ -52,16 +42,6 @@ More complex
 
 ## Windows
 
-### Set your environment variables
-
-This should do it for your local setup:
-
-``` bash
-    set JUNTAGRICO_AWS_KEY_ID=
-    set JUNTAGRICO_AWS_KEY=
-    set JUNTAGRICO_AWS_BUCKET_NAME=
-```
-
 ### Installing requirements
 
     pip install virtualenv
@@ -91,12 +71,7 @@ More complex
 ### Run the server
 
     python -m manage runserver
-    
-#Heroku
 
-you have to login to a heroku bash and setup the db and create the admin user as desbribed in the UNIX section
-    
-    
 
 
 
