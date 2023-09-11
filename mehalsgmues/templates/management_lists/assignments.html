@@ -70,24 +70,24 @@
                         </a>
                     </td>
                     <td>
-                        {{ subscription.assignments|floatformat }}
+                        {{ subscription.assignment_count|floatformat:-2 }}
                     </td>
                     <td>
-                        {{ subscription.subscription.required_assignments }}
+                        {{ subscription.required_assignments|floatformat:0 }}
                     </td>
                     <td>
                         {{ subscription.assignments_progress|floatformat:0 }}%
                     </td>
                     {% if b_show_core and b_requires_core %}
-                        <th>
-                            {{ subscription.core_assignments|floatformat:0 }}
-                        </th>
-                        <th>
-                            {{ subscription.subscription.required_core_assignments }}
-                        </th>
-                        <th>
+                        <td>
+                            {{ subscription.core_assignment_count|floatformat:-2 }}
+                        </td>
+                        <td>
+                            {{ subscription.required_core_assignments|floatformat:0 }}
+                        </td>
+                        <td>
                             {{ subscription.core_assignments_progress|floatformat:0 }}%
-                        </th>
+                        </td>
                     {% endif %}
                     <td class="email d-none">
                             {% for recipient in subscription.subscription.recipients %}
