@@ -151,6 +151,10 @@ def draw_share_progress():
 
 
 def forum_notifications(user):
+    api_key = getattr(settings, "DISCOURSE_API_KEY", None)
+    if not api_key:
+        return 0
+
     cache = forum_notifications.cache.get(user, None)
     if cache and cache[0] + timedelta(minutes=5) > timezone.now():
         return cache[1]
@@ -158,7 +162,7 @@ def forum_notifications(user):
     base = "https://forum.mehalsgmues.ch/"
     method = base + "u/by-external/" + str(user.id) + ".json"
     headers = {
-        'Api-Key': getattr(settings, "DISCOURSE_API_KEY", ""),
+        'Api-Key': api_key,
         'Api-Username': 'system'
     }
     response = requests.get(method, headers=headers)
