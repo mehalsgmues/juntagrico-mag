@@ -17,11 +17,6 @@ class MehAlsGmuesConfig(AppConfig):
         # connect signals
         from . import signals  # noqa: F401
 
-        # register juntagrico menus
-        from juntagrico.util import addons
-        addons.config.register_user_menu('mag/menu/user_menu.html')
-        addons.config.register_admin_menu('mag/menu/admin_menu.html')
-
         # godparent tuning
         from juntagrico_godparent.forms import GodparentForm
         GodparentForm.append_help_texts = dict(

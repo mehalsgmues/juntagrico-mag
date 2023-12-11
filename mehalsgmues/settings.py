@@ -29,10 +29,10 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 # Application definition
 
 INSTALLED_APPS = [
-    'juntagrico_assignment_request',  # keep on top until new menu override is implemented
+    'mehalsgmues',
+    'juntagrico_assignment_request',
     'juntagrico_godparent',
     'mapjob',
-    'mehalsgmues',
     'activityprofile',
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',

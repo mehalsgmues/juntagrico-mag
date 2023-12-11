@@ -1,0 +1,5 @@
+{% extends 'menu/user_menu.html' %}
+{% block extend_user_menu %}
+    {{ block.super }}
+    {% include 'mag/menu/user_menu.html' %}
+{% endblock %}
