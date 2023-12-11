@@ -34,7 +34,10 @@ class ActivityProfileAdminForm(forms.ModelForm):
 
 class ActivityProfileAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
     form = ActivityProfileAdminForm
-    search_fields = ('name',)
+    search_fields = ('activity_area__name', 'activity_area__description', 'clothing', 'days', 'email', 'introduction',
+                     'jobs_more', 'group_extras', 'learn', 'other_communication', 'wanted_for')
+    list_display = ('__str__', 'group_emails', 'chat', 'minimum_size', 'target_size')
+    list_filter = ('flexible', 'alone', 'in_groups', 'wanted')
     readonly_fields = ('activity_area',)
 
     def get_readonly_fields(self, request, obj=None):
