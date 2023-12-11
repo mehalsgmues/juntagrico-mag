@@ -23,7 +23,10 @@ def date_from_get(request, name, default, date_format="%Y-%m-%d"):
     if year is not None:
         month = request.GET.get(name + '_month', 1)
         day = request.GET.get(name + '_day', 1)
-        return datetime(int(year), int(month), int(day)).date()
+        try:
+            return datetime(int(year), int(month), int(day)).date()
+        except ValueError:
+            return default
     return default
 
 
