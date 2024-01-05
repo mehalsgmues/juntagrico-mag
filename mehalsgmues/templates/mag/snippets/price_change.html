@@ -2,9 +2,9 @@
 {% load i18n %}
 <div class="row mb-3">
     <div class="col-md-12">
-        <h3>Anpassung der Betriebsbeiträge</h3>
+        <h3>Automatische Verlängerung der Ernteanteile</h3>
         <p class="lead">
-            Wie an der <a href="https://forum.mehalsgmues.ch/t/a-o-gv-vom-29-11-2022/470/6">GV vom 29.11.2022 entschieden</a>, werden die Betriebsbeiträge auf die nächste Saison 2023/2024 angepasst.
+            Wie jedes Jahr kannst du Ernteanteile bis am 31. Januar kündigen oder deinen Betriebsbeitrag anpassen.
         </p>
         {% with sub=request.user.member.subscription_current future_sub=request.user.member.subscription_future %}
             {% if sub %}
@@ -15,7 +15,7 @@
                 {% include 'mag/snippets/price_change_table.html' with sub=future_sub %}
             {% endif %}
             {% if sub or future_sub %}
-                <p>Du kannst deine Ernteanteile bis am 31. Januar 2023 anpassen.</p>
+                <p>Du kannst deine Ernteanteile bis am <strong>31. Januar 2024</strong> anpassen.</p>
                 {% if future_sub %}
                     {% include 'mag/snippets/price_change_button.html' with sub=future_sub %}
                 {% else %}

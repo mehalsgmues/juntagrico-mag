@@ -86,7 +86,7 @@ urlpatterns = [
     path('', include('juntagrico_godparent.urls')),
 
     # price change
-    path('2023/', home_widgets.price_change, name='price_change'),
+    path('2024/', home_widgets.price_change, name='price_change'),
 
     # map job
     path('map/', include('mapjob.urls'))

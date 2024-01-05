@@ -3,7 +3,7 @@
         <tr>
             <th scope="col">Ernteanteile</th>
             <th scope="col">Bisher [CHF]</th>
-            <th scope="col">Ab 1. April 2023 [CHF]</th>
+            <th scope="col">Ab 1. April 2024 [CHF]</th>
         </tr>
     </thead>
     <tbody>
@@ -11,14 +11,14 @@
             {% if not part.inactive %}
                 <tr>
                     <th scope="row">{{ part }}</th>
-                    <td>{% if part.waiting %}Noch nicht aktiv{% else %}{{ part.type.old_price|floatformat:0 }}{% endif %}</td>
+                    <td>{% if part.waiting %}Noch nicht aktiv{% else %}{{ part.type.price|floatformat:0 }}{% endif %}</td>
                     <td>{% if part.canceled %}Gekündigt{% else %}{{ part.type.price|floatformat:0  }}{% endif %}</td>
                 </tr>
             {% endif %}
         {% endfor %}
         <tr>
             <th scope="row">Total</th>
-            <td>{{ sub.old_price|floatformat:0  }}</td>
+            <td>{{ sub.price|floatformat:0  }}</td>
             <td class="bg-primary">{{ sub.future_price|floatformat:0  }}</td>
         </tr>
     </tbody>
