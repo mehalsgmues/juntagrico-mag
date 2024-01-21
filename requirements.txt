@@ -1,11 +1,11 @@
 vobject
 gunicorn==20.1.0
-# juntagrico~=1.5.0
-git+https://github.com/juntagrico/juntagrico.git@change_sub_test
-django_import_export==3.1.0
-# git+https://github.com/juntagrico/juntagrico-crowdfunding.git
-psycopg2-binary>=2.8.4
-juntagrico-pg~=1.5.0
+juntagrico==1.6.0rc3
+git+https://github.com/juntagrico/juntagrico-pg.git@1.6
+git+https://github.com/juntagrico/juntagrico-godparent.git@1.6
+git+https://github.com/juntagrico/juntagrico-assignment-request.git@1.6
+juntagrico-calendar~=1.5.0
+psycopg>=3.1.8
 openpyxl==3.0.7
 django-oauth-toolkit~=2.2.0
 django-cors-headers==3.11.0
@@ -13,11 +13,7 @@ django-ckeditor==6.1.0
 django-qr-code==2.2.0
 django-multiselectfield==0.1.12
 emoji==1.4.2
-juntagrico-calendar~=1.5.0
-juntagrico-assignment-request~=1.5.0
-git+https://github.com/nixnuex/juntagrico-polling@remove_menudict
 git+https://github.com/pascalfree/django-url-shortener
-git+https://github.com/mehalsgmues/juntagrico-godparent.git
 requests==2.26.0
 CairoSVG==2.5.1  # needed for drawSvg - make sure requirements are installed before via docker file
 drawSvg==1.8.2

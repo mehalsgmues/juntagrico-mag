@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'juntagrico_calendar',
     'juntagrico_polling',
     'juntagrico',
+    'fontawesomefree',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -98,6 +99,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG
         },
     },
 ]
@@ -173,7 +175,7 @@ if DEBUG is True:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STORAGES = {"staticfiles": {"BACKEND": 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage', }, }
 
 LOCALE_PATHS = ('locale',)
 
@@ -208,9 +210,9 @@ ORGANISATION_BANK_CONNECTION = {
     "NAME": "PostFinance AG",
     "ESR": ""
 }
-INFO_EMAIL = "info@mehalsgmues.ch"
-IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', INFO_EMAIL)
-MEMBER_ADMIN_EMAIL = os.environ.get('MEHALSGMUES_MEMBER_ADMIN_EMAIL', INFO_EMAIL)
+CONTACTS = {'general': "info@mehalsgmues.ch"}
+IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', CONTACTS['general'])
+MEMBER_ADMIN_EMAIL = os.environ.get('MEHALSGMUES_MEMBER_ADMIN_EMAIL', CONTACTS['general'])
 SERVER_URL = "www.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
@@ -297,4 +299,8 @@ OAUTH2_PROVIDER = {
     "PKCE_REQUIRED": False
 }
 
+IMPORT_EXPORT_EXPORT_PERMISSION_CODE = 'view'
+
 DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_generation']
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

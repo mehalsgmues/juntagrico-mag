@@ -2,7 +2,6 @@
 """
 from django.urls import path, include
 from django.contrib import admin
-import juntagrico
 
 from mehalsgmues.views import api, home_widgets, list_mgmt, other, sso, stats
 from juntagrico_calendar import views as juntagrico_calendar
@@ -24,22 +23,21 @@ urlpatterns = [
     # member list override
     path('my/filters/active', other.filters_active, name='filters-active'),
 
-    path(r'admin/shell/', include('django_admin_shell.urls')),
-    path(r'admin/', admin.site.urls),
-    path(r'', include('juntagrico.urls')),
-    path(r'', juntagrico.views.home),
-    path(r'', include('juntagrico_pg.urls')),
-    # path(r'', include('juntagrico_crowdfunding.urls')),
-    path(r'', include('juntagrico_calendar.urls')),
-    path(r'', include('juntagrico_assignment_request.urls')),
-    path(r'impersonate/', include('impersonate.urls')),
+    path('admin/shell/', include('django_admin_shell.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('juntagrico.urls')),
+    path('', include('juntagrico_pg.urls')),
+    # path('', include('juntagrico_crowdfunding.urls')),
+    path('', include('juntagrico_calendar.urls')),
+    path('', include('juntagrico_assignment_request.urls')),
+    path('impersonate/', include('impersonate.urls')),
 
     # polling
-    path(r'', include('juntagrico_polling.urls')),
+    path('', include('juntagrico_polling.urls')),
 
     # API
-    path(r'wochenmail/', api.api_emaillist, name='mag-mailing-list'),
-    path(r'contacts/', api.api_vcf_contacts, name='mag-contact-list'),
+    path('wochenmail/', api.api_emaillist, name='mag-mailing-list'),
+    path('contacts/', api.api_vcf_contacts, name='mag-contact-list'),
 
     # exports
     path('my/export/mag/subscriptions', other.excel_export_subscriptions, name='export-subscriptions-mag'),
