@@ -6,7 +6,7 @@
 {% load juntagrico.config %}
 {% block styles %}
     {{ block.super }}
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+    <link href='{% static 'mapjob/external/leaflet-fullscreen/leaflet.fullscreen.css' %}' rel='stylesheet' />
     <link rel="stylesheet" href="{% static 'mapjob/css/mapjob.css' %}" />
 {% endblock %}
 {% block content %}
