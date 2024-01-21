@@ -15,7 +15,7 @@
     {% else %}
         <div class="alert alert-warning">
             Weitere Flyergebiete findest du
-            <a href="{% url "mapjob:map" %}" style="text-decoration: underline">
+            <a href="{% url "mapjob:map_by_type" job.type.id %}" style="text-decoration: underline">
                 auf der Karte
             </a>.
         </div>
