@@ -8,5 +8,9 @@
 }
 
 #job-map .leaflet-legend-item i {
-    padding: 0
+    padding: 0;
+}
+
+select#id_pickup_location {
+    width: 10em;
 }

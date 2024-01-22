@@ -11,4 +11,12 @@ def get_map_job_data(jobs, member):
             'status': 101 if map_job.own else map_job.status_percentage()
         })
         map_job_data.append(geo)
-    return map_job_data
+    return {
+        "legend": {
+            101: ["Deine Gebiete", "#0000ff"],
+            0: ["Offen", "#ff0000"],
+            100: ["Vergeben/Erledigt", "#00ff00"],
+            "default": ["Unterstützung Gesucht", "#ffff00"]
+        },
+        "data": map_job_data
+    }

@@ -9,117 +9,35 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <p>Wir flyern weiter, solange wir noch freie EAT und übrige Flyer haben.</p>
-            <h4>So Funktioniert's</h4>
-            <ul>
-                <li>
-                    <b>Gebiet reservieren:</b> Wähle unten ein geeignetes Gebiet auf der Karte aus, welches rot oder gelb ist.
-                    Klicke es an und wähle Einsatz öffnen, danach "Bestätigen" am Ende der Seite.
-                </li>
-                <li>
-                    <b>Flyer abholen:</b> Du kannst die Flyer in der Gärtnerei abholen.
-                    Du benötigst schätzungsweise 1000 Flyer pro Gebiet. Das wiegt fast 5kg.
-                </li>
-                <li>
-                    <b>Flyer verteilen:</b> Verteile die Flyer in deinem gewählten Gebiet. Schaue genau, bis wohin dein Gebiet geht.
-                    Drucke die Karte, falls es dir hilft, vorher aus.
-                    <ul>
-                        <li>
-                            <b>Wann du willst:</b> Du kannst die Verteilung auch pausieren und an einem anderen Tag weiter machen. Markiere in dem Fall wo du warst.
-                        </li>
-                        <li>
-                            <b>Briefkästen:</b> Verteile die Flyer in alle Briefkästen, aber nur in Briefkästen. Bitte <u>nicht</u> bei Scheibenwischern einklemmen o.ä.<br>
-                            Der "Keine Werbung"-Wunsch ist nicht rechtlich bindend.
-                            Falls du in Diskussionen gerätst, verweise auf deinen "Arbeitgeber" meh als gmües. Die Adresse steht auf dem Flyer.
-                        </li>
-                        <li>
-                            <b>Verschlossene Türen:</b> Grosse Wohnblöcken hat es meist eine unbeschriftete, oder seltsam beschriftete Klingel (wohnt hier wirklich ein P.Ost?),
-                            welche mindestens um die Mittagszeit die Tür öffnet. Pöstler*innen kommen so rein.<br>
-                            Falls du dich traust kannst du auch einfach irgendwo läuten.
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <b>Übrige Flyer:</b> Bitte zurückbringen.
-                </li>
-                <li>
-                    <b>Überstunden:</b> Falls du für dein Gebiet mehr als 4 Stunden aufgewendet hast, kannst du
-                    <a href="{% url "ar-request-assignment" %}">hier zusätzliche Böhnli anmelden.</a> Mit David G. abgesprochen.
-                </li>
-            </ul>
+    {% if has_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <div class="alert alert-success">
+                    {% trans "Du hast schon Gebiete ausgewählt." %}<br>
+                    <a href="{% url 'mapjob:member_dashboard' %}" class="btn btn-primary">
+                        {% trans "Verwalte deine Gebiete hier" %}
+                    </a>
+                    <br>
+                    {% trans "Unten kannst du noch weitere auswählen, wenn du willst." %}
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row pb-4">
-        <div class="col-md-12">
-            <h4>Fragen?</h4>
-            <a class="btn btn-primary" href="mailto:{% email_of 157 %}?subject=Flyereinsatz">
-                melde dich bei David
-            </a>
-        </div>
-    </div>
+    {% endif %}
+
+    {% include "mapjob/snippets/messages.html" %}
+
+    {% include "mapjob/snippets/instructions.html" %}
 
     {% include 'mapjob/snippets/snippet_job_map.html' %}
 
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <form id="email-sender" action="{% url 'mail' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="recipients" id="recipients"/>
-
-                <input type="hidden" name="recipients_count" id="recipients_count"/>
-                {% if can_send_mails or perms.juntagrico.can_send_mails %}
-                    <button type="submit" class="btn btn-success" id="send-email">
-                        {% trans "Email senden" %}
-                    </button>
-                {% endif %}
-            </form>
-            <table id="filter-table" class="list table" style="width: 100%">
-                <thead>
-                    <tr>
-                        <th class="align-top table-search">
-                            {% trans "Gebiet" %}
-                        </th>
-                        <th class="align-top job-status">
-                            {% trans "Wer" %}<br>
-                        </th>
-                        <th style="display: none"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for job in jobs %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
-                                    {{ job.geo_area.properties.name }}
-                                </a>
-                            </td>
-                            <td>
-                                {% if job.free_slots == 0 %}
-                                    {{ job.participant_names }}
-                                {% else %}
-                                    <a href="{% url 'job' job.id %}" class="btn btn-primary">
-                                        Einschreiben
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td class="email" style="display: none">
-                                {% if can_send_mails or perms.juntagrico.can_send_mails %}
-                                    {{ job.participant_emails|join:',' }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    {% include 'mapjob/snippets/snippet_job_table.html' %}
 {% endblock %}
+
 {% block styles %}
     {{ block.super }}
     {% include 'mapjob/snippets/snippet_job_map_styles.html' %}
 {% endblock %}
+
 {% block scripts %}
     {{ block.super }}
     {{ map_job_data|json_script:'map_job_data' }}

@@ -1,6 +1,15 @@
 function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.url) {
-        layer.bindPopup('<strong>' + feature.properties.name + '</strong><br><a href="' + feature.properties.url + '">Einsatz öffnen</a>');
+    if (feature.properties && (feature.properties.url || feature.properties.name)) {
+        let text = []
+        if (feature.properties.name) {
+            text.push('<strong>' + feature.properties.name + '</strong>')
+        }
+        if (feature.properties.url) {
+            text.push('<a href="' + feature.properties.url + '">Einsatz öffnen</a>')
+        }
+        if (text) {
+            layer.bindPopup(text.join('<br>'));
+        }
     }
 }
 
@@ -15,30 +24,29 @@ $(document).ready(function () {
     let map_job_data_element = document.getElementById('map_job_data')
     if (map_job_data_element) {
         let map_job_data = JSON.parse(map_job_data_element.textContent)
-        let geo_json = L.geoJSON(map_job_data, {
-            onEachFeature: onEachFeature,
-            style: function(feature) {
-                switch (feature.properties.status) {
-                    case 0: return {color: "#ff0000"};
-                    case 100: return {color: "#00ff00"};
-                    case 101: return {color: "#0000ff"};
-                    case undefined: return {color: "#000000"};
-                    default: return {color: "#ffff00"};
+        let geo_json
+        if (map_job_data.data) {
+            geo_json = L.geoJSON(map_job_data['data'], {
+                onEachFeature: onEachFeature,
+                style: function(feature) {
+                    try{
+                        return {color: map_job_data.legend[feature.properties.status][1]}
+                    } catch {
+                        return {color: map_job_data.legend.default[1]}
+                    }
                 }
-            }
-        }).addTo(map)
+            }).addTo(map)
+        } else {
+            geo_json = L.geoJSON(map_job_data, {style: {color: "#000000"}}).addTo(map)
+        }
+
         map.fitBounds(geo_json.getBounds(), {padding: [100, 100]});
 
-        if (Array.isArray(map_job_data)) {
+        if (map_job_data.legend) {
             L.control.Legend({
                 position: "topright",
                 title: "Legende",
-                legends: [
-                    {label: "Deine Gebiete", type: "rectangle", color: "#0000ff"},
-                    {label: "Offen",  type: "rectangle", color: "#ff0000"},
-                    {label: "Vergeben/Erledigt", type: "rectangle", color: "#00ff00"},
-                    {label: "Unterstützung Gesucht", type: "rectangle", color: "#ffff00"}
-                ]
+                legends: Object.values(map_job_data.legend).map((x) => ({label: x[0], type: "rectangle", color: x[1]}))
             }).addTo(map);
         }
     }

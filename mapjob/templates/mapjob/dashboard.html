@@ -1,0 +1,25 @@
+{% extends "mapjob/job_map.html" %}
+{% load mag_widgets %}
+{% load static %}
+{% load i18n %}
+{% block page_title %}
+    <h3>
+        Deine Flyergebiete
+    </h3>
+{% endblock %}
+
+{% block content %}
+    {% include "mapjob/snippets/messages.html" %}
+
+    {% include 'mapjob/snippets/snippet_job_table.html' %}
+
+    <div class="row pb-4">
+        <div class="col-md-12">
+            <h4>Deine Verteilkarte</h4>
+            {% trans 'Wenn du noch mehr Gebiete Flyern willst, findest du diese im Menü unter "Flyern"' %}
+        </div>
+    </div>
+    {% include 'mapjob/snippets/snippet_job_map.html' %}
+
+    {% include "mapjob/snippets/instructions.html" %}
+{% endblock %}

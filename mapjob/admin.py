@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 from juntagrico.admins.job_admin import JobAdmin
 from juntagrico.dao.jobtypedao import JobTypeDao
 
-from .models import MapJob
+from .models import MapJob, PickupLocation
 
 
 class CopyMapJobForm(forms.Form):
@@ -32,8 +32,11 @@ class CopyMapJobForm(forms.Form):
             )
 
 
+@admin.register(MapJob)
 class MapJobAdmin(JobAdmin):
     actions = ['copy_map_job']
+    list_filter = ('pickup_location', 'progress') + JobAdmin.list_filter
+    list_display = JobAdmin.list_display + ['pickup_location', 'progress', 'used_flyers']
 
     @admin.action(description=_('Jobs kopieren...'))
     def copy_map_job(self, request, queryset):
@@ -56,4 +59,8 @@ class MapJobAdmin(JobAdmin):
                       ))
 
 
-admin.site.register(MapJob, MapJobAdmin)
+@admin.register(PickupLocation)
+class PickupLocationAdmin(admin.ModelAdmin):
+    list_display = ['location', 'available_flyers']
+    search_fields = ['location__name', 'available_flyers']
+    autocomplete_fields = ['location']
