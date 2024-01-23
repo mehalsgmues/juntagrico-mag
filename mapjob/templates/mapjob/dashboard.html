@@ -1,25 +1,97 @@
 {% extends "mapjob/job_map.html" %}
+{% load crispy_forms_tags %}
 {% load mag_widgets %}
 {% load static %}
 {% load i18n %}
 {% block page_title %}
     <h3>
-        Deine Flyergebiete
+        Deine Flyereinsätze
     </h3>
 {% endblock %}
 
 {% block content %}
     {% include "mapjob/snippets/messages.html" %}
 
-    {% include 'mapjob/snippets/snippet_job_table.html' %}
-
-    <div class="row pb-4">
-        <div class="col-md-12">
-            <h4>Deine Verteilkarte</h4>
-            {% trans 'Wenn du noch mehr Gebiete Flyern willst, findest du diese im Menü unter "Flyern"' %}
+    {% if not own_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <h4>Verteilgebiet(e) reservieren</h4>
+                Wähle unten ein geeignetes Gebiet auf der Karte aus, welches rot oder gelb ist.
+                Klicke es an und wähle Einsatz öffnen, danach "Bestätigen" am Ende der Seite.
+            </div>
         </div>
-    </div>
-    {% include 'mapjob/snippets/snippet_job_map.html' %}
 
-    {% include "mapjob/snippets/instructions.html" %}
+        {% include 'mapjob/snippets/snippet_job_map.html' with job_selector="available" %}
+        {% include 'mapjob/snippets/user_job_table.html' with jobs=available_jobs %}
+    {% else %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <h4>Verteilgebiet(e) reservieren</h4>
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Weitere Gebiete reservieren" %}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if own_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <h4>Flyer abholen</h4>
+                {% if pickup_form %}
+                    <p>Du kannst die Flyer in den Depots abholen.</p>
+                    <p>Du benötigst schätzungsweise 1000 Flyer pro Gebiet. Das wiegt fast 5kg.</p>
+
+                    {% crispy pickup_form %}
+                {% else %}
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Weitere Flyer holen" %}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if own_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                {% if return_form %}
+                    <h4>Flyer verteilen</h4>
+                    <p>Verteile die Flyer in deinem gewählten Gebiet. Schaue genau, bis wohin dein Gebiet geht.
+                        Drucke die Karte, falls es dir hilft, vorher aus.</p>
+                    <ul>
+                        <li>
+                            <b>Wann du willst:</b> Du kannst die Verteilung auch pausieren und an einem anderen Tag weiter machen. Markiere in dem Fall wo du warst.
+                        </li>
+                        <li>
+                            <b>Briefkästen:</b> Verteile die Flyer in alle Briefkästen, aber nur in Briefkästen. Bitte <u>nicht</u> bei Scheibenwischern einklemmen o.ä.<br>
+                            Der "Keine Werbung"-Wunsch ist nicht rechtlich bindend.
+                            Falls du in Diskussionen gerätst, verweise auf deinen "Arbeitgeber" meh als gmües. Die Adresse steht auf dem Flyer.
+                        </li>
+                        <li>
+                            <b>Verschlossene Türen:</b> Grosse Wohnblöcken hat es meist eine unbeschriftete, oder seltsam beschriftete Klingel (wohnt hier wirklich ein P.Ost?),
+                            welche mindestens um die Mittagszeit die Tür öffnet. Pöstler*innen kommen so rein.<br>
+                            Falls du dich traust, kannst du auch einfach irgendwo läuten.
+                        </li>
+                    </ul>
+                {% else %}
+                    <h4>Deine Gebiete</h4>
+                {% endif %}
+
+                {% include 'mapjob/snippets/snippet_job_map.html' with job_selector="reserved" %}
+                {% include 'mapjob/snippets/user_job_table.html' with jobs=own_jobs %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if return_form %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <h4>Übrige Flyer zurückbringen</h4>
+                Wenn du fertig bist mit Flyern, bringe die restlichen Flyer bitte zurück ins Depot.
+
+                {% crispy return_form %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,61 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+<div class="row mb-3">
+    <div class="col-md-12">
+        <table id="filter-table" class="list table" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="align-top table-search">
+                        {% trans "Gebiet" %}
+                    </th>
+                    <th class="align-top">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
+                                {{ job.geo_area.properties.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ job.get_progress_display }}<br>
+                            {% if not request.user.member in job.participants and job.free_slots == 0 %}
+                                <a href="{% url 'job' job.id %}" class="btn btn-primary">
+                                    Einschreiben
+                                </a>
+                            {% else %}
+                                {% if job.progress == job.Progress.OPEN or job.progress == job.Progress.NEED_MORE %}
+                                    {% crispy job.pickup_location_form %}
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-primary">
+                                        Flyer abgeholt
+                                    </a>
+                                {% elif job.progress == job.Progress.PICKED_UP %}
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.NEED_MORE %}" class="btn btn-warning">
+                                        Ich brauche mehr Flyer
+                                    </a>
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.DELIVERED %}" class="btn btn-success">
+                                        Gebiet ist abgeschlossen
+                                    </a>
+                                {% elif job.progress == job.Progress.DELIVERED %}
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-danger">
+                                        Abschliessen rückgängig machen
+                                    </a>
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.RETURNED %}" class="btn btn-success">
+                                        Übrige Flyer zurückgebracht
+                                    </a>
+                                {% elif job.progress == job.Progress.RETURNED %}
+                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.NEED_MORE %}" class="btn btn-danger">
+                                        Abschliessen rückgängig machen
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
