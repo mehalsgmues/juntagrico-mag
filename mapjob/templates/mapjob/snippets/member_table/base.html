@@ -1,0 +1,37 @@
+{% load i18n %}
+<div class="row mb-3">
+    <div class="col-md-12">
+        <table id="filter-table" class="list table" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="align-top table-search">
+                        {% block area_title %}
+                            {% trans "Gebiet" %}
+                        {% endblock %}
+                    </th>
+                    <th class="align-top">
+                        {% block action_title %}
+                        {% endblock %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>
+                            {% block area %}
+                                <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
+                                    {{ job.geo_area.properties.name }}
+                                </a>
+                            {% endblock %}
+                        </td>
+                        <td>
+                           {% block action %}
+                           {% endblock %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

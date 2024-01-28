@@ -1,0 +1,8 @@
+{% extends "mapjob/snippets/member_table/base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block action %}
+    {% if job.progress == job.Progress.OPEN or job.progress == job.Progress.NEED_MORE %}
+        {% crispy job.pickup_location_form %}
+    {% endif %}
+{% endblock %}

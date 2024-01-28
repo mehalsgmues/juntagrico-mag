@@ -1,0 +1,23 @@
+{% extends "mapjob/snippets/member_table/base.html" %}
+{% load i18n %}
+{% block action %}
+    {% if job.progress == job.Progress.OPEN or job.progress == job.Progress.NEED_MORE %}
+        <a href="#get-flyer" class="btn btn-success">
+            {% trans "Flyer abholen" %}
+        </a>
+        <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-light">
+            {% trans "Ich habe noch genug Flyer für dieses Gebiet" %}
+        </a>
+    {% elif job.progress == job.Progress.PICKED_UP %}
+        <a href="{% url 'mapjob:set_progress' job.id job.Progress.NEED_MORE %}" class="btn btn-warning">
+            {% trans "Ich brauche mehr Flyer" %}
+        </a>
+        <a href="{% url 'mapjob:set_progress' job.id job.Progress.DELIVERED %}" class="btn btn-success">
+            {% trans "Gebiet ist abgeschlossen" %}
+        </a>
+    {% elif job.progress == job.Progress.DELIVERED %}
+        <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-danger">
+            Ich bin doch noch nicht fertig
+        </a>
+    {% endif %}
+{% endblock %}

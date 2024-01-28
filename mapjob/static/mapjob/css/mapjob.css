@@ -11,6 +11,6 @@
     padding: 0;
 }
 
-select#id_pickup_location {
-    width: 10em;
+.form-inline select#id_pickup_location {
+    max-width: 20em;
 }

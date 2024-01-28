@@ -5,13 +5,19 @@ from django.utils.translation import gettext_lazy as _
 from juntagrico.entity.location import Location
 from juntagrico.util.signals import set_old_state
 
+from mapjob.querysets import MapJobQueryset
+
 
 class PickupLocation(models.Model):
     location = models.OneToOneField(Location, on_delete=models.CASCADE)
-    available_flyers = models.PositiveSmallIntegerField(_('Verfügbare Flyer'), default=0)
+    available_flyers = models.IntegerField(_('Verfügbare Flyer'), default=0)
 
     def __str__(self):
-        return f'{self.location.name} - {self.available_flyers} Flyer verfügbar'
+        if self.available_flyers <= 0 :
+            available = _('Keine Flyer verfügbar')
+        else:
+            available = _('{} Flyer verfügbar').format(self.available_flyers)
+        return f'{self.location.name} - ' + available
 
     class Meta:
         verbose_name = _('Abholort')
@@ -35,9 +41,17 @@ class MapJob(RecuringJob):
     progress = models.CharField(_('Fortschritt'), max_length=2, choices=Progress.choices, default=Progress.OPEN)
     used_flyers = models.PositiveSmallIntegerField(_('Verteilte Flyer'), default=0)
 
+    objects = MapJobQueryset.as_manager()
+
     def pickup_location_form(self):
         from .forms import PickupLocationForm
-        return PickupLocationForm(instance=self)
+        return PickupLocationForm(instance=self, prefix=self.id)
+
+    def __str__(self):
+        try:
+            return self.geo_area['properties']['name']
+        except KeyError:
+            return super().__str__()
 
     class Meta:
         verbose_name = _('Job mit Fläche')

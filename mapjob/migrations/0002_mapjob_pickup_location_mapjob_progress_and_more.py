@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='PickupLocation',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('available_flyers', models.PositiveSmallIntegerField(default=0, verbose_name='Verfügbare Flyer')),
+                ('available_flyers', models.IntegerField(default=0, verbose_name='Verfügbare Flyer')),
                 ('location',
                  models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='juntagrico.location')),
             ],
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             model_name='mapjob',
             name='pickup_location',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
-                                    to='mapjob.pickuplocation'),
+                                    to='mapjob.pickuplocation', verbose_name='Abholort'),
         ),
         migrations.AddField(
             model_name='mapjob',

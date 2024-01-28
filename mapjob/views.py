@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, F
 from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
@@ -11,7 +10,7 @@ from django.utils.translation import gettext as _
 from juntagrico.entity.jobs import JobType
 from juntagrico.util import return_to_previous_location
 
-from mapjob.forms import PickupLocationForm
+from mapjob.forms import PickupLocationForm, AllPickupLocationForm, PickupForm
 from mapjob.models import MapJob
 from mapjob.utils import get_map_job_data
 
@@ -21,7 +20,7 @@ def job_map(request, jobs=None):
     jobs = jobs or MapJob.objects.all()
     return render(request, 'mapjob/job_map.html', {
         'jobs': jobs,
-        'has_jobs': jobs.filter(assignment__member=request.user.member).exists(),
+        'has_jobs': jobs.of_member(request.user.member).exists(),
         'map_job_data': get_map_job_data(jobs, request.user.member)
     })
 
@@ -39,8 +38,9 @@ class JobMapsListView(ListView):
 
 @login_required
 def member_dashboard(request):
+    member = request.user.member
     # jobs of member
-    own_jobs = MapJob.objects.filter(assignment__member=request.user.member).distinct()
+    own_jobs = MapJob.objects.of_member(member)
 
     own_job_geo = []
     for map_job in own_jobs:
@@ -63,9 +63,7 @@ def member_dashboard(request):
     legend["default"] = [_("Unbekannt"), "#000000"]
 
     # available map jobs
-    available_jobs = MapJob.objects.annotate(occupied_count=Count('assignment')).filter(
-        Q(infinite_slots=True) | Q(occupied_count__lt=F('slots'))
-    )
+    available_jobs = MapJob.objects.with_free_slots()
 
     available_job_geo = []
     for map_job in available_jobs:
@@ -77,13 +75,17 @@ def member_dashboard(request):
 
     # pickup form
     pickup_form = None
-    if own_jobs.filter(progress__in=[MapJob.Progress.OPEN, MapJob.Progress.NEED_MORE]).exists():
-        pickup_form = PickupLocationForm
+    pickup_location_form = None
+    pickup_jobs = own_jobs.need_pickup()
+    if pickup_jobs:
+        pickup_form = PickupForm(pickup_jobs)
+        pickup_location_form = AllPickupLocationForm(initial={'pickup_location': pickup_jobs.first().pickup_location})
 
     # return form
     return_form = None
-    if own_jobs.exclude(progress__in=[MapJob.Progress.OPEN, MapJob.Progress.RETURNED]).exists():
-        return_form = PickupLocationForm
+    return_job = own_jobs.filter(progress__in=[MapJob.Progress.PICKED_UP, MapJob.Progress.DELIVERED]).first()
+    if return_job:
+        return_form = AllPickupLocationForm(initial={'pickup_location': return_job.pickup_location})
 
     return render(request, 'mapjob/dashboard.html', {
         'own_jobs': own_jobs,
@@ -98,26 +100,42 @@ def member_dashboard(request):
             }
         },
         'pickup_form': pickup_form,
+        'pickup_location_form': pickup_location_form,
         'return_form': return_form,
     })
 
 
 @login_required
 def set_job_progress(request, job_id, progress):
-    job = get_object_or_404(MapJob, id=job_id, assignment__member=request.user.member)
+    job = get_object_or_404(MapJob.objects.of_member(request.user.member), id=job_id)
     job.progress = progress
     job.save()
     return return_to_previous_location(request)
 
 
 @login_required
-def set_job_pickup_location(request):
+def pickup(request):
     if request.method == 'POST':
-        job = get_object_or_404(MapJob, id=request.POST['id'], assignment__member=request.user.member)
-        form = PickupLocationForm(instance=job, data=request.POST)
+        form = PickupForm(MapJob.objects.of_member(request.user.member).need_pickup(), request.POST)
         if form.is_valid():
-            messages.success(request, _("Gewünschter Abholort wurde geändert."))
             form.save()
+        else:
+            for field, error in form.errors.items():
+                messages.error(request, mark_safe(f'{field}: {error}'), extra_tags='danger')
+    return return_to_previous_location(request)
+
+
+@login_required
+def set_job_pickup_location(request, job_id=None):
+    if request.method == 'POST':
+        if job_id is not None:
+            job = get_object_or_404(MapJob.objects.of_member(request.user.member), id=job_id)
+            form = PickupLocationForm(request.POST, instance=job, prefix=job_id)
+        else:
+            form = AllPickupLocationForm(request.POST, member=request.user.member)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Gewünschter Abholort wurde geändert."))
         else:
             for field, error in form.errors.items():
                 messages.error(request, mark_safe(f'{field}: {error}'), extra_tags='danger')
