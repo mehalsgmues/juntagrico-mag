@@ -45,6 +45,10 @@ class MapJobAdmin(JobAdmin):
                                               'assignment__member__first_name',
                                               'assignment__member__last_name']
 
+    def get_urls(self):
+        # Needed to not break mass copy action on JobAdmin
+        return super(JobAdmin, self).get_urls()
+
     @admin.action(description=_('Jobs kopieren...'))
     def copy_map_job(self, request, queryset):
         if 'apply' in request.POST:
