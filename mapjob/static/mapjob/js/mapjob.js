@@ -31,32 +31,30 @@ $(document).ready(function () {
             if (Array.isArray(map_job_data)) {
                 geo_json = L.geoJSON(map_job_data, {style: {color: "#000000"}}).addTo(map)
             } else {
-                if (!map_job_data.data) {
+                if (this.dataset.jobs) {
                     map_job_data = map_job_data[this.dataset.jobs]
                 }
                 if (map_job_data) {
-                    geo_json = L.geoJSON(map_job_data['data'], {
-                        filter: function (feature) {
-                            if (feature.properties.visibility) {
-                                return feature.properties.visibility.filter(element => classes.includes('map-' + element));
-                            }
-                            return true
-                        },
-                        onEachFeature: onEachFeature,
-                        style: function (feature) {
-                            if (map_job_data.legend) {
-                                try {
-                                    return {color: map_job_data.legend[feature.properties.status][1]}
-                                } catch {
-                                    return {color: map_job_data.legend.default[1]}
+                    if (!map_job_data.data) {
+                        geo_json = L.geoJSON(map_job_data, {style: {color: "#000000"}}).addTo(map)
+                    } else {
+                        geo_json = L.geoJSON(map_job_data['data'], {
+                            onEachFeature: onEachFeature,
+                            style: function (feature) {
+                                if (map_job_data.legend) {
+                                    try {
+                                        return {color: map_job_data.legend[feature.properties.status][1]}
+                                    } catch {
+                                        return {color: map_job_data.legend.default[1]}
+                                    }
                                 }
+                                try {
+                                    return {color: feature.properties.color}
+                                } catch {}
+                                return {}
                             }
-                            try {
-                                return {color: feature.properties.color}
-                            } catch {}
-                            return {}
-                        }
-                    }).addTo(map)
+                        }).addTo(map)
+                    }
                 }
             }
 

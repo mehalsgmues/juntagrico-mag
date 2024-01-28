@@ -1,10 +1,4 @@
 {% extends "mapjob/snippets/member/table/base.html" %}
-{% load i18n %}
 {% block action %}
-    {% if not request.user.member in job.participants and job.free_slots > 0 %}
-        <a href="{% url 'mapjob:register' job.id %}" class="btn btn-primary"
-           onclick="return confirm('{% blocktrans %}Hiermit bestätige ich, dass ich im Gebiet {{ job }} flyern möchte.{% endblocktrans %}')">
-            {% trans "Hier Flyern" %}
-        </a>
-    {% endif %}
+    {% include "mapjob/snippets/member/action/register.html" %}
 {% endblock %}

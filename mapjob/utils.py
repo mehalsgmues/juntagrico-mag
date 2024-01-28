@@ -19,7 +19,7 @@ def get_map_data(jobs, extra_colors=None):
         MapJob.Progress.PICKED_UP: "#ffff00",
         MapJob.Progress.DELIVERED: "#00ff00",
     }
-    colors.update(extra_colors)
+    colors.update(extra_colors or {})
 
     legend = {
         p: [p.label, colors[p]] for p in MapJob.Progress if p in colors
