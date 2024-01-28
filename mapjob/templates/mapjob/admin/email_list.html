@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emails</title>
+</head>
+<body>
+    <a href="mailto:{{ request.user.member.email }}?bcc={{ emails|join:"," }}">Mit BCC senden</a><br>
+    {% for email in emails %}
+        {{ email }}<br>
+    {% endfor %}
+</body>
+</html>

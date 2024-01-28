@@ -59,7 +59,7 @@ class MapJob(RecuringJob):
     def __str__(self):
         try:
             return self.geo_area['properties']['name']
-        except KeyError:
+        except (TypeError, KeyError):
             return super().__str__()
 
     class Meta:
