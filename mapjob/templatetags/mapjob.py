@@ -2,7 +2,7 @@ from django import template
 from django.utils.html import json_script
 
 from mapjob.models import MapJob
-from mapjob.utils import get_map_job_data
+from mapjob.utils import get_map_data
 
 register = template.Library()
 
@@ -12,5 +12,5 @@ def is_map_job(obj):
 
 
 @register.simple_tag
-def job_map_data(member):
-    return json_script(get_map_job_data(MapJob.objects.all(), member), 'map_job_data')
+def job_map_data():
+    return json_script(get_map_data(MapJob.objects.recent()), 'map_job_data')

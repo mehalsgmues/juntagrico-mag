@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.utils.translation import gettext as _
 
 from mapjob.forms import PickupForm, AllPickupLocationForm, ReturnForm
 from mapjob.models import MapJob
 
 from . import actions
+from ...utils import get_map_data
 
 
 @login_required
@@ -41,26 +41,6 @@ def delivery_dashboard(request):
     if not own_jobs:
         return redirect('mapjob:available_areas')
 
-    own_job_geo = []
-    for map_job in own_jobs:
-        geo = map_job.geo_area
-        geo['properties'].update({
-            'status': map_job.progress,
-            'id': map_job.id,
-        })
-        own_job_geo.append(geo)
-
-    colors = {
-        MapJob.Progress.OPEN: "#ff0000",
-        MapJob.Progress.NEED_MORE: "#ff8800",
-        MapJob.Progress.PICKED_UP: "#ffff00",
-        MapJob.Progress.DELIVERED: "#00ff00",
-    }
-    legend = {
-        p: [p.label, colors[p]] for p in MapJob.Progress if p in colors
-    }
-    legend["default"] = [_("Unbekannt"), "#000000"]
-
     # pickup form
     pickup_form = None
     pickup_location_form = None
@@ -77,10 +57,7 @@ def delivery_dashboard(request):
     return render(request, 'mapjob/dashboard/delivering.html', {
         'own_jobs': own_jobs,
         'map_job_data': {
-            'reserved': {
-                'data': own_job_geo,
-                'legend': legend
-            },
+            'reserved': get_map_data(own_jobs)
         },
         'pickup_form': pickup_form,
         'pickup_location_form': pickup_location_form,

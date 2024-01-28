@@ -4,31 +4,13 @@
 {% load i18n %}
 {% block page_title %}
     <h3>
-        Flyergebiete
+        {% trans "Flyeraktion - Übersicht" %}
     </h3>
 {% endblock %}
 
 {% block content %}
-    {% if has_jobs %}
-        <div class="row pb-4">
-            <div class="col-md-12">
-                <div class="alert alert-success">
-                    {% trans "Du hast schon Gebiete ausgewählt." %}<br>
-                    <a href="{% url 'mapjob:member_dashboard' %}" class="btn btn-primary">
-                        {% trans "Verwalte deine Gebiete hier" %}
-                    </a>
-                    <br>
-                    {% trans "Unten kannst du noch weitere auswählen, wenn du willst." %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
-    {% include "mapjob/snippets/messages.html" %}
-
     {% include 'mapjob/snippets/map/container.html' %}
-
-    {% include 'mapjob/snippets/snippet_job_table.html' %}
+    {% include 'mapjob/snippets/admin/table.html' %}
 {% endblock %}
 
 {% block styles %}

@@ -1,5 +1,4 @@
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -7,21 +6,21 @@ from django.views.generic import ListView
 from juntagrico.entity.jobs import JobType
 
 from mapjob.models import MapJob
-from mapjob.utils import get_map_job_data
+from mapjob.utils import get_map_data
 
 from . import member
 
-@login_required
-def job_map(request, jobs=None):
-    jobs = jobs or MapJob.objects.all()
+
+@staff_member_required
+def job_map(request, jobs=None, days=60):
+    jobs = jobs or MapJob.objects.recent(days)
     return render(request, 'mapjob/job_map.html', {
         'jobs': jobs,
-        'has_jobs': jobs.of_member(request.user.member).exists(),
-        'map_job_data': get_map_job_data(jobs, request.user.member)
+        'map_job_data': get_map_data(jobs, extra_colors={MapJob.Progress.COMPLETE: "#0f0"})
     })
 
 
-@login_required
+@staff_member_required
 def job_map_by_type(request, type_id):
     return job_map(request, MapJob.objects.filter(type=type_id))
 

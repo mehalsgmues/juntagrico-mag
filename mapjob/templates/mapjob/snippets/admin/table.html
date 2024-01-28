@@ -2,11 +2,10 @@
 {% load i18n %}
 <div class="row mb-3">
     <div class="col-md-12">
-        {% if perms.juntagrico.can_send_mails %}
+        {% if can_send_mails or perms.juntagrico.can_send_mails %}
             <form id="email-sender" action="{% url 'mail' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="recipients" id="recipients"/>
-
                 <input type="hidden" name="recipients_count" id="recipients_count"/>
                 {% if can_send_mails or perms.juntagrico.can_send_mails %}
                     <button type="submit" class="btn btn-success" id="send-email">
@@ -20,9 +19,6 @@
                 <tr>
                     <th class="align-top table-search">
                         {% trans "Gebiet" %}
-                    </th>
-                    <th class="align-top job-status">
-                        {% trans "Wer" %}
                     </th>
                     <th class="align-top job-progress">
                         {% trans "Stand" %}
@@ -38,17 +34,8 @@
                                 {{ job.geo_area.properties.name }}
                             </a>
                         </td>
-                        <td>
-                            {% if job.free_slots == 0 %}
-                                {{ job.participant_names }}
-                            {% else %}
-                                <a href="{% url 'job' job.id %}" class="btn btn-primary">
-                                    Einschreiben
-                                </a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ job.get_progress_display }}<br>
+                        <td class="map-popup-{{ job.id }}">
+                            {{ job.get_progress_display }}
                         </td>
                         <td class="email d-none">
                             {% if can_send_mails or perms.juntagrico.can_send_mails %}
