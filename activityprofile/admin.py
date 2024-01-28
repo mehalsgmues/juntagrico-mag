@@ -1,9 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib import admin
-from juntagrico.admins.inlines.contact_inline import ContactInline
 from juntagrico.dao.activityareadao import ActivityAreaDao
-from juntagrico.entity.jobs import ActivityArea
 from juntagrico.util.admin import queryset_for_coordinator, formfield_for_coordinator
 from polymorphic.admin import PolymorphicInlineSupportMixin
 

@@ -1,12 +1,25 @@
-#job-map {
+.map-container {
     height: 40rem;
     max-height: 100%;
 }
 
-#job-map .leaflet-legend-title {
+.map-container .leaflet-legend-title {
     margin-bottom: 0;
 }
 
-#job-map .leaflet-legend-item i {
-    padding: 0
+.map-container .leaflet-legend-item i {
+    padding: 0;
+}
+
+.form-inline select#id_pickup_location {
+    max-width: 20em;
+}
+
+/* button text color fix in leaflet popup */
+.leaflet-popup-content .btn-primary, .leaflet-popup-content .btn-success, .leaflet-popup-content .btn-danger {
+    color: #fff;
+}
+
+.leaflet-popup-content .btn-warning {
+    color: #212529;
 }

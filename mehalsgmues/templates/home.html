@@ -58,12 +58,3 @@
         </div>
     {% endfor %}
 {% endblock %}
-{% block styles %}
-    {{ block.super }}
-    {% include 'mapjob/snippets/snippet_job_map_styles.html' %}
-{% endblock %}
-{% block scripts %}
-    {% job_map_data request.user.member %}
-    {% include 'mapjob/snippets/snippet_job_map_scripts.html' %}
-    {{ block.super }}
-{% endblock %}

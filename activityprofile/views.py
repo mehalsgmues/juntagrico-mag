@@ -9,7 +9,6 @@ from django.template.loader import get_template
 
 from django.contrib.admin.views.decorators import staff_member_required
 from juntagrico.mailer import base_dict
-from juntagrico.util.pdf import return_pdf_http
 from xhtml2pdf import pisa
 
 from activityprofile.models import ActivityProfile
