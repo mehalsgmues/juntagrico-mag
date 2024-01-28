@@ -49,32 +49,6 @@
                         </td>
                         <td>
                             {{ job.get_progress_display }}<br>
-                            {% if request.user.member in job.participants %}
-                                {% if job.progress == job.Progress.OPEN or job.progress == job.Progress.NEED_MORE %}
-                                    {% crispy job.pickup_location_form %}
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-primary">
-                                        Flyer abgeholt
-                                    </a>
-                                {% elif job.progress == job.Progress.PICKED_UP %}
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.NEED_MORE %}" class="btn btn-warning">
-                                        Ich brauche mehr Flyer
-                                    </a>
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.DELIVERED %}" class="btn btn-success">
-                                        Gebiet ist abgeschlossen
-                                    </a>
-                                {% elif job.progress == job.Progress.DELIVERED %}
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-danger">
-                                        Abschliessen rückgängig machen
-                                    </a>
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.RETURNED %}" class="btn btn-success">
-                                        Übrige Flyer zurückgebracht
-                                    </a>
-                                {% elif job.progress == job.Progress.RETURNED %}
-                                    <a href="{% url 'mapjob:set_progress' job.id job.Progress.NEED_MORE %}" class="btn btn-danger">
-                                        Abschliessen rückgängig machen
-                                    </a>
-                                {% endif %}
-                            {% endif %}
                         </td>
                         <td class="email d-none">
                             {% if can_send_mails or perms.juntagrico.can_send_mails %}

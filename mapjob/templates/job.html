@@ -216,6 +216,6 @@
         {{ block.super }}
     {% else %}
         {{ job.geo_area|json_script:'map_job_data' }}
-        {% include 'mapjob/snippets/snippet_job_map_scripts.html' %}
+        {% include 'mapjob/snippets/map/scripts.html' %}
     {% endif %}
 {% endblock %}

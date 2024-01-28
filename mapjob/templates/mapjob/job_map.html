@@ -26,21 +26,19 @@
 
     {% include "mapjob/snippets/messages.html" %}
 
-    {% include "mapjob/snippets/instructions.html" %}
-
-    {% include 'mapjob/snippets/snippet_job_map.html' %}
+    {% include 'mapjob/snippets/map/container.html' %}
 
     {% include 'mapjob/snippets/snippet_job_table.html' %}
 {% endblock %}
 
 {% block styles %}
     {{ block.super }}
-    {% include 'mapjob/snippets/snippet_job_map_styles.html' %}
+    {% include 'mapjob/snippets/map/styles.html' %}
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
     {{ map_job_data|json_script:'map_job_data' }}
-    {% include 'mapjob/snippets/snippet_job_map_scripts.html' %}
+    {% include 'mapjob/snippets/map/scripts.html' %}
     <script type="text/javascript" src="{% static 'juntagrico/external/require.min.js' %}" data-main="{% static 'juntagrico/js/initManList.js' %}"></script>
 {% endblock %}

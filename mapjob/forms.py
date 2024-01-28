@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
+from juntagrico.forms import LinkButton
 
 from mapjob.models import MapJob, PickupLocation
 
@@ -70,7 +71,7 @@ class PickupLocationForm(forms.ModelForm):
 
 
 class PickupForm(forms.Form):
-    pickup_location = forms.ModelChoiceField(queryset=PickupLocation.objects,
+    pickup_location = forms.ModelChoiceField(queryset=PickupLocation.objects, required=False,
                                              label=_('Abholort'), empty_label=_('Woanders'))
     for_jobs = forms.ModelMultipleChoiceField(queryset=MapJob.objects.none(),
                                               label=_('Ich habe die Flyer für diese Gebiete geholt'),
@@ -105,6 +106,36 @@ class PickupForm(forms.Form):
 
     def save(self):
         pickup_location = self.cleaned_data['pickup_location']
-        pickup_location.available_flyers -= self.cleaned_data['amount']
-        pickup_location.save()
+        if pickup_location:
+            pickup_location.available_flyers -= self.cleaned_data['amount']
+            pickup_location.save()
         return self.cleaned_data['for_jobs'].update(pickup_location=pickup_location, progress=MapJob.Progress.PICKED_UP)
+
+
+class ReturnForm(forms.Form):
+    return_location = forms.ModelChoiceField(queryset=PickupLocation.objects, label=_('Rückbringort'))
+    amount = forms.IntegerField(label=_("Anzahl"), validators=[MinValueValidator(0)], initial=0)
+
+    form_action_url = 'mapjob:return'
+    text = {
+        'submit': _('Flyer zurückgebracht'),
+        'complete': _('Ich habe keine Flyer mehr übrig')
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = HorizontalFormHelper()
+        self.helper.form_action = self.form_action_url
+        self.helper.layout = Layout(
+            'return_location',
+            'amount',
+            FormActions(
+                Submit('submit', self.text['submit'], css_class='btn-success'),
+                LinkButton(self.text['complete'], reverse("mapjob:complete"), css_classes='btn-danger'),
+            )
+        )
+
+    def save(self):
+        return_location = self.cleaned_data['return_location']
+        return_location.available_flyers += self.cleaned_data['amount']
+        return_location.save()

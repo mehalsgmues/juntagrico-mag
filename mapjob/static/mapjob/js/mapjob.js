@@ -7,6 +7,9 @@ function onEachFeature(feature, layer) {
         if (feature.properties.url) {
             text.push('<a href="' + feature.properties.url + '">Einsatz öffnen</a>')
         }
+        if (feature.properties.id) {
+            text.push($('.action-' + feature.properties.id).html())
+        }
         if (text) {
             layer.bindPopup(text.join('<br>'));
         }

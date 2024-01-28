@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import signals
-from juntagrico.entity.jobs import RecuringJob
+from juntagrico.config import Config
+from juntagrico.entity.jobs import RecuringJob, Assignment
 from django.utils.translation import gettext_lazy as _
 from juntagrico.entity.location import Location
 from juntagrico.util.signals import set_old_state
@@ -30,7 +31,7 @@ class MapJob(RecuringJob):
         NEED_MORE = 'NM', _('Braucht mehr Flyer')
         PICKED_UP = 'PU', _('Abgeholt')
         DELIVERED = 'DL', _('Verteilt')
-        RETURNED = 'RE', _('Erledigt')
+        COMPLETE = 'CO', _('Erledigt')
 
     """
     Model that represents a job with a map area
@@ -46,6 +47,14 @@ class MapJob(RecuringJob):
     def pickup_location_form(self):
         from .forms import PickupLocationForm
         return PickupLocationForm(instance=self, prefix=self.id)
+
+    def assign(self, member):
+        # This should be a functon in juntagrico
+        if self.free_slots > 0:
+            amount = self.multiplier
+            if Config.assignment_unit() == 'HOURS':
+                amount *= self.duration
+            return Assignment.objects.create(member=member, job=self, amount=amount)
 
     def __str__(self):
         try:

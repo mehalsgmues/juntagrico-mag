@@ -36,7 +36,10 @@ class CopyMapJobForm(forms.Form):
 class MapJobAdmin(JobAdmin):
     actions = ['copy_map_job']
     list_filter = ('pickup_location', 'progress') + JobAdmin.list_filter
-    list_display = JobAdmin.list_display + ['pickup_location', 'progress', 'used_flyers']
+    list_display = JobAdmin.list_display + ['pickup_location', 'progress', 'used_flyers', 'participants']
+    search_fields = JobAdmin.search_fields + ['pickup_location__location__name', 'progress',
+                                              'assignment__member__first_name',
+                                              'assignment__member__last_name']
 
     @admin.action(description=_('Jobs kopieren...'))
     def copy_map_job(self, request, queryset):
@@ -57,6 +60,9 @@ class MapJobAdmin(JobAdmin):
                           jobs=queryset,
                           form=form
                       ))
+
+
+MapJob.participants.fget.short_description = _('Teilnehmende')
 
 
 @admin.register(PickupLocation)

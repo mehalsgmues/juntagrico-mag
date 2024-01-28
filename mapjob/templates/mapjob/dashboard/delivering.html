@@ -12,20 +12,9 @@
 {% block content %}
     {% include "mapjob/snippets/messages.html" %}
 
-    {% if not own_jobs %}
-        <div class="row pb-4">
-            <div class="col-md-12">
-                <h4>Verteilgebiet(e) reservieren</h4>
-                Wähle unten ein geeignetes Gebiet auf der Karte aus, welches rot oder gelb ist.
-                Klicke es an und wähle Einsatz öffnen, danach "Bestätigen" am Ende der Seite.
-            </div>
-        </div>
+    {% include "mapjob/snippets/member/help.html" %}
 
-        {% include 'mapjob/snippets/snippet_job_map.html' with job_selector="available" %}
-        {% include 'mapjob/snippets/member_table/select.html' with jobs=available_jobs %}
-    {% endif %}
-
-    {% if own_jobs and return_form %}
+    {% if own_jobs.picked_up.exists and not return_form %}
         <div class="row pb-4">
             <div class="col-md-12">
                 <h4>Flyer verteilen</h4>
@@ -33,7 +22,7 @@
                     Drucke die Karte, falls es dir hilft, vorher aus.</p>
                 <ul>
                     <li>
-                        <b>Wann du willst:</b> Du kannst die Verteilung auch pausieren und an einem anderen Tag weiter machen. Markiere in dem Fall wo du warst.
+                        <b>Wann du willst:</b> Du kannst die Verteilung auch pausieren und an einem anderen Tag weiter machen. Notiere dir in dem Fall wo du schon warst.
                     </li>
                     <li>
                         <b>Briefkästen:</b> Verteile die Flyer in alle Briefkästen, aber nur in Briefkästen. Bitte <u>nicht</u> bei Scheibenwischern einklemmen o.ä.<br>
@@ -47,8 +36,8 @@
                     </li>
                 </ul>
 
-                {% include 'mapjob/snippets/member_table/delivering.html' with jobs=own_jobs %}
-                {% include 'mapjob/snippets/snippet_job_map.html' with job_selector="reserved" %}
+                {% include 'mapjob/snippets/member/table/delivering.html' with jobs=own_jobs %}
+                {% include 'mapjob/snippets/map/container.html' with job_selector="reserved" %}
             </div>
         </div>
     {% endif %}
@@ -56,14 +45,11 @@
     {% if pickup_form %}
         <div class="row pb-4">
             <div class="col-md-12">
-                {% if not return_form %}
-                    <h4>Flyer abholen</h4>
-                {% else %}
-                    <h4 id="get-flyer">Flyer für weitere Gebiete abholen</h4>
-                {% endif %}
-                    <p>Du kannst die Flyer in den Depots abholen.</p>
+                <h4 id="get-flyer">Wo holst du die Flyer ab?</h4>
+                <p>Du kannst die Flyer in den Depots abholen.</p>
                 <p>Du benötigst schätzungsweise 1000 Flyer pro Gebiet. Das wiegt fast 5kg.</p>
-                <p>Wähle bitte hier, wo du deine Flyer abholen willst,
+                <p>
+                    Wähle bitte hier, wo du deine Flyer abholen willst,
                     damit wir genug Flyer in die richten Depots bringen.
                 </p>
 
@@ -72,7 +58,7 @@
                 {% if own_jobs.need_pickup.count > 1 %}
                     Falls du deine Flyer in unterschiedlichen Depots abholen willst,
                     kannst du dies in der Tabelle unten einstellen.
-                    {% include 'mapjob/snippets/member_table/pickup_location.html' with jobs=own_jobs.need_pickup %}
+                    {% include 'mapjob/snippets/member/table/pickup_location.html' with jobs=own_jobs.need_pickup %}
                 {% endif %}
 
                 <p>Falls es derzeit keine Flyer im gewählten Depot hat, informieren wir dich,
@@ -84,16 +70,17 @@
             </div>
         </div>
 
-        {% if pickup_form and not return_form %}
+        {% if not own_jobs.picked_up.exists %}
             <div class="row pb-4">
                 <div class="col-md-12">
                     <h4>Deine ausgewählten Gebiete</h4>
                     <p>
-                        <button class="btn btn-primary">
+                        <a href="{% url 'mapjob:available_areas' %}" class="btn btn-primary">
                             {% trans "Weitere Gebiete reservieren &rarr;" %}
-                        </button>
+                        </a>
                     </p>
-                    {% include 'mapjob/snippets/snippet_job_map.html' with job_selector="reserved" %}
+                    <p>Klicke auf die Gebiete, für weitere Optionen</p>
+                    {% include 'mapjob/snippets/map/container.html' with job_selector="reserved" %}
                 </div>
             </div>
         {% endif %}
@@ -103,9 +90,21 @@
         <div class="row pb-4">
             <div class="col-md-12">
                 <h4>Übrige Flyer zurückbringen</h4>
-                Wenn du fertig bist mit Flyern, bringe die restlichen Flyer bitte zurück ins Depot.
+                <p>
+                    Wenn du noch Flyer übrig hast,
+                    bringe die restlichen Flyer bitte zurück ins Depot und sende das Formular unten ab.
+                    Damit behalten wir den Überblick, wo es noch Flyer hat.
+                </p>
 
                 {% crispy return_form %}
+            </div>
+        </div>
+
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <h4>Deine beflyerten Gebiete</h4>
+                {% include 'mapjob/snippets/member/table/delivering.html' with jobs=own_jobs %}
+                {% include 'mapjob/snippets/map/container.html' with job_selector="reserved" %}
             </div>
         </div>
     {% endif %}

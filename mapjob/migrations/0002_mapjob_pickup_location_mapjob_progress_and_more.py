@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             name='progress',
             field=models.CharField(
                 choices=[('OP', 'Offen'), ('NM', 'Braucht mehr Flyer'), ('PU', 'Abgeholt'), ('DL', 'Verteilt'),
-                         ('RE', 'Erledigt')], default='OP', max_length=2, verbose_name='Fortschritt'),
+                         ('CO', 'Erledigt')], default='OP', max_length=2, verbose_name='Fortschritt'),
         ),
         migrations.AddField(
             model_name='mapjob',

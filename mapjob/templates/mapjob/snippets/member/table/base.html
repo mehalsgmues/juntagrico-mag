@@ -21,11 +21,11 @@
                         <td>
                             {% block area %}
                                 <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
-                                    {{ job.geo_area.properties.name }}
+                                    {{ job }}
                                 </a>
                             {% endblock %}
                         </td>
-                        <td>
+                        <td class="action action-{{ job.id }}">
                            {% block action %}
                            {% endblock %}
                         </td>
