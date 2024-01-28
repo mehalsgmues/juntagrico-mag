@@ -39,7 +39,8 @@ class CopyMapJobForm(forms.Form):
 @admin.register(MapJob)
 class MapJobAdmin(JobAdmin):
     actions = ['copy_map_job', 'set_complete', 'send_email']
-    list_filter = ('pickup_location', 'progress', 'type', ('time', FutureDateTimeFilter))
+    list_filter = ('pickup_location', 'progress',
+                   ('type', admin.RelatedOnlyFieldListFilter), ('time', FutureDateTimeFilter))
     list_display = JobAdmin.list_display + ['pickup_location', 'progress', 'used_flyers', 'participants']
     search_fields = JobAdmin.search_fields + ['pickup_location__location__name', 'progress',
                                               'assignment__member__first_name',
