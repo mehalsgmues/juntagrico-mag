@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from mapjob.forms import PickupForm, AllPickupLocationForm, ReturnForm
 from mapjob.models import MapJob
 
-from . import actions
+from . import actions  # noqa: F401
 from ...utils import get_map_data
 
 

@@ -22,8 +22,8 @@ def sso(request):
         decoded = base64.decodebytes(payload).decode('utf-8')
         assert 'nonce' in decoded
         assert len(payload) > 0
-    except AssertionError:
-        raise Exception('Invalid payload. Please contact support if this problem persists.')
+    except AssertionError as err:
+        raise Exception('Invalid payload. Please contact support if this problem persists.') from err
 
     key = bytes(settings.DISCOURSE_SSO_SECRET, encoding='utf-8')  # must not be unicode
     h = hmac.new(key, payload, digestmod=hashlib.sha256)
