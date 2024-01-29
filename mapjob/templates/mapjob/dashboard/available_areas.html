@@ -31,8 +31,8 @@
     {% if available_jobs %}
         <div class="row pb-4">
             <div class="col-md-12">
-                Wähle unten ein geeignetes Gebiet auf der Karte aus.
-                Durch Anklicken des Gebiets siehst du dessen Namen und kannst dich einschreiben.
+                Wähle unten ein Gebiet auf der Karte aus.
+                Durch Anklicken siehst du dessen Namen und kannst dich einschreiben.
             </div>
         </div>
 
@@ -41,8 +41,8 @@
     {% else %}
         <div class="row pb-4">
             <div class="col-md-12">
-                Oh. Es sind schon alle Flyereinsätze vergeben.<br>
-                <a href="{% url 'jobs' %}" class="btn btn-primary">Hier findest du viele weitere Einsätze</a>
+                Oh. Es sind schon alle Flyer-Einsätze vergeben.<br>
+                <a href="{% url 'jobs' %}" class="btn btn-primary">Hier findest du viele andere Einsätze</a>
             </div>
         </div>
     {% endif %}
