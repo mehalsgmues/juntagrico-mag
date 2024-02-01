@@ -194,11 +194,10 @@ ORGANISATION_NAME_CONFIG = {"type": "Genossenschaft", "gender": "f"}
 ORGANISATION_LONG_NAME = "meh als gmües"
 ORGANISATION_ADDRESS = {
     "name": "Genossenschaft meh als gmües",
-    "street": "Dialogweg",
-    "number": "6",
-    "zip": "8050",
-    "city": "Zürich",
-    "extra": "c/o Verein MIR"
+    "street": "Reckenholzstrasse",
+    "number": "150",
+    "zip": "8046",
+    "city": "Zürich"
 }
 ORGANISATION_PHONE = ''
 ORGANISATION_BANK_CONNECTION = {
