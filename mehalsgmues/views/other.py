@@ -76,4 +76,4 @@ def filters_active(request):
         'members': Member.objects.exclude(share=None).filter(Q(share__payback_date__gte=date.today()) | Q(share__payback_date__isnull=True)).distinct(),
         'title': 'Alle Mitglieder'
     }
-    return render(request, 'members.html', renderdict)
+    return render(request, 'management_lists/members.html', renderdict)

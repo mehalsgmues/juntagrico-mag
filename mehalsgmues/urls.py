@@ -3,17 +3,11 @@
 from django.urls import path, include
 from django.contrib import admin
 
-from mehalsgmues.views import api, home_widgets, list_mgmt, other, sso, stats
+from mehalsgmues.views import api, home_widgets, other, sso, stats
 from juntagrico_calendar import views as juntagrico_calendar
 from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
-    # depot list management
-    path('my/pdf/manage', list_mgmt.list_mgmt, name='lists-mgmt'),
-    path('my/pdf/manage/success', list_mgmt.list_mgmt, {'success': True}, name='lists-mgmt-success'),
-    path('my/pdf/manage/generate', list_mgmt.list_generate, name='lists-generate'),
-    path('my/pdf/manage/generate/future', list_mgmt.list_generate, {'future': True}, name='lists-generate-future'),
-
     # /manage/share
     path('manage/share/canceledlist', other.share_unpaidlist, name='share-mgmt-unpaid'),
 
@@ -74,11 +68,6 @@ urlpatterns = [
 
     # ajax
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
-
-    # depot changes
-    path('manage/depot/changes', list_mgmt.depot_changes, name='manage-sub-depot-changes'),
-    path('manage/depot/change/confirm/<int:subscription_id>', list_mgmt.depot_change_confirm,
-         name='depot-change-confirm'),
 
     # godparents
     path('', include('juntagrico_godparent.urls')),
