@@ -27,7 +27,7 @@ urlpatterns = [
     path('impersonate/', include('impersonate.urls')),
 
     # polling
-    path('', include('juntagrico_polling.urls')),
+    # path('', include('juntagrico_polling.urls')),
 
     # API
     path('wochenmail/', api.api_emaillist, name='mag-mailing-list'),
