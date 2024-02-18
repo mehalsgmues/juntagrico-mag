@@ -1,0 +1,50 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+<div class="row mb-3">
+    <div class="col-md-12">
+        {% if can_send_mails or perms.juntagrico.can_send_mails %}
+            <form id="email-sender" action="{% url 'mail' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="recipients" id="recipients"/>
+                <input type="hidden" name="recipients_count" id="recipients_count"/>
+                {% if can_send_mails or perms.juntagrico.can_send_mails %}
+                    <button type="submit" class="btn btn-success" id="send-email">
+                        {% trans "Email senden" %}
+                    </button>
+                {% endif %}
+            </form>
+        {% endif %}
+        <table id="filter-table" class="list table" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="align-top table-search">
+                        {% trans "Gebiet" %}
+                    </th>
+                    <th class="align-top job-progress">
+                        {% trans "Stand" %}
+                    </th>
+                    <th class="d-none"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
+                                {{ job.geo_area.properties.name }}
+                            </a>
+                        </td>
+                        <td class="map-popup-{{ job.id }}">
+                            {{ job.get_progress_display }}
+                        </td>
+                        <td class="email d-none">
+                            {% if can_send_mails or perms.juntagrico.can_send_mails %}
+                                {{ job.participant_emails|join:',' }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

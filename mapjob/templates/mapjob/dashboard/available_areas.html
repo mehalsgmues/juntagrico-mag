@@ -1,0 +1,49 @@
+{% extends "mapjob/job_map.html" %}
+{% load crispy_forms_tags %}
+{% load mag_widgets %}
+{% load static %}
+{% load i18n %}
+{% block page_title %}
+    <h3>Verteilgebiet reservieren</h3>
+{% endblock %}
+
+{% block content %}
+    {% include "mapjob/snippets/messages.html" %}
+
+    {% if past_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                <div class="alert alert-success">
+                    <strong>Danke für deinen Einsatz dieses Jahr!</strong>
+                    <p>
+                        Falls du für dein(e) Gebiet(e) mehr als 4 Stunden aufgewendet hast, kannst du
+                        <a href="{% url "ar-request-assignment" %}">hier zusätzliche Böhnli anmelden.</a>
+                        Mit David G. abgesprochen.
+                    </p>
+                    <p>Falls du noch lust hast weiter zu flyern, kannst du unten neue Gebiete auswählen.</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% include "mapjob/snippets/member/help.html" %}
+
+    {% if available_jobs %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                Wähle unten ein Gebiet auf der Karte aus.
+                Durch Anklicken siehst du dessen Namen und kannst dich einschreiben.
+            </div>
+        </div>
+
+        {% include 'mapjob/snippets/map/container.html' with job_selector="available" %}
+        {% include 'mapjob/snippets/member/table/select.html' with jobs=available_jobs %}
+    {% else %}
+        <div class="row pb-4">
+            <div class="col-md-12">
+                Oh. Es sind schon alle Flyer-Einsätze vergeben.<br>
+                <a href="{% url 'jobs' %}" class="btn btn-primary">Hier findest du viele andere Einsätze</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

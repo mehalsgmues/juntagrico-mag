@@ -44,7 +44,7 @@ def slots_by(trunc, start_date, end_date, activity_area=None):
 
 def members_with_assignments(start_date, end_date, activty_area=None, members=None):
     members = members or MemberDao.all_members().filter(deactivation_date__gt=timezone.now().date())
-    if type(members) is list:
+    if isinstance(members, list):
         members = Member.objects.filter(pk__in=[m.pk for m in members])
     return members.annotate(assignments=Sum(
         'assignment__amount',

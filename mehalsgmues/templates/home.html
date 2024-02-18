@@ -7,7 +7,7 @@
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
-    {% include "mag/snippets/price_change.html" %}
+    {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">
         <div class="col-md-12">
             {% news %}
@@ -57,13 +57,4 @@
             </div>
         </div>
     {% endfor %}
-{% endblock %}
-{% block styles %}
-    {{ block.super }}
-    {% include 'mapjob/snippets/snippet_job_map_styles.html' %}
-{% endblock %}
-{% block scripts %}
-    {% job_map_data request.user.member %}
-    {% include 'mapjob/snippets/snippet_job_map_scripts.html' %}
-    {{ block.super }}
 {% endblock %}
