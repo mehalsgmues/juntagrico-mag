@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
-    'juntagrico_polling',
+    #'juntagrico_polling',
     'juntagrico',
     'fontawesomefree',
     'django.contrib.auth',
