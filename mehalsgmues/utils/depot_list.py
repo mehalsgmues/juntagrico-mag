@@ -1,30 +1,35 @@
 import datetime
 
-from dateutil.relativedelta import relativedelta
 from juntagrico.dao.depotdao import DepotDao
 from juntagrico.dao.listmessagedao import ListMessageDao
 from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
+from juntagrico.entity.depot import Tour, Depot
 from juntagrico.entity.subs import Subscription
 from juntagrico.mailer import adminnotification
 from juntagrico.util.pdf import render_to_pdf_storage
-from juntagrico.util.temporal import weekdays
+
+from mehalsgmues.utils.utils import get_delivery_dates_of_month
 
 
-def mag_depot_list_generation(*args, **options):
-    if not options['force']:
+def mag_depot_list_generation(*args, days=0, force=False, **options):
+    if not force:
         return
 
-    date = datetime.date.today() + relativedelta(months=1 if options['future'] else 0)
+    date = datetime.date.today() + datetime.timedelta(days)
 
-    print(date)
+    # patch for delivery dates
+    def delivery_dates(depot):
+        return list(get_delivery_dates_of_month(depot.weekday - 1, date))
+
+    Depot.delivery_dates = delivery_dates
 
     depot_dict = {
-        'subscriptions': Subscription.objects.filter(activation_date__lte=date).exclude(deactivation_date__lt=date).order_by('primary_member__first_name', 'primary_member__last_name'),
+        'subscriptions': Subscription.objects.active_on(date).order_by('primary_member__first_name',
+                                                                       'primary_member__last_name'),
         'products': SubscriptionProductDao.get_all_for_depot_list(),
         'depots': DepotDao.all_depots_for_list(),
-
-        'weekdays': {weekdays[weekday['weekday']]: weekday['weekday'] for weekday in
-                     DepotDao.distinct_weekdays_for_depot_list()},
+        'date': date,
+        'tours': Tour.objects.filter(visible_on_list=True),
         'messages': ListMessageDao.all_active()
     }
 

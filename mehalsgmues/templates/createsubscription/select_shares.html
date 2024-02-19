@@ -15,7 +15,7 @@
             <div class="alert alert-danger">
                 {% blocktrans trimmed %}
                 Du brauchst entweder mehr {{ v_share_pl }} für die von dir gewählten {{ v_subscription_pl }}
-                oder eine deiner Eingaben ist keine postitive Zahl.
+                oder eine deiner Eingaben ist keine positive Zahl.
                 {% endblocktrans %}
                 (x &#8713; &#8469;)
             </div>
@@ -35,11 +35,13 @@
                     Das in Anteilscheinen eingelegte Geld erhältst du im Falle einer Kündigung per Ende der Saison
                     zurück – <b>es ist also lediglich angelegt und nicht ausgegeben</b>.
                 </div>
+                {% comment %}
                 <div class="alert alert-primary">
                     <strong>Wichtig</strong>: Wenn du einen <strong>Schnupper-EAT</strong> ausgewählt hast, werden die Anteilscheine noch nicht ausgestellt.
                     Aus technischen Gründen musst du hier trotzdem 1 Anteilschein auswählen.<br>
                     <strong>Bitte bezahle diesen erst, wenn du nach dem Schnupper-EAT definitiv weitermachst.</strong>
                 </div>
+                {% endcomment %}
                 {% if shares.total_required > 0 %}
                     {% blocktrans trimmed with shares.total_required as st %}
                     Für die von dir ausgewählten {{ v_subscription_pl }} brauchst du mindestens {{ st }}
@@ -76,7 +78,7 @@
                         Du brauchst als HauptbezieherIn mindestens 1 {{ v_share }}.
                         {% endblocktrans %}
                     {% else %}
-                        {% blocktrans trimmed with msc=member.active_shares.count%}
+                        {% blocktrans trimmed with msc=member.active_shares_count %}
                         Du hast bereits {{ msc }} {{ v_share_pl }}
                         {% endblocktrans %}
                     {% endif %}

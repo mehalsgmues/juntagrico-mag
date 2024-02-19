@@ -4,10 +4,10 @@ from django.core import mail
 from django.urls import reverse
 
 from juntagrico.models import Member, Share, Subscription
-from test import MagTestCase
+from juntagrico.tests import JuntagricoTestCase
 
 
-class CreateSubscriptionTests(MagTestCase):
+class CreateSubscriptionTests(JuntagricoTestCase):
 
     def testSignupLogout(self):
         self.client.force_login(self.member.user)

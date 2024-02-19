@@ -2,6 +2,7 @@
 {% load l10n %}
 
 <div {% if field_class %}class="{{ field_class }}"{% endif %}{% if flat_attrs %} {{ flat_attrs|safe }}{% endif %}>
+    {# Mod: show help text and errors above #}
     {% include 'bootstrap4/layout/help_text.html' %}
     {% for group, options, index in field|optgroups %}
     {% if group %}<strong>{{ group }}</strong>{% endif %}

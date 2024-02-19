@@ -3,8 +3,7 @@
 {% load juntagrico.common %}
 {% load juntagrico.config %}
 {% load mag_widgets %}
-{% block pre_subscribe %}
-    {#% covid_info %#}
+{% block subscribe %}
     {% if request.user.member in job.participants %}
         <div class="alert alert-warning">Du bist bereits für diesen Einsatz angemeldet.
             Unten kannst du noch weitere Personen anmelden, die mit dir an den Einsatz kommen.<br>
@@ -14,4 +13,5 @@
             </a>
         </div>
     {% endif %}
+    {{ block.super }}
 {% endblock %}

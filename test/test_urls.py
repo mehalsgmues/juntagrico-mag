@@ -1,9 +1,8 @@
 from django.urls import reverse
+from juntagrico.tests import JuntagricoTestCase
 
-from test import MagTestCase
 
-
-class MagTests(MagTestCase):
+class MagTests(JuntagricoTestCase):
 
     def test_template_override(self):
         self.assertGet(reverse('home'), member=self.admin)
@@ -11,18 +10,14 @@ class MagTests(MagTestCase):
 
     def test_depolist(self):
         # without access
-        self.assertGet(reverse('lists-mgmt'), 302)
-        self.assertGet(reverse('lists-mgmt-success'), 302)
-        self.assertGet(reverse('lists-generate'), 302)
-        self.assertGet(reverse('lists-generate-future'), 302)
-        self.assertGet(reverse('lists-depotlist'), 302)
-        self.assertGet(reverse('lists-depot-overview'), 302)
-        self.assertGet(reverse('lists-depot-amountoverview'), 302)
+        self.assertGet(reverse('manage-list'), 302)
+        self.assertPost(reverse('manage-list'), {}, 302, member=self.member2)
+        self.assertGet(reverse('lists-depotlist'), 302, member=self.member2)
+        self.assertGet(reverse('lists-depot-overview'), 302, member=self.member2)
+        self.assertGet(reverse('lists-depot-amountoverview'), 302, member=self.member2)
         # with access
-        self.assertGet(reverse('lists-mgmt'), member=self.admin)
-        self.assertGet(reverse('lists-mgmt-success'), member=self.admin)
-        self.assertGet(reverse('lists-generate'), 302, member=self.admin)
-        self.assertGet(reverse('lists-generate-future'), 302, member=self.admin)
+        self.assertGet(reverse('manage-list'), member=self.admin)
+        self.assertPost(reverse('manage-list'), {'for_date': '2024-02-18'}, member=self.admin)
         self.assertGet(reverse('lists-depotlist'), member=self.admin)
         self.assertGet(reverse('lists-depot-overview'), member=self.admin)
         self.assertGet(reverse('lists-depot-amountoverview'), member=self.admin)
@@ -46,6 +41,8 @@ class MagTests(MagTestCase):
         self.assertGet(reverse('mag-mailing-list'), member=self.admin)
         self.assertGet(reverse('mag-contact-list'), 302)
         self.assertGet(reverse('mag-contact-list'), member=self.admin)
+        self.assertGet(reverse('filters-active'), 302, member=self.member2)
+        self.assertGet(reverse('filters-active'), member=self.admin)
 
     def test_subscription_export(self):
         self.assertGet(reverse('export-subscriptions-mag'), 302)

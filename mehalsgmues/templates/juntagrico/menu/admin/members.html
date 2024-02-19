@@ -1,14 +1,5 @@
-{% extends 'menu/admin_menu.html' %}
+{% extends "juntagrico/menu/admin/members.html" %}
 {% load i18n %}
-{% block admin %}
-    {% if request.user.is_staff %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
-                {% trans "Datenverwaltung" %}
-            </a>
-        </li>
-    {% endif %}
-{% endblock %}
 {% block member_sub %}
     {% if perms.juntagrico.change_member or perms.juntagrico.can_filter_members %}
         <li class="nav-item">
@@ -22,8 +13,4 @@
             </a>
         </li>
     {% endif %}
-{% endblock %}
-{% block extend_admin_menu %}
-    {{ block.super }}
-    {% include 'mag/menu/admin_menu.html' %}
 {% endblock %}
