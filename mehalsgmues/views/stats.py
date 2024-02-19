@@ -14,6 +14,7 @@ from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
+from juntagrico.entity.share import Share
 from juntagrico.entity.subs import SubscriptionPart
 from juntagrico.util.models import q_isactive
 from juntagrico.util.temporal import start_of_business_year, end_of_business_year
@@ -178,7 +179,6 @@ def subscription_stats(request):
     created = list(accumulate(created))
     active = list(accumulate(active))
     cancelled = list(accumulate(cancelled))
-    print(creations)
 
     renderdict = {
         'start_date': start_date,
@@ -190,6 +190,49 @@ def subscription_stats(request):
         'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
     }
     return render(request, 'mag/stats/subscriptions.html', renderdict)
+
+
+@staff_member_required
+def shares(request):
+    start_date = date_from_get(request, 'start_date', start_of_business_year())
+    end_date = date_from_get(request, 'end_date', end_of_business_year())
+
+    labels = [start_date.strftime('%d.%m')]
+    created = [Share.objects.filter(creation_date__lte=start_date).exclude(paid_date__lte=start_date).count()]
+    paid = [Share.objects.filter(paid_date__lte=start_date).exclude(cancelled_date=start_date).count()]
+    cancelled = [Share.objects.filter(cancelled_date__lte=start_date).exclude(payback_date__lte=start_date).count()]
+    creations = dict(Share.objects.filter(creation_date__range=(start_date, end_date)).exclude(creation_date__gt=F('paid_date')).
+                     values('creation_date').annotate(count=Count('id')).values_list('creation_date', 'count'))
+    payments = dict(Share.objects.filter(paid_date__range=(start_date, end_date)).exclude(creation_date__gt=F('paid_date')).
+                    values('paid_date').annotate(count=Count('id')).values_list('paid_date', 'count'))
+    # because paid date may be set before creation, these are count separately: they count as +1 on paid but don't reduce created
+    early_payments = dict(Share.objects.filter(creation_date__gt=F('paid_date'), paid_date__range=(start_date, end_date)).
+                             values('paid_date').annotate(count=Count('id')).values_list('paid_date', 'count'))
+    cancellations = dict(Share.objects.filter(cancelled_date__range=(start_date, end_date)).values('cancelled_date').annotate(count=Count('id')).values_list('cancelled_date', 'count'))
+    back_payments = dict(Share.objects.filter(payback_date__range=(start_date, end_date)).values('payback_date').annotate(count=Count('id')).values_list('payback_date', 'count'))
+    for day in rrule(DAILY, start_date + timedelta(1), until=end_date):
+        day = day.date()
+        labels.append(day.strftime('%d.%m'))
+        a = payments.get(day, 0)
+        c = cancellations.get(day, 0)
+        created.append(creations.get(day, 0) - a)
+        paid.append(a + early_payments.get(day, 0) - c)
+        cancelled.append(c - back_payments.get(day, 0))
+
+    created = list(accumulate(created))
+    paid = list(accumulate(paid))
+    cancelled = list(accumulate(cancelled))
+
+    renderdict = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'labels': labels,
+        'paid': paid,
+        'cancelled': cancelled,
+        'created': created,
+        'date_form': DateRangeForm(initial={'start_date': start_date, 'end_date': end_date})
+    }
+    return render(request, 'mag/stats/shares.html', renderdict)
 
 
 @staff_member_required
