@@ -1,7 +1,7 @@
 from datetime import date
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -11,8 +11,6 @@ from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.member import Member
-from juntagrico.entity.share import Share
-from juntagrico.util.views_admin import subscription_management_list
 from juntagrico.view_decorators import any_permission_required
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
