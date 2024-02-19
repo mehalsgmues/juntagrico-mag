@@ -208,6 +208,10 @@ ORGANISATION_ADDRESS = {
     "city": "Zürich"
 }
 ORGANISATION_PHONE = ''
+ORGANISATION_WEBSITE = {
+    "name": "mehalsgmues.ch",
+    "url": "https://mehalsgmues.ch"
+}
 ORGANISATION_BANK_CONNECTION = {
     "PC": "",
     "IBAN": "CH80 0900 0000 6170 9835 0",
@@ -215,10 +219,13 @@ ORGANISATION_BANK_CONNECTION = {
     "NAME": "PostFinance AG",
     "ESR": ""
 }
-CONTACTS = {'general': "info@mehalsgmues.ch"}
+CONTACTS = {
+    'general': "info@mehalsgmues.ch",
+    'for_members': "mitglied@mehalsgmues.ch",
+    'for_subscription': "mitglied@mehalsgmues.ch",
+}
 IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', CONTACTS['general'])
 MEMBER_ADMIN_EMAIL = os.environ.get('MEHALSGMUES_MEMBER_ADMIN_EMAIL', CONTACTS['general'])
-SERVER_URL = "www.mehalsgmues.ch"
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"

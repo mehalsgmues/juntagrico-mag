@@ -63,13 +63,6 @@ def ajax_notifications(request):
     return HttpResponse(notifications)
 
 
-@permission_required('juntagrico.view_share')
-def share_unpaidlist(request):
-    render_dict = {'change_date_disabled': True}
-    return subscription_management_list(Share.objects.filter(paid_date__isnull=True).order_by('member'), render_dict,
-                                        'mag/management_lists/share_unpaidlist.html', request)
-
-
 @any_permission_required('juntagrico.can_filter_members', 'juntagrico.change_member')
 def filters_active(request):
     renderdict = {

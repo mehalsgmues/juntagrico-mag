@@ -48,6 +48,7 @@
                 {% include 'bootstrap4/layout/field_file.html' %}
             {% else %}
                 <div{% if field_class %} class="{{ field_class }}"{% endif %}>
+                    {# Mod: show help text and errors above #}
                     {% include 'bootstrap4/layout/help_text_and_errors.html' %}
                     {% if field|is_select and use_custom_control %}
                         {% if field.errors %}

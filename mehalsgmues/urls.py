@@ -8,9 +8,6 @@ from juntagrico_calendar import views as juntagrico_calendar
 from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
-    # /manage/share
-    path('manage/share/canceledlist', other.share_unpaidlist, name='share-mgmt-unpaid'),
-
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
 
