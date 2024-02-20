@@ -207,7 +207,7 @@ def shares(request):
                     values('paid_date').annotate(count=Count('id')).values_list('paid_date', 'count'))
     # because paid date may be set before creation, these are count separately: they count as +1 on paid but don't reduce created
     early_payments = dict(Share.objects.filter(creation_date__gt=F('paid_date'), paid_date__range=(start_date, end_date)).
-                             values('paid_date').annotate(count=Count('id')).values_list('paid_date', 'count'))
+                          values('paid_date').annotate(count=Count('id')).values_list('paid_date', 'count'))
     cancellations = dict(Share.objects.filter(cancelled_date__range=(start_date, end_date)).values('cancelled_date').annotate(count=Count('id')).values_list('cancelled_date', 'count'))
     back_payments = dict(Share.objects.filter(payback_date__range=(start_date, end_date)).values('payback_date').annotate(count=Count('id')).values_list('payback_date', 'count'))
     for day in rrule(DAILY, start_date + timedelta(1), until=end_date):
