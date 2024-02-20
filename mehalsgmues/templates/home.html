@@ -6,6 +6,16 @@
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <h2 id="mapjobs">
+                {% trans "Flyereinsätze" %}
+            </h2>
+            <p>Es ist wieder Flyerzeit. Eine gute Gelegenheit dein Böhnli-Konto zum Ende der Saison aufzufüllen.</p>
+            <p>Ende Februar kommen die Flyer, welche du dann im Demot abholen und irgendwenn Anfang März selbständig verteilen kannst.</p>
+            <a href="{% url "mapjob:member_dashboard" %}" class="btn btn-primary">Jetzt Flyergebiete reservieren</a>
+        </div>
+    </div>
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">
