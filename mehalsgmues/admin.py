@@ -9,6 +9,8 @@ from django.contrib.admin.models import LogEntry, DELETION
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
+from mehalsgmues.models import AccessInformation
+
 
 class IsMemberFilter(admin.SimpleListFilter):
     title = 'Mitgliedschaft'
@@ -87,3 +89,8 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LogEntry, LogEntryAdmin)
+
+
+class JobAccessInfoInline(admin.TabularInline):
+    model = AccessInformation
+    extra = 1
