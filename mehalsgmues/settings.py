@@ -298,3 +298,8 @@ OAUTH2_PROVIDER = {
 }
 
 DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_generation']
+
+BIKE_CODE_HOST = os.environ.get('BIKE_CODE_HOST')
+BIKE_CODE_USERNAME = os.environ.get('BIKE_CODE_USERNAME')
+BIKE_CODE_PASSWORD = os.environ.get('BIKE_CODE_PASSWORD')
+BIKE_CODE_JOB_TYPE = 24
