@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('juntagrico', '0039_alter_activityarea_options_alter_member_options_and_more'),
+        ('juntagrico', '0037_post_1_5'),
     ]
 
     operations = [
