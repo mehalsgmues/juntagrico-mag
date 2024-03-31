@@ -302,4 +302,4 @@ DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_gen
 BIKE_CODE_HOST = os.environ.get('BIKE_CODE_HOST')
 BIKE_CODE_USERNAME = os.environ.get('BIKE_CODE_USERNAME')
 BIKE_CODE_PASSWORD = os.environ.get('BIKE_CODE_PASSWORD')
-BIKE_CODE_JOB_TYPE = 24
+BIKE_CODE_JOB_TYPE = 22
