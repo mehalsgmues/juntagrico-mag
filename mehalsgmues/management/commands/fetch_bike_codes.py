@@ -28,7 +28,7 @@ class Command(BaseCommand):
         with IMAPClient(settings.BIKE_CODE_HOST, ssl_context=ssl_context) as server:
             server.login(settings.BIKE_CODE_USERNAME,
                          settings.BIKE_CODE_PASSWORD)
-            # select_info = server.select_folder('INBOX')
+            server.select_folder('INBOX')
             # print('%d messages in INBOX' % select_info[b'EXISTS'])
             # messages = server.search(['FROM', ''])
 
