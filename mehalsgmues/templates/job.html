@@ -43,9 +43,9 @@
         {% spaceless %}
         {% for i in slotrange %}
         {% if i < number_of_participants %}
-            <img class="" src="{% images " single_full"%}"title="{{ number_of_participants }} von {{ job.slots }} gebucht" />
+            <img class="" src="{% images "single_full"%}" title="{{ number_of_participants }} von {{ job.slots }} gebucht" />
         {% else %}
-            <img class="" src="{% images " single_empty" %}"title="{{ number_of_participants }} von {{ job.slots }} gebucht" />
+            <img class="" src="{% images "single_empty" %}" title="{{ number_of_participants }} von {{ job.slots }} gebucht" />
         {% endif %}
         {% endfor %}
         {% endspaceless %}
