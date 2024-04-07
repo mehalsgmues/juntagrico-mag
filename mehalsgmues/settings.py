@@ -241,6 +241,7 @@ BILLING = False
 BUSINESS_YEAR_START = {"day": 1, "month": 4}
 BUSINESS_YEAR_CANCELATION_MONTH = 1
 MEMBERSHIP_END_MONTH = 3
+MEMBERSHIP_END_NOTICE_PERIOD = 2
 
 SUB_OVERVIEW_FORMAT = {
     'delimiter': ', ',
@@ -315,4 +316,7 @@ IMPORT_EXPORT_EXPORT_PERMISSION_CODE = 'view'
 
 DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_generation']
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+BIKE_CODE_HOST = os.environ.get('BIKE_CODE_HOST')
+BIKE_CODE_USERNAME = os.environ.get('BIKE_CODE_USERNAME')
+BIKE_CODE_PASSWORD = os.environ.get('BIKE_CODE_PASSWORD')
+BIKE_CODE_JOB_TYPE = 22

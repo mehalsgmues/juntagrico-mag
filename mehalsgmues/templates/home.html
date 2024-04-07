@@ -5,6 +5,17 @@
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
+    {% member_is_flyering request.user.member as show_flyer_info %}
+    {% if show_flyer_info %}
+        <div class="row mb-3">
+            <div class="col-md-12 alert alert-info">
+                <p id="mapjobs">
+                    {% trans "Du hast dich für Flyereinsätze eingeschrieben. Schliesse sie hier ab, wenn du fertig bist." %}
+                </p>
+                <a href="{% url "mapjob:member_dashboard" %}" class="btn btn-primary">Deine offenen Flyereinsätze ansehen</a>
+            </div>
+        </div>
+    {% endif %}
     {#% include "mag/snippets/subscription_progress_snippet.html" %#}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">

@@ -3,6 +3,23 @@
 {% load juntagrico.common %}
 {% load juntagrico.config %}
 {% load mag_widgets %}
+
+{% block description %}
+    {% if job.accessinformation_set.count %}
+        <div class="row pb-4">
+            <div class="col-md-3">
+                {% trans "Zugangsinfos" %}:
+            </div>
+            <div class="col-md-5  alert alert-info">
+                {% for accessinfo in job.accessinformation_set.all %}
+                <div> {{ accessinfo.name }} : <strong>{{ accessinfo.code }} </strong> </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
+
 {% block subscribe %}
     {% if request.user.member in job.participants %}
         <div class="alert alert-warning">Du bist bereits für diesen Einsatz angemeldet.

@@ -2,6 +2,9 @@
 {% load util %}
 {% block extend %}
     {{ block.super }}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "mapjob:member_dashboard" %}">Flyern</a>
+        </li>
     </ul>
     <hr>
     <ul class="main-menu nav flex-column">

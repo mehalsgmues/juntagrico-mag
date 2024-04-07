@@ -13,7 +13,7 @@
             {% trans "Ich brauche mehr Flyer" %}
         </a>
         <a href="{% url 'mapjob:set_progress' job.id job.Progress.DELIVERED %}" class="btn btn-success">
-            {% trans "Gebiet ist abgeschlossen" %}
+            {% trans "als abgeschlossen markieren" %}
         </a>
     {% elif job.progress == job.Progress.DELIVERED %}
         <a href="{% url 'mapjob:set_progress' job.id job.Progress.PICKED_UP %}" class="btn btn-danger">
