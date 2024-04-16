@@ -29,6 +29,7 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'mehalsgmues',
     'juntagrico_assignment_request',
     'juntagrico_godparent',
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
     'adminsortable2',
     # 'report_builder',
     'crispy_forms',

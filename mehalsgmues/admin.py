@@ -8,6 +8,8 @@ from django.urls import reverse, NoReverseMatch
 from django.contrib.admin.models import LogEntry, DELETION
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from juntagrico.entity.jobs import RecuringJob
+from juntagrico.util import addons
 
 from mehalsgmues.models import AccessInformation
 
@@ -94,3 +96,7 @@ admin.site.register(LogEntry, LogEntryAdmin)
 class JobAccessInfoInline(admin.TabularInline):
     model = AccessInformation
     extra = 1
+
+
+addons.config.register_model_inline(RecuringJob, JobAccessInfoInline)
+
