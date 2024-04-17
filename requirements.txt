@@ -1,5 +1,5 @@
 vobject
-gunicorn==20.1.0
+gunicorn==22.0.0
 # juntagrico~=1.5.0
 git+https://github.com/juntagrico/juntagrico.git@change_sub_test
 django_import_export==3.1.0
