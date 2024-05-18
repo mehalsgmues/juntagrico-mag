@@ -22,5 +22,4 @@
     {{ block.super }}
     {{ map_job_data|json_script:'map_job_data' }}
     {% include 'mapjob/snippets/map/scripts.html' %}
-    <script type="text/javascript" src="{% static 'juntagrico/external/require.min.js' %}" data-main="{% static 'juntagrico/js/initManList.js' %}"></script>
 {% endblock %}
