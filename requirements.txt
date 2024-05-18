@@ -1,5 +1,5 @@
 vobject
-gunicorn==20.1.0
+gunicorn==22.0.0
 juntagrico~=1.6.0
 juntagrico-pg~=1.6.0
 juntagrico-godparent~=1.6.0
