@@ -1,4 +1,4 @@
-{% load mag_widgets %}
+{% load juntagrico.config %}
 {% load i18n %}
 <div class="row mb-3">
     <div class="col-md-12">
@@ -26,6 +26,6 @@
             {% endif %}
         {% endwith %}
         <p>Hast du Fragen, gibt es Unstimmigkeiten oder brauchst du Unterstützung, helfen wir dir gerne weiter:
-            <a href="mailto:{% member_admin_email %}">{% member_admin_email %}</a>.</p>
+            <a href="mailto:{% contacts for_members %}">{% contacts for_members %}</a>.</p>
     </div>
 </div>

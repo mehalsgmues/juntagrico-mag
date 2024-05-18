@@ -1,8 +1,7 @@
 {% extends "home.html" %}
-{% load mapjob %}
 {% load i18n %}
 {% load mag_widgets %}
-{% block content %}
+{% block jobs %}
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
     </h4>
@@ -24,48 +23,5 @@
             {% news %}
         </div>
     </div>
-    <h3 id="jobs">
-        {% trans "Aktuelle Arbeitseinsätze" %}
-    </h3>
-    <div class="row mb-3">
-        <div class="col-md-12">
-            {#% covid_info %#}
-            {% if perms.juntagrico.can_create_recuringjob %}
-            <a href="{% url 'admin:juntagrico_recuringjob_add' %}" class="edit">
-                <i class="fas fa-plus"></i>
-                Wiederkehrenden Einsatz ausschreiben
-            </a><br>
-            {% endif %}
-            {% if perms.juntagrico.can_create_onetimejob %}
-            <a href="{% url 'admin:juntagrico_onetimejob_add' %}" class="edit">
-                <i class="fas fa-plus"></i>
-                Einzel-Einsatz ausschreiben
-            </a>
-            {% endif %}
-            {% include "snippets/snippet_jobs.html" %}
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-12">
-            <a href="{% url 'jobs' %}">
-                {% trans "Hier alle Arbeitseinsätze anzeigen" %}
-            </a>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <h4>
-                {% trans "Zu den Kalendern der einzelnen Tätigkeitsbereiche" %}
-            </h4>
-        </div>
-    </div>
-    {% for area in areas %}
-        <div class="row mb-1">
-            <div class="col-md-12">
-                <a href="{% url 'area' area.id %}" class="{% if area.core %}core{% endif %}">
-                    {{ area.name }}
-                </a>
-            </div>
-        </div>
-    {% endfor %}
+    {{ block.super }}
 {% endblock %}

@@ -3,7 +3,6 @@ from django.utils.safestring import mark_safe
 from juntagrico.entity.member import Member
 
 from mapjob.models import MapJob
-from mehalsgmues import settings
 from mehalsgmues.utils.utils import draw_share_progress, get_available_subscriptions
 from mehalsgmues.utils.news import get_recent_posts
 
@@ -53,11 +52,5 @@ def email_of(member):
 
 
 @register.simple_tag
-def member_admin_email():
-    return settings.MEMBER_ADMIN_EMAIL
-
-
-@register.simple_tag
 def member_is_flyering(member):
     return MapJob.objects.filter(assignment__member=member).exclude(progress=MapJob.Progress.COMPLETE).exists()
-

@@ -59,7 +59,7 @@ class ActivityProfile(models.Model):
 
     clothing = RichTextField('Kleidung', max_length=1000, null=True, blank=True)
 
-    season = MultiSelectField('Saison', choices=SEASON, null=True)
+    season = MultiSelectField('Saison', choices=SEASON, null=True, max_length=1000)
 
     flexible = models.BooleanField('Einsätze Flexibel möglich?', default=False,
                                    help_text='Können eingeführte Mitglieder, jederzeit selbständig Einsätze leisten?')

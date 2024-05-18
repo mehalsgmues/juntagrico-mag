@@ -15,7 +15,7 @@
             <div class="alert alert-danger">
                 {% blocktrans trimmed %}
                 Du brauchst entweder mehr {{ v_share_pl }} für die von dir gewählten {{ v_subscription_pl }}
-                oder eine deiner Eingaben ist keine postitive Zahl.
+                oder eine deiner Eingaben ist keine positive Zahl.
                 {% endblocktrans %}
                 (x &#8713; &#8469;)
             </div>
@@ -78,7 +78,7 @@
                         Du brauchst als HauptbezieherIn mindestens 1 {{ v_share }}.
                         {% endblocktrans %}
                     {% else %}
-                        {% blocktrans trimmed with msc=member.active_shares.count%}
+                        {% blocktrans trimmed with msc=member.active_shares_count %}
                         Du hast bereits {{ msc }} {{ v_share_pl }}
                         {% endblocktrans %}
                     {% endif %}

@@ -8,10 +8,18 @@
         <div class="col-md-3">
             {{ v_subscription_pl }} nach Typ
         </div>
-        <div class="col-md-9">
+        <div class="col-md-3">
             <a href="{% url 'export-subscriptions-mag' %}">
                 {% trans "exportieren" %}
             </a>
+        </div>
+        <div class="col-md-6">
+            <div class="alert alert-warning">
+                {% trans "Neu: Datenverwaltung" %}
+                <a href="{% url 'admin:juntagrico_subscription_changelist' %}">&rarr; {{ v_subscription_pl }}</a>
+                {% trans "&rarr; Exportieren (oben rechts)" %}
+                {% trans "&rarr; Ressource:" %} "{{ v_subscription_pl }} nach Typ
+            </div>
         </div>
     </div>
 {% endblock %}

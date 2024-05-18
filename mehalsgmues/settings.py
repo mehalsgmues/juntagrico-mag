@@ -29,6 +29,7 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'mehalsgmues',
     'juntagrico_assignment_request',
     'juntagrico_godparent',
@@ -37,15 +38,15 @@ INSTALLED_APPS = [
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
-    'juntagrico_polling',
+    #'juntagrico_polling',
     'juntagrico',
+    'fontawesomefree',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
     'adminsortable2',
     # 'report_builder',
     'crispy_forms',
@@ -86,7 +87,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -98,6 +98,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG
         },
     },
 ]
@@ -173,7 +174,14 @@ if DEBUG is True:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+}
 
 LOCALE_PATHS = ('locale',)
 
@@ -200,6 +208,10 @@ ORGANISATION_ADDRESS = {
     "city": "Zürich"
 }
 ORGANISATION_PHONE = ''
+ORGANISATION_WEBSITE = {
+    "name": "mehalsgmues.ch",
+    "url": "https://mehalsgmues.ch"
+}
 ORGANISATION_BANK_CONNECTION = {
     "PC": "",
     "IBAN": "CH80 0900 0000 6170 9835 0",
@@ -207,10 +219,13 @@ ORGANISATION_BANK_CONNECTION = {
     "NAME": "PostFinance AG",
     "ESR": ""
 }
-INFO_EMAIL = "info@mehalsgmues.ch"
-IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', INFO_EMAIL)
-MEMBER_ADMIN_EMAIL = os.environ.get('MEHALSGMUES_MEMBER_ADMIN_EMAIL', INFO_EMAIL)
-SERVER_URL = "www.mehalsgmues.ch"
+CONTACTS = {
+    'general': "info@mehalsgmues.ch",
+    'for_members': "mitglied@mehalsgmues.ch",
+    'for_subscription': "mitglied@mehalsgmues.ch",
+    'for_shares': "buchhaltung@mehalsgmues.ch",
+}
+CONTACTS['technical'] = os.environ.get('MEHALSGMUES_IT_EMAIL', CONTACTS['general'])
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"
@@ -296,6 +311,8 @@ ADMIN_SHELL_ONLY_DEBUG_MODE = False
 OAUTH2_PROVIDER = {
     "PKCE_REQUIRED": False
 }
+
+IMPORT_EXPORT_EXPORT_PERMISSION_CODE = 'view'
 
 DEFAULT_DEPOTLIST_GENERATORS = ['mehalsgmues.utils.depot_list.mag_depot_list_generation']
 
