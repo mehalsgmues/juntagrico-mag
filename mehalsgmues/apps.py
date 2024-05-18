@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 class MehAlsGmuesConfig(AppConfig):
     name = 'mehalsgmues'
     verbose_name = "meh als gmües"
+    default_auto_field = 'django.db.models.AutoField'
 
     def ready(self):
         # connect signals
