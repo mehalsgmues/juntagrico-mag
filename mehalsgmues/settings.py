@@ -223,9 +223,9 @@ CONTACTS = {
     'general': "info@mehalsgmues.ch",
     'for_members': "mitglied@mehalsgmues.ch",
     'for_subscription': "mitglied@mehalsgmues.ch",
+    'for_shares': "buchhaltung@mehalsgmues.ch",
 }
-IT_EMAIL = os.environ.get('MEHALSGMUES_IT_EMAIL', CONTACTS['general'])
-MEMBER_ADMIN_EMAIL = os.environ.get('MEHALSGMUES_MEMBER_ADMIN_EMAIL', CONTACTS['general'])
+CONTACTS['technical'] = os.environ.get('MEHALSGMUES_IT_EMAIL', CONTACTS['general'])
 BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"
