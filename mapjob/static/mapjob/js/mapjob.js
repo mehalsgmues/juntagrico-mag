@@ -17,7 +17,10 @@ function onEachFeature(feature, layer) {
 }
 
 $(document).ready(function () {
-    $('.map-container').each(function() {
+    let table = $("#filter-table").DataTable({"ordering": true});
+    $("#email-sender").EmailButton(table)
+
+    $('.map-container').each(function () {
         let map = L.map(this, {fullscreenControl: true}).setView([48, 2], 11);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
@@ -50,7 +53,8 @@ $(document).ready(function () {
                                 }
                                 try {
                                     return {color: feature.properties.color}
-                                } catch {}
+                                } catch {
+                                }
                                 return {}
                             }
                         }).addTo(map)
@@ -66,7 +70,11 @@ $(document).ready(function () {
                 L.control.Legend({
                     position: "topright",
                     title: "Legende",
-                    legends: Object.values(map_job_data.legend).map((x) => ({label: x[0], type: "rectangle", color: x[1]}))
+                    legends: Object.values(map_job_data.legend).map((x) => ({
+                        label: x[0],
+                        type: "rectangle",
+                        color: x[1]
+                    }))
                 }).addTo(map);
             }
         }
