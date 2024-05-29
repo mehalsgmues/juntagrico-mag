@@ -1,9 +1,9 @@
 {% load juntagrico.depot_extras %}
 {% load i18n %}
 {% load juntagrico.config %}
-<table cellpadding="2" cellspacing="0" repeat="5">
+<table cellpadding="2" cellspacing="0" repeat="3">
     <tr>
-        <th colspan="{{ depot.delivery_dates|count|add:3 }}" class="horz-left">{% comment %}#TODO: this must be adjusted, if products are added{% endcomment %}
+        <th colspan="{{ depot.delivery_dates|count|add:2 }}" class="horz-left">{#TODO: this must be adjusted, if products are added #}
             <h2 class="depot">{{ depot.name }}</h2>
             <h3 class="depotaddr">{{ depot.location.address }} ({% trans "Kontakt" %}: {{ depot.contact }})</h3>
             <br />
