@@ -1,12 +1,21 @@
 {% extends "createsubscription/summary.html" %}
+{% load juntagrico.snippets %}
 {% load i18n %}
 {% load juntagrico.config %}
 {% load crispy_forms_tags %}
 {% block depot %}
-    <h4>{% trans "Depot" %} <a href="{% url 'cs-depot' %}" class="edit"><i class="fas fa-pen"></i></a></h4>
+    <h4>
+        {% if depot.id == 4 %}{% trans "Lieferung" %}{% else %}{% trans "Depot" %}{% endif %}
+        <a href="{% url 'cs-depot' %}" class="edit"><i class="fas fa-pen"></i></a>
+    </h4>
     <p>{{ depot.name }}
+        {% depot_fee depot subscriptions "<br><strong>" "</strong>" %}
         {# bending the rules of physics here #}
-        <br>{% trans 'Abholung jeweils am' %} Freitag und Samstag
+        {% if depot.id == 4 %}
+            <br>{% trans 'Lieferung jeweils am' %} Samstag
+        {% else %}
+            <br>{% trans 'Abholung jeweils am' %} Freitag und Samstag
+        {% endif %}
         {% if depot.location.address %}<br>{{ depot.location.address_html|safe }}{% endif %}
     </p>
 {% endblock %}
