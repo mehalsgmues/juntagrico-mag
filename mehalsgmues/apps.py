@@ -42,11 +42,11 @@ class MehAlsGmuesConfig(AppConfig):
 
         @admin.display(
             boolean=True,
-            ordering=Exists(Share.objects.filter(member=OuterRef('pk')).exclude(payback_date__lt=date.today())),
+            ordering=Exists(Share.objects.filter(member=OuterRef('pk')).exclude(termination_date__lt=date.today())),
             description='Mitglied'
         )
         def is_member(self, obj):
-            return obj.share_set.exclude(payback_date__lt=date.today()).exists()
+            return obj.share_set.exclude(termination_date__lt=date.today()).exists()
 
         from juntagrico.admin import MemberAdminWithShares
         from mehalsgmues.admin import IsMemberFilter
