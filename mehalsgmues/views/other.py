@@ -11,6 +11,7 @@ from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.member import Member
+from juntagrico.util.management_list import prefetch_for_list
 from juntagrico.view_decorators import any_permission_required
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -63,8 +64,11 @@ def ajax_notifications(request):
 
 @any_permission_required('juntagrico.can_filter_members', 'juntagrico.change_member')
 def filters_active(request):
+    members = Member.objects.exclude(share=None).filter(
+        Q(share__termination_date__gte=date.today()) | Q(share__termination_date__isnull=True)).distinct()
+    members = prefetch_for_list(members)
     renderdict = {
-        'members': Member.objects.exclude(share=None).filter(Q(share__termination_date__gte=date.today()) | Q(share__termination_date__isnull=True)).distinct(),
+        'members': members,
         'title': 'Alle Mitglieder'
     }
     return render(request, 'management_lists/members.html', renderdict)
