@@ -5,9 +5,9 @@ name: juntagrico-ci
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master, release_* ]
+    branches: [ main, release/** ]
 
 jobs:
   build:
