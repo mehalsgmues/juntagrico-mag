@@ -70,8 +70,11 @@ td {
 }
 
 .namecol {
-    width: 14cm;
     text-align: left;
+}
+
+.sizecol {
+    width: 1.2cm;
 }
 
 .checkboxcol {

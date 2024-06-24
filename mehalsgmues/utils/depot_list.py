@@ -22,11 +22,13 @@ def mag_depot_list_generation(*args, days=0, force=False, **options):
         return list(get_delivery_dates_of_month(depot.weekday - 1, date))
 
     Depot.delivery_dates = delivery_dates
+    products = SubscriptionProductDao.get_all_for_depot_list()
 
     depot_dict = {
         'subscriptions': Subscription.objects.active_on(date).order_by('primary_member__first_name',
                                                                        'primary_member__last_name'),
-        'products': SubscriptionProductDao.get_all_for_depot_list(),
+        'products': products,
+        'count_sizes': sum(p.sizes_for_depot_list.count() for p in products),
         'depots': DepotDao.all_depots_for_list(),
         'date': date,
         'tours': Tour.objects.filter(visible_on_list=True),
