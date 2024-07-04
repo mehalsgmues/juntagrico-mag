@@ -115,9 +115,10 @@ class ActivityProfile(models.Model):
 @receiver(post_save, sender=ActivityArea)
 @receiver(m2m_changed, sender=ActivityArea.members.through)
 def clear_pdf(sender, instance, **kwargs):
-    if isinstance(instance, ActivityArea):
-        if not hasattr(instance, 'profile'):
-            return
-        instance = instance.profile
-    if isinstance(instance, ActivityProfile):
-        default_storage.delete(instance.output_file)
+    if not kwargs.get('raw', False):
+        if isinstance(instance, ActivityArea):
+            if not hasattr(instance, 'profile'):
+                return
+            instance = instance.profile
+        if isinstance(instance, ActivityProfile):
+            default_storage.delete(instance.output_file)
