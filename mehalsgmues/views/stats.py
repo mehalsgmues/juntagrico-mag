@@ -79,7 +79,7 @@ def stats_export(request):
 
     # data
     for row, subscription in enumerate(assignments_by_subscription(start_date, end_date, activity_area), 2):
-        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].recipients]))
+        ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].current_members]))
         ws1.cell(row, 2, subscription['assignments'])
         ws1.cell(row, 3, subscription['subscription'].totalsize)
 
