@@ -34,7 +34,9 @@
                     <td class="top-border left-border"></td>
                 {% endfor %}
             {% endfor %}
-            <td class="namecol top-border left-border right-border horz-left">{{ sub.recipients_display_name }}</td>
+            <td class="namecol top-border left-border right-border horz-left">
+                {% include "juntagrico/snippets/subscription/recipients.html" with subscription=sub %}
+            </td>
         </tr>
     {% endfor %}
     </table>
