@@ -57,6 +57,7 @@ def nextcloud_profile(request):
     membergroups = request.user.groups.values_list('name', flat=True)
     grouplist = list(membergroups)
     response = JsonResponse({'id': member.id,
+                             'unique': f'mag-{member.id}',
                              'email': member.email,
                              'firstName': member.first_name,
                              'lastName': member.last_name,
