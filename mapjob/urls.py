@@ -21,4 +21,8 @@ urlpatterns = [
     path('pickup/', views.member.actions.pickup, name='pickup'),
     path('return/', views.member.actions.return_remaining, name='return'),
     path('complete/all/', views.member.actions.complete, name='complete'),
+
+    # admin
+    path('admin/mapjob/import/', views.admin.import_csv, name='import'),
+    path('admin/mapjob/select_entries/', views.admin.select_entries, name='select_entries'),
 ]

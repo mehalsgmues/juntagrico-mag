@@ -139,3 +139,22 @@ class ReturnForm(forms.Form):
         return_location = self.cleaned_data['return_location']
         return_location.available_flyers += self.cleaned_data['amount']
         return_location.save()
+
+
+class CSVUploadForm(forms.Form):
+    csv_file = forms.FileField(label='Select a CSV file')
+
+
+class CSVSelectionForm(forms.ModelForm):
+    class Meta:
+        model = MapJob
+        fields = ['type', 'slots', 'infinite_slots', 'time', 'multiplier', 'pinned',
+                  'additional_description', 'duration_override']
+
+    def __init__(self, *args, **kwargs):
+        csv_data = kwargs.pop('csv_data', [])
+        super().__init__(*args, **kwargs)
+
+        for i, row in enumerate(csv_data):
+            self.fields[f'select_{i}'] = forms.BooleanField(required=False, label=str(row[1]))
+            # Add additional fields to map CSV data to model fields

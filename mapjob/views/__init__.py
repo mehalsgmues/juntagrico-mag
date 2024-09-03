@@ -8,7 +8,7 @@ from juntagrico.entity.jobs import JobType
 from mapjob.models import MapJob
 from mapjob.utils import get_map_data
 
-from . import member  # noqa: F401
+from . import member, admin  # noqa: F401
 
 
 @staff_member_required
