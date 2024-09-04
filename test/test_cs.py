@@ -78,6 +78,7 @@ class CreateSubscriptionTests(JuntagricoTestCase):
             {
                 'amount[1]': 1,
                 'amount[2]': 0,
+                'amount[3]': 0,
             }
         )
         self.assertRedirects(response, reverse('cs-depot'))
