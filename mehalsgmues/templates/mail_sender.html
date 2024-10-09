@@ -1,0 +1,7 @@
+{% extends "mail_sender.html" %}
+{% load static %}
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'external/plugin.min.js' %}">
+    </script>
+{% endblock %}
