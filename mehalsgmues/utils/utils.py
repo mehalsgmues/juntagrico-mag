@@ -11,7 +11,6 @@ from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.share import Share
 from juntagrico.entity.subs import SubscriptionPart
 from juntagrico.util.models import q_cancelled, q_deactivated
-from requests.exceptions import ConnectTimeout
 
 from mehalsgmues import settings
 
@@ -169,7 +168,7 @@ def forum_notifications(user):
     }
     try:
         response = requests.get(method, headers=headers)
-    except (ConnectionError, ConnectTimeout):
+    except (requests.ConnectionError, requests.ConnectTimeout):
         return None
     if response:
         try:
@@ -182,7 +181,7 @@ def forum_notifications(user):
         headers['Api-Username'] = username
         try:
             response = requests.get(method, headers=headers)
-        except (ConnectionError, ConnectTimeout):
+        except (requests.ConnectionError, requests.ConnectTimeout):
             return None
         if response:
             try:
