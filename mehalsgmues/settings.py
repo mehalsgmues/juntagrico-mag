@@ -321,3 +321,6 @@ BIKE_CODE_HOST = os.environ.get('BIKE_CODE_HOST')
 BIKE_CODE_USERNAME = os.environ.get('BIKE_CODE_USERNAME')
 BIKE_CODE_PASSWORD = os.environ.get('BIKE_CODE_PASSWORD')
 BIKE_CODE_JOB_TYPE = 22
+
+WP_USER = os.environ.get('WP_USER')
+WP_PASSWORD = os.environ.get('WP_PASSWORD')
