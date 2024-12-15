@@ -53,4 +53,4 @@ class MehAlsGmuesConfig(AppConfig):
         MemberAdminWithShares.is_member = is_member
         MemberAdminWithShares.list_display[-1] = 'is_member'
         MemberAdminWithShares.list_filter.insert(0, IsMemberFilter)
-        del MemberAdminWithShares.fieldsets[-4]  # remove status
+        del MemberAdminWithShares.fieldsets[-3]  # remove status
