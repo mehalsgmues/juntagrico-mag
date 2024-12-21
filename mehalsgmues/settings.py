@@ -281,14 +281,20 @@ SHARE_PROGRESS_BASELINE = os.environ.get('SHARE_PROGRESS_BASELINE')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {'format': '%(levelname)s [%(asctime)s] %(message)s'}
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
     },
 }
 
