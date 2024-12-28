@@ -25,7 +25,7 @@
         <div class="alert alert-success">Du hast dich erfolgreich für diesen Einsatz angemeldet.<br>
             Wenn du willst, kannst du unten noch weitere Personen anmelden, die mit dir an den Einsatz kommen.<br>
             Hast du dich zu oft eingetragen?<br>
-            <a href="mailto:{{ job.get_emails|join:',' }}?cc={% email_of 157 %}&subject=Einsatzabmeldung:%20{{ job.type.get_name|urlencode }}%20{{ job.start_time|date:'SHORT_DATE_FORMAT'|urlencode }}">
+            <a href="mailto:{{ job.get_emails|join:',' }}?cc={% contacts "technical" %}&subject=Einsatzabmeldung:%20{{ job.type.get_name|urlencode }}%20{{ job.start_time|date:'SHORT_DATE_FORMAT'|urlencode }}">
                 Melde das gleich per E-Mail.
             </a>
         </div>

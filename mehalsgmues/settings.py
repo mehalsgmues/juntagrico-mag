@@ -282,7 +282,7 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'simple': {'format': '%(levelname)s [%(asctime)s] %(message)s'}
+        'simple': {'format': '[%(asctime)s] %(levelname)s %(message)s'}
     },
     'handlers': {
         'console': {
