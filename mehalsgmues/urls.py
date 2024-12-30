@@ -12,7 +12,7 @@ urlpatterns = [
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
 
     # member list override
-    path('my/filters/active', other.filters_active, name='filters-active'),
+    path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
 
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),

@@ -14,6 +14,11 @@ class MehAlsGmuesConfig(AppConfig):
         # connect signals
         from . import signals  # noqa: F401
 
+        # add export resources
+        from juntagrico.admins.subscription_admin import SubscriptionAdmin
+        from mehalsgmues.resources.subscription import SubscriptionByTypeResource
+        SubscriptionAdmin.resource_classes.append(SubscriptionByTypeResource)
+
         # godparent tuning
         from juntagrico_godparent.forms import GodparentForm
         GodparentForm.append_help_texts = dict(

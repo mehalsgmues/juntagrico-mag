@@ -1,20 +1,7 @@
 {% extends "juntagrico/menu/admin.html" %}
 {% load util %}
 {% load i18n %}
-{% block member_sub %}
-    {% if perms.juntagrico.change_member or perms.juntagrico.can_filter_members %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'filters-active' %}">
-                {% blocktrans %}Mitglieder{% endblocktrans %}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'filters' %}">
-                {% blocktrans %}Alle{% endblocktrans %}
-            </a>
-        </li>
-    {% endif %}
-{% endblock %}
+
 {% block extend %}
     {{ block.super }}
     {% if request.user.is_staff %}
