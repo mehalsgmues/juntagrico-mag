@@ -233,6 +233,7 @@ STYLES = {'static': ['css/mehalsgmues.css']}
 SCRIPTS = {'template': 'mag/js/page.html'}
 EXTRA_SUB_INFO = ""
 ACTIVITY_AREA_INFO = ""
+ENABLE_SHARES = True
 SHARE_PRICE = "250"
 PROMOTED_JOB_TYPES = []
 PROMOTED_JOBS_AMOUNT = 20
