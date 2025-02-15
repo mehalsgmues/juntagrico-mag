@@ -28,9 +28,9 @@ class IsMemberFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'yes':
-            return queryset.exclude(share=None).filter(Q(share__payback_date__gte=date.today()) | Q(share__payback_date__isnull=True)).distinct()
+            return queryset.exclude(share=None).filter(Q(share__termination_date__gte=date.today()) | Q(share__termination_date__isnull=True)).distinct()
         if self.value() == 'no':
-            return queryset.filter(Q(share__payback_date__lt=date.today()) | Q(share=None)).distinct()
+            return queryset.filter(Q(share__termination_date__lt=date.today()) | Q(share=None)).distinct()
 
 
 class LogEntryAdmin(admin.ModelAdmin):
