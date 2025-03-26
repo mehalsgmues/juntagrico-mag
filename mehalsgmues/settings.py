@@ -67,7 +67,7 @@ ROOT_URLCONF = 'mehalsgmues.urls'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('JUNTAGRICO_DATABASE_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME', 'mehalsgmues.db'),
+        'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME', 'mehalsgmues.1.7.0a.db'),
         'USER': os.environ.get('JUNTAGRICO_DATABASE_USER'),  # 'junatagrico',
         # The following settings are not used with sqlite3:
         'PASSWORD': os.environ.get('JUNTAGRICO_DATABASE_PASSWORD'),  # 'junatagrico',
@@ -269,10 +269,6 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
-
-SHARE_PROGRESS_GOAL = os.environ.get('SHARE_PROGRESS_GOAL')
-SHARE_PROGRESS_OFFSET = os.environ.get('SHARE_PROGRESS_OFFSET')
-SHARE_PROGRESS_BASELINE = os.environ.get('SHARE_PROGRESS_BASELINE')
 
 LOGGING = {
     'version': 1,

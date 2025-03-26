@@ -3,15 +3,10 @@ from django.utils.safestring import mark_safe
 from juntagrico.entity.member import Member
 
 from mapjob.models import MapJob
-from mehalsgmues.utils.utils import draw_share_progress, get_available_subscriptions
+from mehalsgmues.utils.utils import get_available_subscriptions
 from mehalsgmues.utils.news import get_recent_posts
 
 register = template.Library()
-
-
-@register.simple_tag
-def share_progress():
-    return mark_safe(draw_share_progress())
 
 
 @register.simple_tag

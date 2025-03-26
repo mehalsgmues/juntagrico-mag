@@ -55,14 +55,8 @@ urlpatterns = [
     # activity profile url
     path('activityprofile/', include('activityprofile.urls')),
 
-    # share progress
-    path('shares/preview/', home_widgets.share_progress_preview, name='shares-preview'),
-
     # keep working
     path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
-
-    # BEP
-    path('bep/', home_widgets.bep, name='bep'),
 
     # ajax
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
