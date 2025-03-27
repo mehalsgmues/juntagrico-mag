@@ -15,15 +15,6 @@ def news():
 
 
 @register.simple_tag
-def covid_info():
-    return mark_safe('<div class="alert alert-success">Die bisher geltenden Corona-Massnahmen wurden wie in der '
-                     'ganzen Schweiz auch bei meh als gmues grösstenteils ausser Kraft gesetzt. Es verbleiben die '
-                     '<a href="https://mehalsgmues.ch/corona" target="_blank">Umgangsrichtlinien</a>.<br>'
-                     'Bleibt umsichtig und freundlich zueinander :-)</div>'
-                     )
-
-
-@register.simple_tag
 def available_subscriptions():
     return get_available_subscriptions()
 
