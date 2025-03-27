@@ -3,15 +3,18 @@
 {% load static %}
 {% load juntagrico.common %}
 {% load juntagrico.config %}
+
 {% block styles %}
     {{ block.super }}
     <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
 {% endblock %}
+
 {% block page_title %}
     <h3>
         {{ area.name }}
     </h3>
 {% endblock %}
+
 {% block content %}
     {% include "activityprofile/snippets/snippet_activity_profile.html" %}
     <div class="row mb-3">

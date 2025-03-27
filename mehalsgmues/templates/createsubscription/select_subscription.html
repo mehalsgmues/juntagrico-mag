@@ -1,26 +1,14 @@
 {% extends "createsubscription/select_subscription.html" %}
 {% load i18n %}
-{% load static %}
 {% load juntagrico.config %}
-{% load crispy_forms_tags %}
-{% block all_page_title %}
-    {% vocabulary "subscription_pl" as v_subscription_pl %}
-    <div class="page-title offset-md-2 col-md-8">
-        <h3>
-            {# changed text here #}
-            {% blocktrans %}Wähle deine {{ v_subscription_pl }}{% endblocktrans %}
-        </h3>
-    </div>
+
+{% block title %}
+    {% blocktrans with v_subscription_pl=vocabulary.subscription_pl %}Wähle deine {{ v_subscription_pl }}{% endblocktrans %}
 {% endblock %}
-{% block allcontent %}
+
+{% block intro %}
     {% config "share_price" as c_share_price %}
     {% config "currency" as c_currency %}
-    {# added text here #}
-        <div class="offset-md-2 col-md-8">
-            Pro EAT benötigts Du 1 Anteilschein (je {{ c_currency }} {{ c_share_price }})
-        </div>
-    </div>
-    <div class="allcontent row">
-    {# until here here #}
+    Pro EAT benötigst Du 1 Anteilschein (je {{ c_currency }} {{ c_share_price }})
     {{ block.super }}
 {% endblock %}

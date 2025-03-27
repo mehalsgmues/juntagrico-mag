@@ -1,41 +1,9 @@
 {% extends "createsubscription/select_depot.html" %}
-{% load juntagrico.snippets %}
 {% load i18n %}
-{% load static %}
 {% load juntagrico.config %}
-{% block allcontent %}
-    {% vocabulary "subscription" as v_subscription %}
-    {% vocabulary "depot" as v_depot %}
-    <div id="depot_container" class="offset-md-2 col-md-8">
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="depot-select form-group row">
-                <label class="col-md-3" for="depot">
-                    {% vocabulary "depot" %}
-                </label>
-                <div class="col-md-9">
-                    <label for="depot">
-                        {# changed text here #}
-                        {% blocktrans %}Wähle 1 {{ v_depot }} als Abholort für dein Gemüse aus oder lass es dir nach Hause liefern.{% endblocktrans %}
-                    </label>
-                    {% include "juntagrico/snippets/depot/select.html" %}
-                </div>
-            </div>
-            {% include "juntagrico/snippets/depot/descriptions.html" %}
-            <div class="depot-map form-group row">
-                <div class="offset-md-3 col-md-9" id="map-container">
-                </div>
-            </div>
-            <div class="form-actions row">
-                <div class="offset-md-3 col-md-9">
-                    <button type="submit" class="btn btn-success">
-                        {% trans "Weiter" %}
-                    </button>
-                    <a href="{% url 'cs-cancel' %}" class="btn">
-                        {% trans "Abbrechen" %}
-                    </a>
-                </div>
-            </div>
-        </form>
-    </div>
+
+{% block label %}
+    {% blocktrans trimmed with v_depot=vocabulary.depot v_subscription=vocabulary.subscription %}
+        Wähle 1 {{ v_depot }} als {{ v_subscription }}-Abholort aus.
+    {% endblocktrans %}
 {% endblock %}

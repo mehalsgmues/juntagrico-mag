@@ -49,6 +49,8 @@ class TemplateHeader:
 
     @cached_property
     def extends_path(self):
+        if self.extends is None:
+            return None
         return self.EXTENDS_TAG.search(self.extends).group(1).strip()
 
     def append(self, line):
@@ -280,7 +282,7 @@ class Project:
             logger.info(f"Ignoring template '{file_path}', not found in project")
             return
 
-        # only compare overwritten blocks
+        # only compare overwritten blocks if template extends itself
         extends = my_version.headers.extends_path
         if extends == '"' + file_path + '"':  # TODO: deal with relative paths
             logger.debug(f"template '{file_path}', extends itself, only compare blocks")
@@ -299,6 +301,7 @@ class Project:
 
 
 def main(template_path):
+    # TODO: deal with templates from add-ons and non-juntagrico packages
     project = Project(
         host="https://github.com",
         owner="juntagrico",
