@@ -118,6 +118,10 @@ h1, h2, h3, h4, h5, h6, .main-menu {
     color: white;
 }
 
+#filter-table_wrapper > div.justify-content-between {
+    background-image: url(/static/img/mag_back.jpg);
+}
+
 /* collapse symbol on job */
 td.details-control, tr.shown td.details-control {
     color: #4c9434;

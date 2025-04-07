@@ -10,12 +10,7 @@
     </h4>
     <p>{{ depot.name }}
         {% depot_fee depot subscriptions "<br><strong>" "</strong>" %}
-        {# bending the rules of physics here #}
-        {% if depot.id == 4 %}
-            <br>{% trans 'Lieferung jeweils am' %} Samstag
-        {% else %}
-            <br>{% trans 'Abholung jeweils am' %} Freitag und Samstag
-        {% endif %}
+        <br>{% trans 'Abholung jeweils am' %} {{ depot.pickup_display }}
         {% if depot.location.address %}<br>{{ depot.location.address_html|safe }}{% endif %}
     </p>
 {% endblock %}

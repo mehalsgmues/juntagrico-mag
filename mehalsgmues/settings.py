@@ -64,24 +64,18 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'mehalsgmues.urls'
 
-if os.environ.get('DATABASE_URL'):  # on heroku
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('JUNTAGRICO_DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME', 'mehalsgmues.1.7.0a.db'),
+        'USER': os.environ.get('JUNTAGRICO_DATABASE_USER'),  # 'junatagrico',
+        # The following settings are not used with sqlite3:
+        'PASSWORD': os.environ.get('JUNTAGRICO_DATABASE_PASSWORD'),  # 'junatagrico',
+        # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'HOST': os.environ.get('JUNTAGRICO_DATABASE_HOST'),  # 'localhost',
+        'PORT': os.environ.get('JUNTAGRICO_DATABASE_PORT', False),  # '', # Set to empty string for default.
     }
-else:  # local settings
-    DATABASES = {
-        'default': {
-            'ENGINE': os.environ.get('JUNTAGRICO_DATABASE_ENGINE', 'django.db.backends.sqlite3'),
-            'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME', 'mehalsgmues.db'),
-            'USER': os.environ.get('JUNTAGRICO_DATABASE_USER'),  # 'junatagrico',
-            # The following settings are not used with sqlite3:
-            'PASSWORD': os.environ.get('JUNTAGRICO_DATABASE_PASSWORD'),  # 'junatagrico',
-            # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-            'HOST': os.environ.get('JUNTAGRICO_DATABASE_HOST'),  # 'localhost',
-            'PORT': os.environ.get('JUNTAGRICO_DATABASE_PORT', False),  # '', # Set to empty string for default.
-        }
-    }
+}
 
 TEMPLATES = [
     {
@@ -97,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
+                'juntagrico.context_processors.vocabulary',
             ],
             'debug': DEBUG
         },
@@ -274,10 +269,6 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
-
-SHARE_PROGRESS_GOAL = os.environ.get('SHARE_PROGRESS_GOAL')
-SHARE_PROGRESS_OFFSET = os.environ.get('SHARE_PROGRESS_OFFSET')
-SHARE_PROGRESS_BASELINE = os.environ.get('SHARE_PROGRESS_BASELINE')
 
 LOGGING = {
     'version': 1,

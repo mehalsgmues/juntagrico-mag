@@ -12,17 +12,20 @@ from juntagrico.util.models import q_isactive
 
 
 class SubscriptionByTypeResource(ModQuerysetModelResource):
-    members = Field('recipients_names')
+    members = Field('current_members')
     email = Field('primary_member__email')
     total = Field('price', widget=DecimalWidget())
 
-    def get_fields(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # create a field for each type dynamically
         self.fields.update({
-            'EAT ' + str(subs_type.id): Field(f'type{subs_type.id}_count', 'EAT ' + str(subs_type.price))
+            'EAT ' + subs_type.display_name: Field(f'type{subs_type.id}_count', 'EAT ' + str(subs_type.price))
             for subs_type in SubscriptionTypeDao.get_all()
         })
-        return super().get_fields()
+
+    def dehydrate_members(self, subscription):
+        return ', '.join(str(m) for m in subscription.current_members)
 
     def update_queryset(self, queryset):
         today = datetime.date.today()
