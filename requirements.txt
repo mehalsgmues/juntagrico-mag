@@ -1,7 +1,6 @@
 vobject
 gunicorn==23.0.0
-# juntagrico~=1.6.0
-git+https://github.com/juntagrico/juntagrico.git@releases/1.7
+juntagrico~=1.7.0
 juntagrico-pg~=1.6.0
 juntagrico-godparent~=1.6.0
 juntagrico-assignment-request~=1.6.2
