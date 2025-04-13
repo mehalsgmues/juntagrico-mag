@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from juntagrico.admins.filters import FutureDateTimeFilter
 
 from juntagrico.admins.job_admin import JobAdmin
@@ -38,6 +38,13 @@ class CopyMapJobForm(forms.Form):
 
 @admin.register(MapJob)
 class MapJobAdmin(JobAdmin):
+    fieldsets = [
+        (None, { 'fields': JobAdmin.fields, },),
+        (_('Flyer'),
+            {'fields': ['geo_area', 'progress', 'pickup_location', 'used_flyers'],},
+        ),
+    ]
+    fields = None
     actions = ['copy_map_job', 'set_complete', 'send_email']
     list_filter = ('pickup_location', 'progress',
                    ('type', admin.RelatedOnlyFieldListFilter), ('time', FutureDateTimeFilter))
