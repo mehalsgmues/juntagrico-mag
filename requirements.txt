@@ -1,7 +1,7 @@
 vobject
 gunicorn==23.0.0
 juntagrico~=1.7.0
-juntagrico-pg~=1.6.0
+juntagrico-pg~=1.7.0
 juntagrico-godparent~=1.7.0
 juntagrico-assignment-request~=1.7.0
 juntagrico-calendar~=1.6.0
@@ -14,6 +14,6 @@ django-qr-code==2.2.0
 django-multiselectfield==0.1.12
 emoji==1.4.2
 git+https://github.com/pascalfree/django-url-shortener
-requests==2.31.0
+requests==2.32.0
 django-admin-shell==2.0.1
 IMAPClient==3.0.1
