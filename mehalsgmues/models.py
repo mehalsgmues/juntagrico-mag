@@ -1,6 +1,8 @@
 from django.db import models
+from django.db.models.functions import Ceil
 from django.utils.translation import gettext_lazy as _
 from juntagrico.entity.jobs import Job
+from juntagrico.queryset.subscription import SubscriptionQuerySet
 
 
 class AccessInformation(models.Model):
@@ -19,3 +21,11 @@ class AccessInformation(models.Model):
             models.UniqueConstraint(
                 fields=['job', 'name'], name='unique job name')
         ]
+
+
+# Override rounding of assignments
+def my_rounding(number):
+    return Ceil(number*2)/2
+
+
+SubscriptionQuerySet._assignment_rounding = staticmethod(my_rounding)
