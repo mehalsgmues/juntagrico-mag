@@ -44,7 +44,11 @@ a:hover, a:focus {
 
 html, body {
     font-family: "Oxygen", monospace;
-	background-image:  url(/static/img/mag_back.jpg);
+	background-image: url(/static/img/mag_back.jpg);
+}
+
+#calendar-toolbar {
+    background-image: url(/static/img/mag_back.jpg);
 }
 
 html {

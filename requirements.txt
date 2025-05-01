@@ -5,7 +5,8 @@ git+https://github.com/juntagrico/juntagrico@mag
 juntagrico-pg~=1.7.0
 juntagrico-godparent~=1.7.0
 juntagrico-assignment-request~=1.7.0
-juntagrico-calendar~=1.6.0
+# juntagrico-calendar~=1.6.0
+git+https://github.com/mehalsgmues/juntagrico_calendar@new
 psycopg>=3.1.8
 openpyxl==3.0.7
 django-oauth-toolkit~=2.2.0
