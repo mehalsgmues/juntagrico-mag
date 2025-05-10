@@ -182,6 +182,7 @@ LOCALE_PATHS = ('locale',)
 
 IMPERSONATE = {
     'REDIRECT_URL': '/my/profile',
+    'URI_EXCLUSIONS': (,),
 }
 
 LOGIN_REDIRECT_URL = "/my/home"
