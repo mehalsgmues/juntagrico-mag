@@ -1,6 +1,7 @@
 {% extends "home.html" %}
 {% load i18n %}
 {% load mag_widgets %}
+
 {% block content %}
     <h4>
         <a href="#jobs">{% trans "Zu den Einsätzen" %} &darr;</a>
@@ -15,6 +16,23 @@
                 <a href="{% url "mapjob:member_dashboard" %}" class="btn btn-primary">Deine offenen Flyereinsätze ansehen</a>
             </div>
         </div>
+    {% else %}
+        {% load mapjob %}
+        {% job_map_data as map_job_data %}
+        {% if map_job_data.data %}
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2 id="mapjobs">
+                        {% trans "Flyereinsätze" %}
+                    </h2>
+                    <p>Es gibt noch offene Flyereinsätze. Diese kannst du selbständig in deinen Zeitplan integrieren.</p>
+                    <a href="{% url "mapjob:member_dashboard" %}" class="btn btn-primary">Jetzt Flyergebiete reservieren</a>
+                </div>
+            </div>
+
+            {{ map_job_data|json_script:'map_job_data' }}
+            {% include "mapjob/snippets/map/container.html" %}
+        {% endif %}
     {% endif %}
     {#% include "mag/snippets/price_change.html" %#}
     <div class="row mb-3">
@@ -22,5 +40,15 @@
             {% news %}
         </div>
     </div>
+    {{ block.super }}
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+    {% include 'mapjob/snippets/map/styles.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {% include 'mapjob/snippets/map/scripts.html' %}
     {{ block.super }}
 {% endblock %}
