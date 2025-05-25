@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import signals
+from django.utils import timezone
 from juntagrico.config import Config
 from juntagrico.entity.jobs import RecuringJob, Assignment
 from django.utils.translation import gettext_lazy as _
@@ -43,6 +44,14 @@ class MapJob(RecuringJob):
     used_flyers = models.PositiveSmallIntegerField(_('Verteilte Flyer'), default=0)
 
     objects = MapJobQueryset.as_manager()
+
+    def start_time(self):
+        # start is always in the future.
+        return timezone.now() + timezone.timedelta(hours=1)
+
+    def end_time(self):
+        # Make end time relative to start_time. This hides the "job is over"-banner
+        return self.start_time() + timezone.timedelta(hours=self.duration)
 
     def pickup_location_form(self):
         from .forms import PickupLocationForm
