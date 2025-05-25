@@ -1,17 +1,11 @@
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from mapjob.models import MapJob
 
 
-def get_map_data(jobs, extra_colors=None):
-    job_geo = []
-    for map_job in jobs:
-        geo = map_job.geo_area
-        geo['properties'].update({
-            'id': map_job.id,
-            'status': map_job.progress,
-        })
-        job_geo.append(geo)
+def get_map_data(jobs, extra_colors=None, legend=True, urls=False):
+    result = {}
 
     colors = {
         MapJob.Progress.OPEN: "#ff0000",
@@ -21,12 +15,25 @@ def get_map_data(jobs, extra_colors=None):
     }
     colors.update(extra_colors or {})
 
-    legend = {
-        p: [p.label, colors[p]] for p in MapJob.Progress if p in colors
-    }
-    legend["default"] = [_("Andere"), "#000000"]
+    job_geo = []
+    for map_job in jobs:
+        geo = map_job.geo_area
+        geo['properties'].update({
+            'id': map_job.id,
+            'status': map_job.progress,
+        })
+        if not legend:
+            geo['properties']['color'] = colors[map_job.progress]
+        if urls:
+            geo['properties']['url'] = reverse('job', args=[map_job.id])
+        job_geo.append(geo)
 
-    return {
-        'data': job_geo,
-        'legend': legend
-    }
+    result['data'] = job_geo
+
+    if legend:
+        result['legend'] = {
+            p: [p.label, colors[p]] for p in MapJob.Progress if p in colors
+        }
+        result['legend']["default"] = [_("Andere"), "#000000"]
+
+    return result

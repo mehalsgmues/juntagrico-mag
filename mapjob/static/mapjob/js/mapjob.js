@@ -17,8 +17,10 @@ function onEachFeature(feature, layer) {
 }
 
 $(document).ready(function () {
-    let table = $("#filter-table").DataTable({"ordering": true});
-    $("#email-sender").EmailButton(table)
+    let table = $("#filter-table.map-job-table").DataTable({"ordering": true});
+    if (table) {
+        $("#email-sender").EmailButton(table)
+    }
 
     $('.map-container').each(function () {
         let map = L.map(this, {fullscreenControl: true}).setView([48, 2], 11);

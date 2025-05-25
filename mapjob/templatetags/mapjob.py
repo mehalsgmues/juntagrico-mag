@@ -1,5 +1,4 @@
 from django import template
-from django.utils.html import json_script
 
 from mapjob.models import MapJob
 from mapjob.utils import get_map_data
@@ -13,4 +12,4 @@ def is_map_job(obj):
 
 @register.simple_tag
 def job_map_data():
-    return json_script(get_map_data(MapJob.objects.recent()), 'map_job_data')
+    return get_map_data(MapJob.objects.active().undelivered().with_free_slots(), legend=False, urls=True)
