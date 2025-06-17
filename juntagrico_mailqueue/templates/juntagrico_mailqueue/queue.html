@@ -1,0 +1,112 @@
+{% extends "juntagrico/manage/base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+
+{% block page_title %}
+    <h3>
+        {% trans "E-Mails im Postausgang" %}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'mail-queue' %}" class="btn btn-info">
+        <i class="fa-solid fa-rotate"></i> {% trans "Aktualisieren" %}
+    </a>
+
+    <div id="outbox_queue" class="row mt-3 mb-6">
+        <div class="col-md-12">
+            <table class="list table">
+                <thead>
+                <tr>
+                    <th>
+                        {% trans "Verfasst am" %}
+                    </th>
+                    <th>
+                        {% trans "Betreff" %}
+                    </th>
+                    <th>
+                        {% trans "Von" %}
+                    </th>
+                    <th>
+                        {% trans "Anzahl EmpfängerInnen" %}
+                    </th>
+                    <th>
+                        {% trans "Status" %}
+                    </th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>
+                        {% trans "Verfasst am" %}
+                    </th>
+                    <th>
+                        {% trans "Betreff" %}
+                    </th>
+                    <th>
+                        {% trans "Von" %}
+                    </th>
+                    <th>
+                        {% trans "Anzahl EmpfängerInnen" %}
+                    </th>
+                    <th>
+                        {% trans "Status" %}
+                    </th>
+                </tr>
+                </tfoot>
+                <tbody>
+                {% for email in emails %}
+                    <tr>
+                        <td>
+                            {{ email.created_on }}
+                        </td>
+                        <td>
+                            {{ email.subject }}
+                        </td>
+                        <td>
+                            {{ email.reply_to|default:email.from_email }}
+                        </td>
+                        <td>
+                            {{ email.recipients.count }}
+                        </td>
+                        <td>
+                            {% if email.failed %}
+                                <a href="#" class="text-danger" title="{{ email.last_error }}"
+                                   data-toggle="modal" data-target="#email_{{ email.id }}_error_modal">
+                                    {% trans "Fehler" %}
+                                </a>
+                                <div class="modal" id="email_{{ email.id }}_error_modal" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+                                                    Fehler beim Senden der E-Mail
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>{{ email.last_error }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Schliessen
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% trans "wartend" %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

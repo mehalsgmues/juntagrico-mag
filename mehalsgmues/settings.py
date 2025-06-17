@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
     #'juntagrico_polling',
+    'juntagrico_mailqueue',
     'juntagrico',
     'fontawesomefree',
     'django.contrib.auth',
@@ -142,6 +143,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'https://cloud.mehalsgmues.ch',
 )
+
+EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('JUNTAGRICO_EMAIL_USER')
