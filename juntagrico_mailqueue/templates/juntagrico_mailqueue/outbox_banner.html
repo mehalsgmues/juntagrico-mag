@@ -1,0 +1,26 @@
+{% load i18n %}
+{% if emails > 0 %}
+    <div class="alert alert-info">
+        {% blocktrans %}Es sind noch {{ emails }} E-Mail(s) an {{ recipients }} Person(en) im Postausgang.{% endblocktrans %}
+        <br>
+        <a href="{% url 'mail-queue' %}" class="btn btn-info">
+            {% if can_see_outbox %}
+                <i class="fa-solid fa-inbox"></i>
+                {% trans "Postausgang öffnen" %}
+            {% else %}
+                <i class="fa-solid fa-rotate"></i>
+                {% trans "Aktualisieren" %}
+            {% endif %}
+        </a>
+    </div>
+{% elif show_empty %}
+    <div class="alert alert-success">
+        {% blocktrans %}Der Postausgang ist leer.{% endblocktrans %}
+    </div>
+{% endif %}
+
+{% for error in errors %}
+    <div class="alert alert-danger">
+        {{ error.last_error }}
+    </div>
+{% endfor %}

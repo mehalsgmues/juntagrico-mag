@@ -1,0 +1,7 @@
+{% extends "mail_sender.html" %}
+{% load juntagrico_mailqueue.widgets %}
+
+{% block content %}
+    {% outbox_banner %}
+    {{ block.super }}
+{% endblock %}
