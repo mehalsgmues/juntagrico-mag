@@ -1,6 +1,10 @@
 import base64
 import json
+import logging
 from pathlib import Path
+
+
+logger = logging.getLogger(__name__)
 
 
 class AttachmentEncoder(json.JSONEncoder):
@@ -23,15 +27,14 @@ class AttachmentDecoder(json.JSONDecoder):
 class Lock:
     def __init__(self, file):
         self._file = file
-        self._lock = None
 
     def __enter__(self):
         try:
-            self._lock = open(self._file, 'x')
+            logger.debug(f'Acquiring Lock {self._file}')
+            open(self._file, 'x').close()
         except FileExistsError:
             raise RuntimeError('sendmails command is already running.')
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self._lock:
-            self._lock.close()
+        logger.debug(f'Releasing Lock {self._file}')
         Path(self._file).unlink()
