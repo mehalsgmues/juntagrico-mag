@@ -41,6 +41,7 @@ class Lock:
                 self.renew()
             else:
                 raise RuntimeError('sendmails command is already running.')
+        return self
 
     def renew(self):
         # touch lock file to renew the timestamp
