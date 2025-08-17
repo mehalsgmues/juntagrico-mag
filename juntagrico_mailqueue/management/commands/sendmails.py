@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 for handler in logger.handlers:
                     handler.level = logging.DEBUG
 
-        with Lock('juntagrico_mailqueue.lock'):
+        with Lock('juntagrico_mailqueue.lock') as lock:
             # TODO: add option to use another backend
             with mail.get_connection(backend='django.core.mail.backends.smtp.EmailBackend') as connection:
                 count = 0
@@ -45,6 +45,7 @@ class Command(BaseCommand):
                             email.cc = []
                             email.save()
                         message.cc = []
+                        lock.renew()
 
                         # send individual emails for every bcc
                         for recipient in email.recipients.all():
@@ -57,6 +58,7 @@ class Command(BaseCommand):
                                 success = True
                                 # cleanup processed recipients
                                 recipient.delete()
+                            lock.renew()
 
                         # clean up sent emails
                         if not email.recipients.exists():
