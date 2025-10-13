@@ -19,4 +19,3 @@ git+https://github.com/pascalfree/django-url-shortener
 requests==2.32.0
 django-admin-shell==2.0.1
 IMAPClient==3.0.1
-faker~=37.8.0
