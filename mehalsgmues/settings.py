@@ -304,7 +304,7 @@ MAILER_RICHTEXT_OPTIONS = {
 }
 
 # The goal for the number of standard subscrition equivalents
-SUBSCRIPTION_PROGRESS_GOAL = 280
+SUBSCRIPTION_PROGRESS_GOAL = 270
 # The price of one standard subscription
 EAT_EQUIVALENT_PRICE = 1200.0
 

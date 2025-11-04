@@ -144,7 +144,7 @@ def indexes(request):
     eat_equivalent_price = float(getattr(settings, "EAT_EQUIVALENT_PRICE", "1200") or "1200")
     num_eat_equivalent = float(active_parts.filter(
             type__price__gt=0).aggregate(total=Sum('type__price'))['total']) / eat_equivalent_price
-    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "280") or "280")
+    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "270") or "270")
     missing_eat = target_num_eat - num_eat_equivalent
 
     renderdict = dict(
