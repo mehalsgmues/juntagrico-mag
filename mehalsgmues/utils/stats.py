@@ -86,8 +86,8 @@ def get_eat_stats(active_parts):
     rotation = 1.8 * min(max(num_eat_equivalent - 200, 0), 100)
     return {
         'target_num_eat': target_num_eat,
-        'num_eat_equivalent': round(num_eat_equivalent, 1),
-        'missing_eat': round(missing_eat, 1),
+        'num_eat_equivalent': num_eat_equivalent,
+        'missing_eat': missing_eat,
         'rotation': int(rotation),
     }
 

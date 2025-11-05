@@ -7,7 +7,9 @@
             <img src="/static/img/EAT_zeiger.png" style="width: 135px; position: absolute; left: 53px; bottom: -10px; transform-origin: calc(100% - 35px) 50%; transform: rotate({{ rotation }}deg);" />
         </div>
         <div style="margin-top: 26px; font-size: 34px; font-weight: bold;">{{ num_eat_equivalent|floatformat:1 }} / {{ target_num_eat }}</div>
-        <div style="margin-top: 10px;">{% blocktrans %}Wir haben diese Saison <b>bislang umgerechnet {{ num_eat_equivalent }} "EAT Standard"</b> verkauft. Um unser Saison-Ziel von {{ target_num_eat }} zu erreichen <b>sollten wir noch {{ missing_eat }} EAT an die Leute bringen.</b> {% endblocktrans %}</div>
+        <div style="margin-top: 10px;">{% blocktrans with n=num_eat_equivalent|floatformat:1 missing=missing_eat|floatformat:1 trimmed %}
+            Wir haben diese Saison <b>bislang umgerechnet {{ n }} "EAT Standard"</b> verkauft.
+            Um unser Saison-Ziel von {{ target_num_eat }} zu erreichen <b>sollten wir noch {{ missing }} EAT an die Leute bringen.</b> {% endblocktrans %}</div>
     </div>
 
 {% endblock %}
