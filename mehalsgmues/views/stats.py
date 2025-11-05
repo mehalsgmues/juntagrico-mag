@@ -5,7 +5,7 @@ from itertools import accumulate
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, Avg, Sum, F
+from django.db.models import Count, Avg, F
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.timezone import make_naive
@@ -22,7 +22,6 @@ from openpyxl import Workbook
 from mehalsgmues.forms import DateRangeForm, CompareForm
 from mehalsgmues.utils.stats import TemporalData, assignments_by, slots_by, assignments_by_subscription, members_with_assignments, get_assignment_progress, get_active_parts, get_eat_stats
 from mehalsgmues.utils.utils import date_from_get
-from mehalsgmues import settings
 
 
 @staff_member_required
@@ -137,18 +136,11 @@ def indexes(request):
         subscription_parts__in=active_parts
     ).annotate(num=Count('id')).order_by('-price')
 
-    eat_equivalent_price = float(getattr(settings, "EAT_EQUIVALENT_PRICE", "1200") or "1200")
-    num_eat_equivalent = float(active_parts.filter(
-            type__price__gt=0).aggregate(total=Sum('type__price'))['total']) / eat_equivalent_price
-    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "270") or "270")
-    missing_eat = target_num_eat - num_eat_equivalent
-
     renderdict = dict(
         subscription_types=types,
         average_sub_price=active_parts.aggregate(avg=Avg('type__price'))['avg'],
         average_paid_sub_price=active_parts.filter(
             type__price__gt=0).aggregate(avg=Avg('type__price'))['avg'],
-        eat_equivalent_price=eat_equivalent_price,
         **get_eat_stats(active_parts)
     )
     return render(request, 'mag/stats/indexes.html', renderdict)
