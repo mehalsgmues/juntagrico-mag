@@ -16,12 +16,11 @@ from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
 from juntagrico.entity.share import Share
 from juntagrico.entity.subs import SubscriptionPart
-from juntagrico.util.models import q_isactive
 from juntagrico.util.temporal import start_of_business_year, end_of_business_year
 from openpyxl import Workbook
 
 from mehalsgmues.forms import DateRangeForm, CompareForm
-from mehalsgmues.utils.stats import TemporalData, assignments_by, slots_by, assignments_by_subscription, members_with_assignments, get_assignment_progress
+from mehalsgmues.utils.stats import TemporalData, assignments_by, slots_by, assignments_by_subscription, members_with_assignments, get_assignment_progress, get_active_parts, get_eat_stats
 from mehalsgmues.utils.utils import date_from_get
 from mehalsgmues import settings
 
@@ -133,10 +132,7 @@ def stats_export(request):
 
 @staff_member_required
 def indexes(request):
-    active_parts = SubscriptionPart.objects.filter(
-        type__size__product__is_extra=False).filter(q_isactive()).filter(
-        subscription__in=SubscriptionDao().all_active_subscritions()
-    )
+    active_parts = get_active_parts()
     types = SubscriptionTypeDao.get_all().filter(
         subscription_parts__in=active_parts
     ).annotate(num=Count('id')).order_by('-price')
@@ -153,9 +149,7 @@ def indexes(request):
         average_paid_sub_price=active_parts.filter(
             type__price__gt=0).aggregate(avg=Avg('type__price'))['avg'],
         eat_equivalent_price=eat_equivalent_price,
-        num_eat_equivalent=num_eat_equivalent,
-        target_num_eat=target_num_eat,
-        missing_eat=missing_eat
+        **get_eat_stats(active_parts)
     )
     return render(request, 'mag/stats/indexes.html', renderdict)
 
