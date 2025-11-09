@@ -11,7 +11,6 @@ from django.shortcuts import render
 from django.utils.timezone import make_naive
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
-from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
 from juntagrico.entity.share import Share

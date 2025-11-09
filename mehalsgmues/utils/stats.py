@@ -71,11 +71,13 @@ def assignments_by_subscription(start_date, end_date, activty_area=None):
         })
     return subscriptions_list
 
+
 def get_active_parts():
     return SubscriptionPart.objects.filter(
         type__size__product__is_extra=False).filter(q_isactive()).filter(
         subscription__in=SubscriptionDao().all_active_subscritions()
     )
+
 
 def get_eat_stats(active_parts):
     eat_equivalent_price = float(getattr(settings, "EAT_EQUIVALENT_PRICE", "1200") or "1200")
