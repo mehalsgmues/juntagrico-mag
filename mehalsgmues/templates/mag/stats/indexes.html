@@ -20,6 +20,11 @@
             </div>
         </div>
     {% endfor %}
+    <br>
+    <div>{% blocktrans %}Total Standard-EAT-Äquivalente{% endblocktrans %}: <b>{{ num_eat_equivalent|floatformat:2 }}</b></div>
+    <div>{% blocktrans %}Soll Standard-EAT-Äquivalente{% endblocktrans %}: <b>{{ target_num_eat }}</b></div>
+    <div>{% blocktrans %}Fehlende EAT{% endblocktrans %}: <b>{{ missing_eat|floatformat:2 }}</b></div>
+    <div><i>{% blocktrans %}*1 Standard-EAT-Äquivalent = CHF {{ eat_equivalent_price }} (unterjährige EAT werden wie ganzjährige EAT gezählt){% endblocktrans %}</i></div>
     <br><br>
     <h3>{% trans "Durchschnittspreise" %}</h3>
     <p>{% blocktrans %}Gerechnet auf alle derzeit aktiven {{ v_subscription_pl }}{% endblocktrans %}</p>

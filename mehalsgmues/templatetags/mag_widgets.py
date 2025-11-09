@@ -5,6 +5,7 @@ from juntagrico.entity.member import Member
 from mapjob.models import MapJob
 from mehalsgmues.utils.utils import get_available_subscriptions
 from mehalsgmues.utils.news import get_recent_posts
+from mehalsgmues.utils.stats import get_active_parts, get_eat_stats
 
 register = template.Library()
 
@@ -40,3 +41,9 @@ def email_of(member):
 @register.simple_tag
 def member_is_flyering(member):
     return MapJob.objects.filter(assignment__member=member).exclude(progress=MapJob.Progress.COMPLETE).exists()
+
+
+@register.inclusion_tag('mag/stats/subscription_counter.html')
+def eat_counter():
+    active_parts = get_active_parts()
+    return get_eat_stats(active_parts)

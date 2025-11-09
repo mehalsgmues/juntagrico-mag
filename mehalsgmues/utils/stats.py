@@ -8,10 +8,14 @@ from django.db.models import Count, Sum, Q, functions
 from django.utils import timezone
 from juntagrico.dao.memberdao import MemberDao
 from juntagrico.entity.jobs import Assignment, Job
+from juntagrico.entity.subs import SubscriptionPart
 from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.member import Member
 from django.template.defaultfilters import date as date_filter
 from juntagrico.entity.subs import Subscription
+from juntagrico.util.models import q_isactive
+
+from mehalsgmues import settings
 
 
 def jobs_in_activity_area(activity_area):
@@ -66,6 +70,29 @@ def assignments_by_subscription(start_date, end_date, activty_area=None):
             'assignments': assignments,
         })
     return subscriptions_list
+
+
+def get_active_parts():
+    return SubscriptionPart.objects.filter(
+        type__size__product__is_extra=False).filter(q_isactive()).filter(
+        subscription__in=SubscriptionDao().all_active_subscritions()
+    )
+
+
+def get_eat_stats(active_parts):
+    eat_equivalent_price = float(getattr(settings, "EAT_EQUIVALENT_PRICE", "1200") or "1200")
+    num_eat_equivalent = float(active_parts.filter(
+            type__price__gt=0).aggregate(total=Sum('type__price'))['total']) / eat_equivalent_price
+    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "270") or "270")
+    missing_eat = target_num_eat - num_eat_equivalent
+    rotation = 1.8 * min(max(num_eat_equivalent - 200, 0), 100)
+    return {
+        'eat_equivalent_price': eat_equivalent_price,
+        'target_num_eat': target_num_eat,
+        'num_eat_equivalent': num_eat_equivalent,
+        'missing_eat': missing_eat,
+        'rotation': int(rotation),
+    }
 
 
 class TemporalData:

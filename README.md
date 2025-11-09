@@ -13,7 +13,7 @@ On any environment install Python 3, and add it to your path
 
     sudo easy_install pip
     sudo pip install virtualenv
-    virtualenv --distribute venv
+    virtualenv venv
     source ./venv/bin/activate
     pip install --upgrade -r requirements.txt
 
