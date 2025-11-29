@@ -1,3 +1,4 @@
+import logging
 from smtplib import SMTPException
 from ssl import SSLError
 
@@ -11,9 +12,17 @@ from juntagrico_mailqueue.utils import Lock
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('-l', '--limit', type=int, help='Maximum number of emails to send')
+        parser.add_argument('--verbose', action='store_true', help='Verbose output')
 
     def handle(self, *args, **options):
-        with Lock('juntagrico_mailqueue.lock'):
+        if options['verbose']:
+            for name in ['juntagrico_mailqueue']:
+                logger = logging.getLogger(name)
+                logger.setLevel(logging.DEBUG)
+                for handler in logger.handlers:
+                    handler.level = logging.DEBUG
+
+        with Lock('juntagrico_mailqueue.lock') as lock:
             # TODO: add option to use another backend
             with mail.get_connection(backend='django.core.mail.backends.smtp.EmailBackend') as connection:
                 count = 0
@@ -36,6 +45,7 @@ class Command(BaseCommand):
                             email.cc = []
                             email.save()
                         message.cc = []
+                        lock.renew()
 
                         # send individual emails for every bcc
                         for recipient in email.recipients.all():
@@ -48,6 +58,7 @@ class Command(BaseCommand):
                                 success = True
                                 # cleanup processed recipients
                                 recipient.delete()
+                            lock.renew()
 
                         # clean up sent emails
                         if not email.recipients.exists():
