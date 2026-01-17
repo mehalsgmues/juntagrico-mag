@@ -1,4 +1,6 @@
+import base64
 import datetime
+import re
 
 from django.core.management.base import BaseCommand
 
@@ -42,34 +44,52 @@ class Command(BaseCommand):
                 raw_message = message_data[message_id][b'BODY[]']
                 html_content = raw_message.decode('utf-8')
 
-                # print(html_content)
-                vehicle = self.find_substring_between_tags(
-                    html_content, "Deine_Reservation_f=C3=BCr_", "_in_der_Sie")
-                if vehicle is not None:
-                    vehicle = quopri.decodestring(vehicle.encode()).decode()
+                if 'Subject: =?utf-8?B?UmVzZXJ2aWVydW5nIEUtQmlrZSAxIHVuZCA1IGbDvHIgMjAyNg==?=' in html_content:
+                    text = self.find_substring_between_tags(
+                        html_content,
+                        'Content-Type: text/plain; charset="utf-8"\r\nContent-Transfer-Encoding: base64\r\n\r\n',
+                        '\r\n\r\n'
+                    )
+                    plain_text = base64.b64decode(text).decode('utf-8')
+                    codes = plain_text.split('Flyer 5\r\n')[1]
+                    matches = re.compile('(\d{2}).(\d{2}).\s*=\s*(\d{4})\s*=\s*(\d{4})').findall(codes)
+                    for match in matches:
+                        date = datetime.date(2026, int(match[1]), int(match[0]))
+                        jobs = Job.objects.filter(
+                            recuringjob__type__id=settings.BIKE_CODE_JOB_TYPE, time__date=date)
+                        if jobs:
+                            AccessInformation.objects.update_or_create(
+                                job=jobs[0], name='Flyer 1', defaults={"code": match[2]})
+                            AccessInformation.objects.update_or_create(
+                                job=jobs[0], name='Flyer 5', defaults={"code": match[3]})
 
-                code = self.find_substring_between_tags(html_content,
-                                                        "Mit dem Code =C2=AB", "=C2=BB")
-                date = self.find_substring_between_tags(html_content, "<li>Datum: ",
-                                                        "</li>")
+                else:
+                    vehicle = self.find_substring_between_tags(
+                        html_content, "Deine_Reservation_f=C3=BCr_", "_in_der_Sie")
+                    if vehicle is not None:
+                        vehicle = quopri.decodestring(vehicle.encode()).decode()
 
-                if date is None:
-                    # print("No code extracted.")
-                    continue
-                
-                date = datetime.datetime.strptime(date, "%d.%m.%Y").date()
-                vehicle = vehicle.replace("_", " ")
+                    code = self.find_substring_between_tags(html_content,
+                                                            "Mit dem Code =C2=AB", "=C2=BB")
+                    date = self.find_substring_between_tags(html_content, "<li>Datum: ",
+                                                            "</li>")
 
-                # print(vehicle, code, date)
+                    if date is None:
+                        # print("No code extracted.")
+                        continue
 
-                jobs = Job.objects.filter(
-                    recuringjob__type__id=settings.BIKE_CODE_JOB_TYPE, time__date=date)
-                if jobs:
-                    AccessInformation.objects.update_or_create(
-                        job=jobs[0], name=vehicle,defaults= {"code": code})
+                    date = datetime.datetime.strptime(date, "%d.%m.%Y").date()
+                    vehicle = vehicle.replace("_", " ")
+
+                    # print(vehicle, code, date)
+
+                    jobs = Job.objects.filter(
+                        recuringjob__type__id=settings.BIKE_CODE_JOB_TYPE, time__date=date)
+                    if jobs:
+                        AccessInformation.objects.update_or_create(
+                            job=jobs[0], name=vehicle, defaults= {"code": code})
 
     def find_substring_between_tags(self, text, start_tag, end_tag):
-
         start_index = text.find(start_tag)
         if start_index == -1:
             return None
