@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.test import override_settings
 from django.urls import reverse
@@ -56,7 +57,19 @@ class DepotListTests(JuntagricoTestCase):
         self.assertListsCreated()
 
 
+@override_settings(STORAGES={
+    'default': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
+    'staticfiles': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+})
 class DepotListAccessTests(JuntagricoTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # create empty dummy files
+        default_storage.save('depotlist.pdf', ContentFile(''))
+        default_storage.save('depot_overview.pdf', ContentFile(''))
+        default_storage.save('amount_overview.pdf', ContentFile(''))
+
     def testViewDepotList(self):
         url = reverse('lists')
         self.assertGet(url)
