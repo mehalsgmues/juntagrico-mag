@@ -63,7 +63,7 @@ urlpatterns = [
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
 
     # godparents
-    path('', include('juntagrico_godparent.urls')),
+    path('jgo/', include('juntagrico_godparent.urls')),
 
     # price change
     path('2024/', home_widgets.price_change, name='price_change'),

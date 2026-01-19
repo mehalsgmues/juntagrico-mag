@@ -59,7 +59,7 @@ def members_with_assignments(start_date, end_date, activty_area=None, members=No
 
 def assignments_by_subscription(start_date, end_date, activty_area=None):
     subscriptions_list = []
-    for subscription in SubscriptionDao.all_active_subscritions().annotate(totalsize=Sum('parts__type__size__units')):
+    for subscription in SubscriptionDao.all_active_subscritions():
         assignments = 0
         for member in members_with_assignments(start_date, end_date, activty_area, members=subscription.current_members):
             if member.assignments:
@@ -74,7 +74,7 @@ def assignments_by_subscription(start_date, end_date, activty_area=None):
 
 def get_active_parts():
     return SubscriptionPart.objects.filter(
-        type__size__product__is_extra=False).filter(q_isactive()).filter(
+        type__is_extra=False).filter(q_isactive()).filter(
         subscription__in=SubscriptionDao().all_active_subscritions()
     )
 

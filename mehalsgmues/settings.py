@@ -4,14 +4,15 @@ Django settings for mehalsgmues project.
 """
 
 import os
+from pathlib import Path
 from datetime import timedelta
 
+from juntagrico import defaults
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
+SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY', 'fake')
 
 DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True') == 'True'
 
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
-    #'juntagrico_polling',
+    # 'juntagrico_polling',
     'juntagrico_mailqueue',
     'juntagrico',
     'fontawesomefree',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'adminsortable2',
     # 'report_builder',
     'crispy_forms',
+    'crispy_bootstrap4',
     'impersonate',
     'oauth2_provider',
     'corsheaders',
@@ -60,7 +62,9 @@ INSTALLED_APPS = [
     'ckeditor',
     'polymorphic',
     'django_admin_shell',
-    'import_export'
+    'import_export',
+    'django_select2',
+    'djrichtextfield',
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'
@@ -153,8 +157,6 @@ EMAIL_PORT = int(os.environ.get('JUNTAGRICO_EMAIL_PORT', '25'))
 EMAIL_USE_TLS = os.environ.get('JUNTAGRICO_EMAIL_TLS', 'False') == 'True'
 EMAIL_USE_SSL = os.environ.get('JUNTAGRICO_EMAIL_SSL', 'False') == 'True'
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
 WHITELIST_EMAILS = []
 
 
@@ -169,7 +171,7 @@ if DEBUG is True:
         if key.startswith("JUNTAGRICO_EMAIL_WHITELISTED"):
             whitelist_email_from_env(key)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 
 STORAGES = {
@@ -177,7 +179,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
@@ -234,8 +236,6 @@ EXTRA_SUB_INFO = ""
 ACTIVITY_AREA_INFO = ""
 ENABLE_SHARES = True
 SHARE_PRICE = "250"
-PROMOTED_JOB_TYPES = []
-PROMOTED_JOBS_AMOUNT = 20
 DEPOT_LIST_GENERATION_DAYS = []
 BILLING = False
 BUSINESS_YEAR_START = {"day": 1, "month": 4}
@@ -294,14 +294,15 @@ LOGGING = {
     },
 }
 
-MAILER_RICHTEXT_OPTIONS = {
+
+DJRICHTEXTFIELD_CONFIG = defaults.richtextfield_config(LANGUAGE_CODE, mailer={
     'valid_styles': {
         '*': 'color,text-align,font-size,font-weight,font-style,font-family,text-decoration'
     },
     'plugins': 'link lists code',
     'toolbar': "undo redo | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | "
                "bullist numlist | link | fontselect fontsizeselect | code",
-}
+})
 
 # The goal for the number of standard subscrition equivalents
 SUBSCRIPTION_PROGRESS_GOAL = 270

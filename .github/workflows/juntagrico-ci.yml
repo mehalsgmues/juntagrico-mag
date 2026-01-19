@@ -18,7 +18,7 @@ jobs:
       JUNTAGRICO_SECRET_KEY: fake
     strategy:
       matrix:
-        python-version: ['3.9', '3.11']
+        python-version: ['3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v4
@@ -31,10 +31,10 @@ jobs:
         pip install --upgrade -r requirements-local.txt
     - name: ruff
       run: |
-        ruff check mehalsgmues
-        ruff check activityprofile
-        ruff check mapjob
-        ruff check test
+        ruff check --preview mehalsgmues
+        ruff check --preview activityprofile
+        ruff check --preview mapjob
+        ruff check --preview test
     - name: run tests
       run: |
         python -m django makemigrations --noinput

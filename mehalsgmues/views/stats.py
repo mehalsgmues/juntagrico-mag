@@ -11,10 +11,10 @@ from django.shortcuts import render
 from django.utils.timezone import make_naive
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
-from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.jobs import ActivityArea
 from juntagrico.entity.share import Share
 from juntagrico.entity.subs import SubscriptionPart
+from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.util.temporal import start_of_business_year, end_of_business_year
 from openpyxl import Workbook
 
@@ -72,14 +72,11 @@ def stats_export(request):
     ws1.column_dimensions['A'].width = 40
     ws1.cell(1, 2, u"{}".format(_('Arbeitseinsätze')))
     ws1.column_dimensions['B'].width = 17
-    ws1.cell(1, 3, u"{}".format(_('{}-Grösse').format(Config.vocabulary('subscription'))))
-    ws1.column_dimensions['C'].width = 17
 
     # data
     for row, subscription in enumerate(assignments_by_subscription(start_date, end_date, activity_area), 2):
         ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription['subscription'].current_members]))
         ws1.cell(row, 2, subscription['assignments'])
-        ws1.cell(row, 3, subscription['subscription'].totalsize)
 
     # Sheet 2: assignments per day
     ws2 = wb.create_sheet(title="assignments per day")
@@ -131,7 +128,7 @@ def stats_export(request):
 @staff_member_required
 def indexes(request):
     active_parts = get_active_parts()
-    types = SubscriptionTypeDao.get_all().filter(
+    types = SubscriptionType.objects.filter(
         subscription_parts__in=active_parts
     ).annotate(num=Count('id')).order_by('-price')
 

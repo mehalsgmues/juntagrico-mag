@@ -1,13 +1,14 @@
 import threading
 
-from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
+from juntagrico.backends.email import BaseEmailBackend
 
 from juntagrico_mailqueue.models import EmailMessage, EmailTo
 
 
 class EmailBackend(BaseEmailBackend):
     def send_messages(self, email_messages):
+        email_messages = self.clean_messages(email_messages)
         for message in email_messages:
             message_obj = EmailMessage.objects.create(
                 subject=message.subject,

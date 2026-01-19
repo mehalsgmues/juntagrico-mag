@@ -92,7 +92,7 @@ class PickupForm(forms.Form):
         self.fields['pickup_location'].initial = first_location
         initial_jobs = jobs.filter(pickup_location=first_location)
         self.fields['for_jobs'].initial = initial_jobs
-        self.fields['amount'].initial = initial_jobs.count()*1000
+        self.fields['amount'].initial = initial_jobs.count() * 1000
         if jobs.count() <= 1:
             self.fields['for_jobs'].widget = forms.MultipleHiddenInput()
         self.helper = HorizontalFormHelper()

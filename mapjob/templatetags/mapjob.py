@@ -5,6 +5,7 @@ from mapjob.utils import get_map_data
 
 register = template.Library()
 
+
 @register.filter
 def is_map_job(obj):
     return isinstance(obj, MapJob)
