@@ -2,9 +2,9 @@ from django.core.files.storage import default_storage
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.urls import reverse
+from djrichtextfield.models import RichTextField
 from juntagrico.config import Config
 from multiselectfield import MultiSelectField
-from ckeditor.fields import RichTextField
 from django.db import models
 from juntagrico.entity.jobs import ActivityArea
 from django.utils.translation import gettext as _
@@ -40,9 +40,10 @@ class ActivityProfile(models.Model):
                                         help_text='Link zur Lizenz des Bilds (wenn erforderlich)')
 
     learn = RichTextField('Lernen / Vorkenntnisse', max_length=1500, null=True, blank=True,
-                          help_text='Was kann das Mitglied in dieser Gruppe lernen? Welche Kenntnisse werden vorausgesetzt?')
+                          help_text='Was kann das Mitglied in dieser Gruppe lernen? Welche Kenntnisse werden vorausgesetzt?',
+                          field_settings='activityprofile')
     introduction = RichTextField('Einführung', max_length=1000, null=True, blank=True,
-                                 help_text='Ist eine Einführung nötig?')
+                                 help_text='Ist eine Einführung nötig?', field_settings='activityprofile')
 
     active_members = models.PositiveSmallIntegerField('Anzahl aktive Mitglieder', default=1)
     minimum_size = models.PositiveSmallIntegerField('Mindestgrösse', default=1)
@@ -55,9 +56,10 @@ class ActivityProfile(models.Model):
                                   help_text='Wofür genau werden Interessierte gesucht? (optional)')
 
     group_extras = RichTextField('Gruppe / Mitglieder', max_length=1000, null=True, blank=True,
-                                 help_text='Weitere Informationen zur Gruppe und deren Mitglieder')
+                                 help_text='Weitere Informationen zur Gruppe und deren Mitglieder',
+                                 field_settings='activityprofile')
 
-    clothing = RichTextField('Kleidung', max_length=1000, null=True, blank=True)
+    clothing = RichTextField('Kleidung', max_length=1000, null=True, blank=True, field_settings='activityprofile')
 
     season = MultiSelectField('Saison', choices=SEASON, null=True, max_length=1000)
 
@@ -68,10 +70,12 @@ class ActivityProfile(models.Model):
     days = models.CharField('Tage', max_length=100, null=True, blank=True,
                             help_text='Welche Tage der Woche gibt es Einsätze?')
     jobs_more = RichTextField('Mehr Einsatzdetails', max_length=1000, null=True, blank=True,
-                              help_text='Was muss für den Einsatz sonst noch beachtet werden?')
+                              help_text='Was muss für den Einsatz sonst noch beachtet werden?',
+                              field_settings='activityprofile')
 
     children = RichTextField('Kinderbegleitung Möglich?', max_length=500, null=True, blank=True,
-                             help_text='Falls ja, unter welchen Bedingungen. Falls nein, warum nicht?')
+                             help_text='Falls ja, unter welchen Bedingungen. Falls nein, warum nicht?',
+                             field_settings='activityprofile')
 
     email = models.EmailField('Gruppen-E-Mail', null=True, blank=True,
                               help_text='E-Mail-Verteiler der Gruppe (falls vorhanden). '

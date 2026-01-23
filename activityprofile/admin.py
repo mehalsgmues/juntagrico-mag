@@ -1,6 +1,6 @@
-from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib import admin
+from djrichtextfield.widgets import RichTextWidget
 from juntagrico.admins import AreaCoordinatorMixin
 from polymorphic.admin import PolymorphicInlineSupportMixin
 
@@ -8,7 +8,7 @@ from .models import ActivityProfile
 
 
 class ActivityProfileAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Beschreibung', widget=CKEditorWidget())
+    description = forms.CharField(label='Beschreibung', widget=RichTextWidget(field_settings='activityprofile'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'qr_code',
     'shortener',
     'multiselectfield',
-    'ckeditor',
     'polymorphic',
     'django_admin_shell',
     'import_export',
@@ -261,18 +260,6 @@ DISCOURSE_SSO_SECRET = os.environ.get('DISCOURSE_SSO_SECRET')
 DISCOURSE_API_KEY = os.environ.get('DISCOURSE_API_KEY')
 
 TELEGRAM_GROUP_LINK = os.environ.get('TELEGRAM_GROUP_LINK')
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ]
-    },
-}
 
 LOGGING = {
     'version': 1,

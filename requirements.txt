@@ -12,7 +12,6 @@ psycopg>=3.1.8
 openpyxl~=3.1.5
 django-oauth-toolkit~=3.2.0
 django-cors-headers~=4.9.0
-django-ckeditor~=6.7.3
 django-qr-code~=4.2.0
 django-multiselectfield==1.0.1
 emoji~=2.15.0
