@@ -10,8 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    {% include "mapjob/snippets/messages.html" %}
-
     {% include "mapjob/snippets/member/help.html" %}
 
     {% if own_jobs.picked_up.exists and not return_form %}

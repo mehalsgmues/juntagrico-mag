@@ -12,7 +12,6 @@
                     <th class="align-top job-progress">
                         {% trans "Stand" %}
                     </th>
-                    <th class="d-none"></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,14 +21,14 @@
                             <a href="{% url 'job' job.id %}" class="{{ job.get_css_classes }}">
                                 {{ job.geo_area.properties.name }}
                             </a>
+                            {% if can_send_mails or perms.juntagrico.can_send_mails %}
+                            {% for member in job.participants %}
+                                <span class="email d-none" data-id="{{ member.id }}"></span>
+                            {% endfor %}
+                        {% endif %}
                         </td>
                         <td class="map-popup-{{ job.id }}">
                             {{ job.get_progress_display }}
-                        </td>
-                        <td class="email d-none">
-                            {% if can_send_mails or perms.juntagrico.can_send_mails %}
-                                {{ job.participant_emails|join:',' }}
-                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
