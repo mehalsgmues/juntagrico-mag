@@ -11,13 +11,13 @@ from django.utils.translation import gettext_lazy as _
 from juntagrico.admins.filters import FutureDateTimeFilter
 
 from juntagrico.admins.job_admin import JobAdmin
-from juntagrico.dao.jobtypedao import JobTypeDao
+from juntagrico.entity.jobs import JobType
 
 from .models import MapJob, PickupLocation
 
 
 class CopyMapJobForm(forms.Form):
-    new_type = forms.ModelChoiceField(queryset=JobTypeDao.visible_types())
+    new_type = forms.ModelChoiceField(queryset=JobType.objects.filter(visible=True))
     new_datetime = forms.SplitDateTimeField(label=_('Neue Zeit'), widget=AdminSplitDateTime(), initial=timezone.now)
 
     def __init__(self, queryset, *args, **kwargs):
@@ -39,9 +39,9 @@ class CopyMapJobForm(forms.Form):
 @admin.register(MapJob)
 class MapJobAdmin(JobAdmin):
     fieldsets = [
-        (None, { 'fields': JobAdmin.fields, },),
+        (None, {'fields': JobAdmin.fields, },),
         (_('Flyer'),
-            {'fields': ['geo_area', 'progress', 'pickup_location', 'used_flyers'],},
+            {'fields': ['geo_area', 'progress', 'pickup_location', 'used_flyers'], },
         ),
     ]
     fields = None

@@ -8,8 +8,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
 from juntagrico.dao.subscriptiondao import SubscriptionDao
-from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 from juntagrico.entity.member import Member
+from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.views.manage import MemberView
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -35,7 +35,7 @@ def excel_export_subscriptions(request):
     ws1.column_dimensions['B'].width = 30
     ws1.cell(1, 3, u"{}".format(_('Gesamtpreis [{}]').format(Config.currency())))
     ws1.column_dimensions['C'].width = 17
-    for column, subs_type in enumerate(SubscriptionTypeDao.get_all(), 4):
+    for column, subs_type in enumerate(SubscriptionType.objects.all(), 4):
         ws1.cell(1, column, u"EAT {}".format(subs_type.price))
         ws1.column_dimensions[get_column_letter(column)].width = 17
 
@@ -44,7 +44,7 @@ def excel_export_subscriptions(request):
         ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription.current_members]))
         ws1.cell(row, 2, subscription.primary_member.email)
         ws1.cell(row, 3, subscription.price)
-        for column, subs_type in enumerate(SubscriptionTypeDao.get_all(), 4):
+        for column, subs_type in enumerate(SubscriptionType.objects.all(), 4):
             ws1.cell(row, column, subscription.active_parts.filter(type__id=subs_type.id).count())
 
     ws1.freeze_panes = ws1['A2']

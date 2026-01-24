@@ -25,7 +25,7 @@ class AccessInformation(models.Model):
 
 # Override rounding of assignments
 def my_rounding(number):
-    return Ceil(number*2)/2
+    return Ceil(number * 2) / 2
 
 
 SubscriptionQuerySet._assignment_rounding = staticmethod(my_rounding)

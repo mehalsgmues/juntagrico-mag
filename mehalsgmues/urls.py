@@ -14,10 +14,14 @@ urlpatterns = [
     # member list override
     path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
 
+    # activity profile overrides
+    path('', include('activityprofile.url_overrides')),
+
+    path('', include('juntagrico_mailqueue.urls')),
+
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),
     path('', include('juntagrico.urls')),
-    path('', include('juntagrico_mailqueue.urls')),
     path('', include('juntagrico_pg.urls')),
     # path('', include('juntagrico_crowdfunding.urls')),
     path('', include('juntagrico_calendar.urls')),
@@ -63,7 +67,7 @@ urlpatterns = [
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
 
     # godparents
-    path('', include('juntagrico_godparent.urls')),
+    path('jgo/', include('juntagrico_godparent.urls')),
 
     # price change
     path('2024/', home_widgets.price_change, name='price_change'),

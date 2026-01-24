@@ -8,6 +8,7 @@ from juntagrico.tests import JuntagricoTestCase
 
 
 class CreateSubscriptionTests(JuntagricoTestCase):
+    with_extra_subs = False
 
     def testSignupLogout(self):
         self.client.force_login(self.member.user)
@@ -97,10 +98,16 @@ class CreateSubscriptionTests(JuntagricoTestCase):
             }
         )
         self.assertRedirects(response, reverse('cs-co-members'))
+        response = self.client.get(
+            reverse('cs-co-members'), {
+                'next': '1'
+            }
+        )
+        self.assertRedirects(response, reverse('cs-shares'))
         response = self.client.post(
             reverse('cs-shares'),
             {
-                'shares_mainmember': 1
+                'of_member': 1
             }
         )
         self.assertRedirects(response, reverse('cs-summary'))
