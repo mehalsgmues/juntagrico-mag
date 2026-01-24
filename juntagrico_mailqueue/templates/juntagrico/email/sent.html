@@ -1,0 +1,8 @@
+{% extends "juntagrico/email/sent.html" %}
+{% load i18n %}
+{% load juntagrico_mailqueue.widgets %}
+{% load juntagrico.config %}
+
+{% block content %}
+    {% outbox_banner show_empty=True can_see_outbox=perms.juntagrico_mailqueue.view_emailmessage %}
+{% endblock %}

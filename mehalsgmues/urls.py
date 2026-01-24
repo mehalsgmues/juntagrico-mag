@@ -17,10 +17,11 @@ urlpatterns = [
     # activity profile overrides
     path('', include('activityprofile.url_overrides')),
 
+    path('', include('juntagrico_mailqueue.urls')),
+
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),
     path('', include('juntagrico.urls')),
-    path('', include('juntagrico_mailqueue.urls')),
     path('', include('juntagrico_pg.urls')),
     # path('', include('juntagrico_crowdfunding.urls')),
     path('', include('juntagrico_calendar.urls')),
