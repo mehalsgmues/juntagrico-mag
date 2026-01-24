@@ -1,0 +1,9 @@
+{% extends "juntagrico/subscription/create/select_depot.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+
+{% block label %}
+    {% blocktrans trimmed with v_depot=vocabulary.depot %}
+        Wähle 1 {{ v_depot }} als Abholort für dein Gemüse aus.
+    {% endblocktrans %}
+{% endblock %}
