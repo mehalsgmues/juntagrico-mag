@@ -1,0 +1,24 @@
+{% extends "juntagrico/my/area/show.html" %}
+{% load admin_links %}
+{% load static %}
+
+{% block content %}
+    {% edit_link %}
+    {{ block.super }}
+{% endblock %}
+
+{% block description_text %}
+    {{ area.description|safe }}
+{% endblock %}
+
+{% block upcoming %}
+    {% if area.profile %}
+        {% include "activityprofile/snippets/snippet_activity_profile.html" %}
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static "activityprofile/css/screen.css" %}" rel="stylesheet"/>
+{% endblock %}

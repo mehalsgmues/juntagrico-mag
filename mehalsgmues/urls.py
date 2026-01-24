@@ -14,6 +14,9 @@ urlpatterns = [
     # member list override
     path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
 
+    # activity profile overrides
+    path('', include('activityprofile.url_overrides')),
+
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),
     path('', include('juntagrico.urls')),
