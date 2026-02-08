@@ -12,11 +12,12 @@ from juntagrico import defaults
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY', 'fake')
-
 DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True') == 'True'
 
-ALLOWED_HOSTS = ['.mehalsgmues.ch', 'localhost', '127.0.0.1']
+SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
+
+if not DEBUG:
+    ALLOWED_HOSTS = ['.mehalsgmues.ch']
 
 
 # Admin Settings
@@ -36,7 +37,6 @@ INSTALLED_APPS = [
     'juntagrico_godparent',
     'mapjob',
     'activityprofile',
-    'juntagrico_pg',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
     # 'juntagrico_polling',
