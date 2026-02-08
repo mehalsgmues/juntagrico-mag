@@ -317,3 +317,11 @@ BIKE_CODE_JOB_TYPE = 22
 
 WP_USER = os.environ.get('WP_USER')
 WP_PASSWORD = os.environ.get('WP_PASSWORD')
+
+
+# Staging
+if os.environ.get('JUNTAGRICO_STAGING') == '1':
+    # staging URL erlauben
+    ALLOWED_HOSTS = ['mehalsgmues-staging.juntagrico.science']
+    # E-Mails Deaktivieren
+    EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
