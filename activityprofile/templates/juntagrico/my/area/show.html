@@ -2,11 +2,6 @@
 {% load admin_links %}
 {% load static %}
 
-{% block content %}
-    {% edit_link %}
-    {{ block.super }}
-{% endblock %}
-
 {% block description_text %}
     {{ area.description|safe }}
 {% endblock %}
@@ -14,6 +9,8 @@
 {% block upcoming %}
     {% if area.profile %}
         {% include "activityprofile/snippets/snippet_activity_profile.html" %}
+    {% else %}
+        {% add_link %}
     {% endif %}
     {{ block.super }}
 {% endblock %}
