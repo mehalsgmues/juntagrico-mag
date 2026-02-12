@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     # 'juntagrico_polling',
     'juntagrico_mailqueue',
     'juntagrico',
-    'fontawesomefree',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

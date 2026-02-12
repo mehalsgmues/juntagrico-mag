@@ -5,12 +5,12 @@
         <br>
         {% if can_see_outbox %}
             <a href="{% url 'mail-queue' %}" class="btn btn-info">
-                <i class="fa-solid fa-inbox"></i>
+                <i class="bi bi-inbox"></i>
                 {% trans "Postausgang öffnen" %}
             </a>
         {% else %}
             <a href="" class="btn btn-info">
-                <i class="fa-solid fa-rotate"></i>
+                <i class="bi bi-arrow-clockwise"></i>
                 {% trans "Aktualisieren" %}
             </a>
         {% endif %}
