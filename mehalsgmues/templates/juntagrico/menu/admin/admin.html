@@ -1,15 +1,9 @@
+{% extends "juntagrico/menu/admin/admin.html" %}
 {% load i18n %}
 {% block admin %}
-    {% if request.user.is_staff %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
-                {% trans "Datenverwaltung" %}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'config' %}">
-                {% trans "Konfiguration" %}
-            </a>
-        </li>
-    {% endif %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
+            {% trans "Datenverwaltung" %}
+        </a>
+    </li>
 {% endblock %}
