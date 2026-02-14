@@ -1,0 +1,13 @@
+{% extends "signup.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block read_instructions %}
+    Lass uns als Erstes deine E-Mail-Adresse bestätigen:
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% crispy form %}
+    </form>
+{% endblock %}

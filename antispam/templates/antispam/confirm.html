@@ -1,0 +1,14 @@
+{% extends "juntagrico/signup/base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% blocktrans %}E-Mail-Adresse bestätigen{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <p>Wir haben dir ein Bestätigungs-E-Mail an <strong>{{ email }}</strong> geschickt. Schau in deinem Posteingang und auch im Spam-Ordner nach.</p>
+    <form action="" method="post">
+        {% crispy form %}
+    </form>
+{% endblock %}
