@@ -6,10 +6,8 @@ from math import floor
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count, Sum, Q, functions
 from django.utils import timezone
-from juntagrico.dao.memberdao import MemberDao
 from juntagrico.entity.jobs import Assignment, Job
 from juntagrico.entity.subs import SubscriptionPart
-from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.member import Member
 from django.template.defaultfilters import date as date_filter
 from juntagrico.entity.subs import Subscription
@@ -47,7 +45,7 @@ def slots_by(trunc, start_date, end_date, activity_area=None):
 
 
 def members_with_assignments(start_date, end_date, activty_area=None, members=None):
-    members = members or MemberDao.all_members().filter(deactivation_date__gt=timezone.now().date())
+    members = members or Member.objects.all().filter(deactivation_date__gt=timezone.now().date())
     if isinstance(members, list):
         members = Member.objects.filter(pk__in=[m.pk for m in members])
     return members.annotate(assignments=Sum(
@@ -59,7 +57,7 @@ def members_with_assignments(start_date, end_date, activty_area=None, members=No
 
 def assignments_by_subscription(start_date, end_date, activty_area=None):
     subscriptions_list = []
-    for subscription in SubscriptionDao.all_active_subscritions():
+    for subscription in Subscription.objects.active():
         assignments = 0
         for member in members_with_assignments(start_date, end_date, activty_area, members=subscription.current_members):
             if member.assignments:
@@ -75,7 +73,7 @@ def assignments_by_subscription(start_date, end_date, activty_area=None):
 def get_active_parts():
     return SubscriptionPart.objects.filter(
         type__is_extra=False).filter(q_isactive()).filter(
-        subscription__in=SubscriptionDao().all_active_subscritions()
+        subscription__in=Subscription.objects.active()
     )
 
 

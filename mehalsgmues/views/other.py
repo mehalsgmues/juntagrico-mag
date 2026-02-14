@@ -7,8 +7,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
-from juntagrico.dao.subscriptiondao import SubscriptionDao
 from juntagrico.entity.member import Member
+from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.views.manage import MemberView
 from openpyxl import Workbook
@@ -40,7 +40,7 @@ def excel_export_subscriptions(request):
         ws1.column_dimensions[get_column_letter(column)].width = 17
 
     # data
-    for row, subscription in enumerate(SubscriptionDao.all_active_subscritions(), 2):
+    for row, subscription in enumerate(Subscription.objects.active(), 2):
         ws1.cell(row, 1, ", ".join([member.get_name() for member in subscription.current_members]))
         ws1.cell(row, 2, subscription.primary_member.email)
         ws1.cell(row, 3, subscription.price)
