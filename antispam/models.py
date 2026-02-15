@@ -16,3 +16,18 @@ class EmailToken(models.Model):
     consumed = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     attempts = models.PositiveIntegerField(default=0)
+
+
+class Access(models.Model):
+    ip_address = models.GenericIPAddressField()
+    attempts = models.PositiveIntegerField(default=0)
+    last_access = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def from_meta(cls, meta):
+        x_forwarded_for = meta.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0].strip()
+        else:
+            ip = meta.get('REMOTE_ADDR')
+        return cls.objects.get_or_create(ip_address=ip)[0]

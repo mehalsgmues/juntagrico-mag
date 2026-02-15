@@ -1,6 +1,8 @@
 import datetime
 
-from django.http import HttpResponseRedirect
+from django.db.models import F
+from django.db.models.functions import Greatest
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -8,7 +10,7 @@ from juntagrico.util.sessions import SessionObjectManager, CSSessionObject
 from juntagrico.views_subscription import SignupView
 
 from antispam.forms import EmailForm, ConfirmForm
-from antispam.models import EmailToken
+from antispam.models import EmailToken, Access
 
 
 def signup(request):
@@ -20,6 +22,14 @@ def signup(request):
     if request.method == 'POST':
         form = EmailForm(request.POST)
         if form.is_valid():
+            Access.objects.filter(last_access__lt=timezone.now() - datetime.timedelta(1)).update(
+                attempts = Greatest(0, F('attempts') - 10)
+            )
+            access = Access.from_meta(request.META)
+            access.attempts += 1
+            access.save()
+            if access.attempts > 3:
+                return HttpResponseForbidden()
             uid = form.save()
             return HttpResponseRedirect(reverse('confirm-email', args=(uid,)))
     else:
