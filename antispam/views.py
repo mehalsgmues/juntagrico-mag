@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db.models import F
 from django.db.models.functions import Greatest
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -9,7 +10,7 @@ from django.utils import timezone
 from juntagrico.util.sessions import SessionObjectManager, CSSessionObject
 from juntagrico.views_subscription import SignupView
 
-from antispam.forms import EmailForm, ConfirmForm
+from antispam.forms import EmailForm, ConfirmForm, EmailFormWithCaptcha
 from antispam.models import EmailToken, Access
 
 
@@ -19,21 +20,28 @@ def signup(request):
     if session_object.edit:
         return HttpResponseRedirect(reverse('signup', args=('continue', '0')))
 
+    # clean old accesses
+    old_access = Access.objects.filter(last_access__lt=timezone.now() - datetime.timedelta(1))
+    old_access.filter(attempts__lt=10).delete()
+    old_access.update(attempts=Greatest(0, F('attempts') - 10))
+    # get current access
+    access = Access.from_meta(request.META)
+
+    form_class = EmailForm
+    if access.attempts > 0 or request.META.get('HTTP_USER_AGENT') in settings.SUSPICIOUS:
+        form_class = EmailFormWithCaptcha
+
     if request.method == 'POST':
-        form = EmailForm(request.POST)
+        form = form_class(request.POST)
         if form.is_valid():
-            Access.objects.filter(last_access__lt=timezone.now() - datetime.timedelta(1)).update(
-                attempts = Greatest(0, F('attempts') - 10)
-            )
-            access = Access.from_meta(request.META)
             access.attempts += 1
             access.save()
-            if access.attempts > 3:
+            if access.attempts > 5:
                 return HttpResponseForbidden()
             uid = form.save()
             return HttpResponseRedirect(reverse('confirm-email', args=(uid,)))
     else:
-        form = EmailForm()
+        form = form_class()
     return render(request, 'antispam/signup.html', {
         'form': form,
     })
@@ -59,8 +67,7 @@ def confirm(request, uid):
 class ProtectedMemberSignupView(SignupView):
     def __init__(self):
         super().__init__()
-        self.uid = None
-        self.token = None
+        self.email_token = None
 
     def dispatch(self, request, *args, **kwargs):
         som = SessionObjectManager(request, 'create_subscription', CSSessionObject)
@@ -68,27 +75,31 @@ class ProtectedMemberSignupView(SignupView):
         if session_object.edit:
             return super().dispatch(request, *args, **kwargs)
 
-        self.uid = kwargs.pop('uid')
-        self.token = kwargs.pop('token')
+        uid = kwargs.pop('uid')
+        token = kwargs.pop('token')
         now = timezone.now()
         EmailToken.objects.filter(created__lt=now - datetime.timedelta(hours=1)).delete()
         EmailToken.objects.filter(consumed__lt=now - datetime.timedelta(minutes=15)).delete()
-        email_token = EmailToken.objects.filter(uid=self.uid, token=self.token)
-        if not email_token.exists():
+        self.email_token = EmailToken.objects.filter(uid=uid, token=token).first()
+        if not self.email_token:
             return HttpResponseRedirect(reverse('pre-signup'))
         else:
-            email_token.update(consumed=now)
+            self.email_token.consumed = now
+            self.email_token.save()
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        if not self.cs_session.edit:
-            email = request.POST.get('email')
-            if not EmailToken.objects.filter(uid=self.uid, token=self.token, email=email).exists():
-                form = self.get_form()
-                form.add_error('email', 'Verwende die gleiche E-Mail-Adresse wie zuvor.')
-                return self.form_invalid(form)
-        return super().post(request, *args, **kwargs)
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.email_token:
+            return initial | {'email': self.email_token.email}
+        return initial
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['email'].disabled = True
+        return form
 
     def form_valid(self, form):
-        EmailToken.objects.filter(uid=self.uid).delete()
+        if self.email_token:
+            self.email_token.delete()
         return super().form_valid(form)

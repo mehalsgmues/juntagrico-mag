@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from antispam import views
 
@@ -11,4 +11,5 @@ urlpatterns = [
 
     path('member/create/<uid>/<token>', views.ProtectedMemberSignupView.as_view(), name='signup'),
     path('member/create/<uid>/<token>', views.ProtectedMemberSignupView.as_view(), name='member-create'),
+    path('captcha/', include('captcha.urls')),
 ]

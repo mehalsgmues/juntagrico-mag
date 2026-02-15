@@ -19,3 +19,4 @@ git+https://github.com/pascalfree/django-url-shortener
 requests==2.32.5
 django-admin-shell==2.0.1
 IMAPClient==3.0.1
+django-simple-captcha~=0.6.0

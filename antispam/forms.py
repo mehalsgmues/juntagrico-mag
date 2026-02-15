@@ -1,5 +1,6 @@
 import datetime
 
+from captcha.fields import CaptchaField
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
@@ -59,6 +60,17 @@ class EmailForm(forms.Form):
                 to=[email]
             ).send()
         return token.uid
+
+
+class EmailFormWithCaptcha(EmailForm):
+    captcha = CaptchaField(
+        label=_('Sicherheitsprüfung'),
+        help_text=_('Gib die Buchstaben ein, die du auf dem Bild siehst.')
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.layout.insert(1, 'captcha')
 
 
 class ConfirmForm(forms.Form):
