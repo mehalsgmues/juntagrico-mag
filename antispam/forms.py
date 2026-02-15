@@ -4,13 +4,13 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django import forms
-from django.db.models import F
 from django.template.loader import get_template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _, gettext_lazy
+from juntagrico.config import Config
 from juntagrico.entity.member import Member
 from juntagrico.mailer import EmailSender, organisation_subject, base_dict
 
@@ -46,7 +46,7 @@ class EmailForm(forms.Form):
         email = self.cleaned_data['email']
         # reset retry limit
         now = timezone.now()
-        EmailToken.objects.filter(email=email, created__lt=now - datetime.timedelta(minutes=0)).delete()
+        EmailToken.objects.filter(email=email, created__lt=now - datetime.timedelta(minutes=10)).delete()
         # create and send token
         token, created = EmailToken.objects.update_or_create(email=email)
         if created:
@@ -55,6 +55,7 @@ class EmailForm(forms.Form):
                 get_template('antispam/email_token.txt').render(base_dict(
                     dict(uid=token.uid, token=token.token)
                 )),
+                from_email='noreply@' + Config.contacts('general').split('@')[1],
                 to=[email]
             ).send()
         return token.uid
