@@ -4,8 +4,7 @@ import requests
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum
 from django.utils import timezone
-from juntagrico.dao.subscriptiondao import SubscriptionDao
-from juntagrico.entity.subs import SubscriptionPart
+from juntagrico.entity.subs import SubscriptionPart, Subscription
 from juntagrico.util.models import q_canceled, q_deactivated
 
 from mehalsgmues import settings
@@ -98,6 +97,6 @@ def get_available_subscriptions():
     target = SubscriptionPart.objects.filter(
         ~q_canceled() & ~q_deactivated(),
         type__size__product__is_extra=False,
-        subscription__in=SubscriptionDao.future_subscriptions()
+        subscription__in=Subscription.objects.filter(cancellation_date=None, deactivation_date=None),
     ).aggregate(total=Sum('type__size__units'))['total'] or 0
     return goal - target

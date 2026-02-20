@@ -1,7 +1,7 @@
 """mehalsgmues URL Configuration
 """
 from django.contrib.auth.views import LoginView
-from django.urls import path
+from django.urls import path, include
 
 from activityprofile.views import print_pdf, iframe
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('print/<int:area_id>', print_pdf, name='print'),
     path('iframe/<int:area_id>', iframe, name='iframe'),
     path('login/', LoginView.as_view(template_name='activityprofile/login.html'), name='external-login'),
+    path('', include('activityprofile.url_overrides')),
 ]

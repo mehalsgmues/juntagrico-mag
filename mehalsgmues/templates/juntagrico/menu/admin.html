@@ -6,9 +6,9 @@
     {{ block.super }}
     {% if request.user.is_staff %}
         <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#statssubman">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#statssubman">
+            <i class="bi bi-caret-down turn"></i>
             {% blocktrans %}Statistik{% endblocktrans %}
-            <i class="fas fa-angle-right"></i>
         </a>
         <div class="collapse" id="statssubman">
             <ul class="nav flex-column subadmin-menu">

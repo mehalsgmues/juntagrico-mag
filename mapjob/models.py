@@ -15,7 +15,7 @@ class PickupLocation(models.Model):
     available_flyers = models.IntegerField(_('Verfügbare Flyer'), default=0)
 
     def __str__(self):
-        if self.available_flyers <= 0 :
+        if self.available_flyers <= 0:
             available = _('Keine Flyer verfügbar')
         else:
             available = _('{} Flyer verfügbar').format(self.available_flyers)

@@ -1,9 +1,0 @@
-{% extends "createsubscription/select_depot.html" %}
-{% load i18n %}
-{% load juntagrico.config %}
-
-{% block label %}
-    {% blocktrans trimmed with v_depot=vocabulary.depot v_subscription=vocabulary.subscription %}
-        Wähle 1 {{ v_depot }} als {{ v_subscription }}-Abholort aus.
-    {% endblocktrans %}
-{% endblock %}

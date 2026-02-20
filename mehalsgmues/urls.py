@@ -3,9 +3,8 @@
 from django.urls import path, include
 from django.contrib import admin
 
-from mehalsgmues.views import api, home_widgets, other, sso, stats
+from mehalsgmues.views import api, other, sso, stats
 from juntagrico_calendar import views as juntagrico_calendar
-from juntagrico import views_subscription as juntagrico_subscription
 
 urlpatterns = [
     # jobs view override
@@ -14,20 +13,19 @@ urlpatterns = [
     # member list override
     path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
 
+    # activity profile overrides
+    path('', include('activityprofile.url_overrides')),
+
+    path('', include('juntagrico_mailqueue.urls')),
+
     path('', include('antispam.urls')),
 
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),
     path('', include('juntagrico.urls')),
-    path('', include('juntagrico_mailqueue.urls')),
-    path('', include('juntagrico_pg.urls')),
-    # path('', include('juntagrico_crowdfunding.urls')),
     path('', include('juntagrico_calendar.urls')),
     path('', include('juntagrico_assignment_request.urls')),
     path('impersonate/', include('impersonate.urls')),
-
-    # polling
-    # path('', include('juntagrico_polling.urls')),
 
     # API
     path('wochenmail/', api.api_emaillist, name='mag-mailing-list'),
@@ -58,17 +56,14 @@ urlpatterns = [
     # activity profile url
     path('activityprofile/', include('activityprofile.urls')),
 
-    # keep working
-    path('my/order/share/', juntagrico_subscription.manage_shares, name='share-order'),
-
     # ajax
     path('ajax/notifications', other.ajax_notifications, name='ajax-notifications'),
 
     # godparents
-    path('', include('juntagrico_godparent.urls')),
+    path('jgo/', include('juntagrico_godparent.urls')),
 
     # price change
-    path('2024/', home_widgets.price_change, name='price_change'),
+    # path('2024/', home_widgets.price_change, name='price_change'),
 
     # map job
     path('map/', include('mapjob.urls')),

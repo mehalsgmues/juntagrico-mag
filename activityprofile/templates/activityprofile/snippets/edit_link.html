@@ -1,21 +1,5 @@
-{% if edit_url.strip or add_url.strip %}
-    <div class="row mb-3">
-        <div class="col-md-12">
-            {% if edit_url.strip %}
-                <a href="{{ edit_url }}" class="edit">
-                    <i class="fas fa-pen">
-                    </i>
-                    Bearbeiten
-                </a>
-            {% endif %}
-            {% if add_url.strip %}
-                <br/>
-                <a href="{{ add_url }}" class="edit">
-                    <i class="fas fa-plus">
-                    </i>
-                    Steckbrief erstellen
-                </a>
-            {% endif %}
-        </div>
-    </div>
+{% if edit_url.strip %}
+    <a href="{{ edit_url }}" class="edit">
+        <i class="bi bi-pencil-square"></i>
+    </a>
 {% endif %}

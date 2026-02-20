@@ -1,38 +1,19 @@
-import datetime
-
-from juntagrico.dao.depotdao import DepotDao
-from juntagrico.dao.listmessagedao import ListMessageDao
-from juntagrico.dao.subscriptionproductdao import SubscriptionProductDao
-from juntagrico.entity.depot import Tour, Depot
-from juntagrico.entity.subs import Subscription
+from juntagrico.entity.depot import Depot
 from juntagrico.mailer import adminnotification
 from juntagrico.util.pdf import render_to_pdf_storage
 
 from mehalsgmues.utils.utils import get_delivery_dates_of_month
 
 
-def mag_depot_list_generation(*args, days=0, force=False, **options):
-    if not force:
-        return
-
-    date = datetime.date.today() + datetime.timedelta(days)
-
+def mag_depot_list_generation(context):
     # patch for delivery dates
     def delivery_dates(depot):
-        return list(get_delivery_dates_of_month(depot.weekday - 1, date))
+        return list(get_delivery_dates_of_month(depot.weekday - 1, context['date']))
 
     Depot.delivery_dates = delivery_dates
-    products = SubscriptionProductDao.get_all_for_depot_list()
 
-    depot_dict = {
-        'subscriptions': Subscription.objects.active_on(date).order_by('primary_member__first_name',
-                                                                       'primary_member__last_name'),
-        'products': products,
-        'count_sizes': sum(p.sizes_for_depot_list.count() for p in products),
-        'depots': DepotDao.all_depots_for_list(),
-        'date': date,
-        'tours': Tour.objects.filter(visible_on_list=True),
-        'messages': ListMessageDao.all_active()
+    depot_dict = context | {
+        'count_sizes': sum(p.sizes.on_depot_list().count() for p in context['products']),
     }
 
     render_to_pdf_storage('exports/depotlist.html',
