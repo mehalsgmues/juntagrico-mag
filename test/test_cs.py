@@ -64,7 +64,7 @@ class CreateSubscriptionTests(JuntagricoTestCase):
             Permission.objects.get(codename='notified_on_share_creation'))
         self.member.user.save()
         member_email = 'test@user.com'
-        response = self.client.post(reverse('pre-signup'), {'email': member_email,})
+        response = self.client.post(reverse('pre-signup'), {'email': member_email})
         email_token = EmailToken.objects.first()
         self.assertRedirects(response, reverse('confirm-email', args=[email_token.uid]))
         response = self.client.post(reverse('confirm-email', args=[email_token.uid]), {

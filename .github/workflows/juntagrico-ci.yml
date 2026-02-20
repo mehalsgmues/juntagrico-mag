@@ -34,6 +34,7 @@ jobs:
         ruff check --preview mehalsgmues
         ruff check --preview activityprofile
         ruff check --preview mapjob
+        ruff check --preview antispam
         ruff check --preview test
     - name: run tests
       run: |
