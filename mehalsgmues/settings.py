@@ -31,7 +31,7 @@ SERVER_EMAIL = "server@mehalsgmues.ch"
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'juntagrico.apps.JuntagricoAdminConfig',
     'mehalsgmues',
     'juntagrico_assignment_request',
     'juntagrico_godparent',
