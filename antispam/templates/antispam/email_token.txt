@@ -7,11 +7,12 @@ Hallo
 
 Danke für dein Interesse an {{ c_organisation_name }}.
 
-Klicke auf diesen Link, um mit der Anmeldung fortzufahren:
+Gib folgenden Code im Anmeldefenster ein:
+{{ token }}
+
+Oder klicke auf diesen Link, um mit der Anmeldung fortzufahren:
 {{ serverurl }}{% url 'member-create' uid token %}
 
-Oder gib folgenden Code im Anmeldefenster ein:
-{{ token }}
 
 Falls du dich nicht bei {{ c_organisation_name }} angemeldet hast, kannst du dieses E-Mail ignorieren.
 
