@@ -7,18 +7,18 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
-from juntagrico.util.sessions import SessionObjectManager, CSSessionObject
-from juntagrico.views_subscription import SignupView
+from django.utils.module_loading import import_string
+from juntagrico.config import Config
+from juntagrico.views_subscription import MemberSignupView
 
 from antispam.forms import EmailForm, ConfirmForm, EmailFormWithCaptcha
 from antispam.models import EmailToken, Access
 
 
 def signup(request):
-    som = SessionObjectManager(request, 'create_subscription', CSSessionObject)
-    session_object = som.data
-    if session_object.edit:
-        return HttpResponseRedirect(reverse('signup', args=('continue', '0')))
+    signup_manager = import_string(Config.signup_manager())(request)
+    if signup_manager.get('main_member'):
+        return HttpResponseRedirect(reverse('signup', args=('continue', '0'), query=request.GET))
 
     # clean old accesses
     old_access = Access.objects.filter(last_access__lt=timezone.now() - datetime.timedelta(1))
@@ -64,15 +64,16 @@ def confirm(request, uid):
     })
 
 
-class ProtectedMemberSignupView(SignupView):
+class ProtectedMemberSignupView(MemberSignupView):
     def __init__(self):
         super().__init__()
         self.email_token = None
+        self.initial_email = None
 
     def dispatch(self, request, *args, **kwargs):
-        som = SessionObjectManager(request, 'create_subscription', CSSessionObject)
-        session_object = som.data
-        if session_object.edit:
+        signup_manager = import_string(Config.signup_manager())(request)
+        if main_member := signup_manager.get('main_member'):
+            self.initial_email = main_member['email']
             return super().dispatch(request, *args, **kwargs)
 
         uid = kwargs.pop('uid')
@@ -86,12 +87,13 @@ class ProtectedMemberSignupView(SignupView):
         else:
             self.email_token.consumed = now
             self.email_token.save()
+        self.initial_email = self.email_token.email
         return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
         initial = super().get_initial()
-        if self.email_token:
-            return initial | {'email': self.email_token.email}
+        if self.initial_email:
+            return initial | {'email': self.initial_email}
         return initial
 
     def get_form(self, form_class=None):
