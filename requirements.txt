@@ -5,7 +5,7 @@ git+https://github.com/juntagrico/juntagrico-godparent.git@2.0
 #juntagrico-assignment-request~=1.7.0
 git+https://github.com/juntagrico/juntagrico-assignment-request.git@2.0
 # juntagrico-calendar~=1.6.0
-git+https://github.com/mehalsgmues/juntagrico_calendar@new
+git+https://github.com/mehalsgmues/juntagrico_calendar@mag
 psycopg>=3.1.8
 # activity profile
 emoji~=2.15.0
@@ -20,3 +20,4 @@ git+https://github.com/pascalfree/django-url-shortener
 django-admin-shell~=2.0.1
 requests~=2.32.5
 IMAPClient~=3.1.0
+django-simple-captcha~=0.6.0

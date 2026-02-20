@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('', include('juntagrico_mailqueue.urls')),
 
+    path('', include('antispam.urls')),
+
     path('admin/shell/', include('django_admin_shell.urls')),
     path('admin/', admin.site.urls),
     path('', include('juntagrico.urls')),
@@ -64,5 +66,5 @@ urlpatterns = [
     # path('2024/', home_widgets.price_change, name='price_change'),
 
     # map job
-    path('map/', include('mapjob.urls'))
+    path('map/', include('mapjob.urls')),
 ]

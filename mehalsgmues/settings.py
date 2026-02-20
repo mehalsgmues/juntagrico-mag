@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'juntagrico_godparent',
     'mapjob',
     'activityprofile',
+    'antispam',
     # 'juntagrico_crowdfunding',
     'juntagrico_calendar',
     # 'juntagrico_polling',
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_select2',
     'djrichtextfield',
+    'captcha',
 ]
 
 ROOT_URLCONF = 'mehalsgmues.urls'
@@ -313,6 +315,11 @@ BIKE_CODE_HOST = os.environ.get('BIKE_CODE_HOST')
 BIKE_CODE_USERNAME = os.environ.get('BIKE_CODE_USERNAME')
 BIKE_CODE_PASSWORD = os.environ.get('BIKE_CODE_PASSWORD')
 BIKE_CODE_JOB_TYPE = 22
+
+SUSPICIOUS = []
+for key in os.environ.keys():
+    if key.startswith('MAG_SUSPICIOUS'):
+        SUSPICIOUS.append(os.environ.get(key))
 
 WP_USER = os.environ.get('WP_USER')
 WP_PASSWORD = os.environ.get('WP_PASSWORD')

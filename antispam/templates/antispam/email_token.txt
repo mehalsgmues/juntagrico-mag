@@ -1,0 +1,20 @@
+{% extends "mails/email.txt" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block content %}
+{% config "organisation_name" as c_organisation_name %}
+Hallo
+
+Danke für dein Interesse an {{ c_organisation_name }}.
+
+Gib folgenden Code im Anmeldefenster ein:
+{{ token }}
+
+Oder klicke auf diesen Link, um mit der Anmeldung fortzufahren:
+{{ serverurl }}{% url 'member-create' uid token %}
+
+
+Falls du dich nicht bei {{ c_organisation_name }} angemeldet hast, kannst du dieses E-Mail ignorieren.
+
+Bis bald und liebe Grüsse die {{ c_organisation_name }}-Betriebsgruppe
+{% endblock %}
