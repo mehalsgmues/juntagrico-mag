@@ -21,10 +21,12 @@
 
 {% block styles %}
     {{ block.super }}
-    {% include 'mapjob/snippets/map/styles.html' %}
+    {% if job|is_map_job %}
+        {% include 'mapjob/snippets/map/styles.html' %}
+    {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block time %}
     {% if not job|is_map_job %}
         {{ block.super }}
     {% else %}
@@ -34,64 +36,11 @@
                 auf der Karte
             </a>.
         </div>
-        {% vocabulary "assignment_pl" as v_assignment_pl %}
-        {% if job.free_slots > -1 %}
-        <div class="row pb-4">
-            <div class="col-md-3">
-                {% trans "Status" %}:
-            </div>
-            <div class="col-md-5">
-                {% spaceless %}
-                {% for i in slotrange %}
-                    {% if i < number_of_participants %}
-                        <img class="" src="{% images "single_full" %}"title="{{ number_of_participants }} von {{ job.slots }} gebucht"/>
-                    {% else %}
-                        <img class="" src="{% images "single_empty" %}"title="{{ number_of_participants }} von {{ job.slots }} gebucht"/>
-                    {% endif %}
-                {% endfor %}
-                {% endspaceless %}
-            </div>
-        </div>
-        {% endif %}
-        {% if job.multiplier > 1 %}
-            <div class="row pb-4">
-                <div class="col-md-3">
-                    {% vocabulary "assignment_pl" %}:
-                </div>
-                <div class="col-md-5">
-                    {% blocktrans trimmed with jm=job.multiplier %}
-                    Du erhälst für diesen Job das {{ jm }} fachen an {{ v_assignment_pl }} gutgeschrieben.
-                    {% endblocktrans %}
-                </div>
-            </div>
-        {% elif job.multiplier == 0 %}
-            <div class="row pb-4">
-                <div class="col-md-3">
-                    {% vocabulary "assignment_pl" %}:
-                </div>
-                <div class="col-md-5">
-                    {% blocktrans trimmed with jm=job.multiplier %}
-                    Du erhältst für diesen Event keine {{ v_assignment_pl }} gutgeschrieben.
-                    {% endblocktrans %}
-                </div>
-            </div>
-        {% endif %}
+    {% endif %}
+{% endblock %}
 
-        {% if job.extras.strip %}
-            <div class="row pb-4">
-                <div class="col-md-3">
-                    {% trans "Extras" %}:
-                </div>
-                <div class="col-md-5">
-                    {% for extra in job.empty_per_job_extras %}
-                        {{ extra.extra_type.display_empty|safe }}
-                    {% endfor %}
-                    {% for extra in job.full_per_job_extras %}
-                        {{ extra.extra_type.display_full|safe }}
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+{% block location %}
+    {% if job|is_map_job %}
         <div class="row pb-4">
             <div class="col-md-3">
                 {% trans "Gebiet" %}:
@@ -100,60 +49,19 @@
                 <div class="map-container"></div>
             </div>
         </div>
-        <div class="row pb-4">
-            <div class="col-md-3">
-                {% trans "Beschreibung" %}:
-            </div>
-            <div class="col-md-5">
-                <div class="job-description">{{ job.type.description|richtext|safe }}</div>
-                {% if job.additional_description %}
-                    <div class="job-additional-description">{{ job.additional_description|richtext|safe }}</div>
-                {% endif %}
-            </div>
-        </div>
-        {% if can_contact %}
-            <div class="row pb-4">
-                <div class="col-md-3">
-                    {% trans "Kontaktieren" %}:
-                </div>
-                <div class="col-md-5">
-                    <form id="email-sender" action="{% url 'mail-job' %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="recipients" id="recipients" value="{{ emails }}"/>
-                        <input type="hidden" name="recipients_count" id="recipients_count"value="{{ number_of_participants }}"/>
-                        <button type="submit" class="btn" id="send-email">
-                            {% trans "Allen eine Email senden" %}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        {% endif %}
-        <div class="row pb-4">
-            <div class="col-md-3">
-                {% trans "Dabei sind" %}:
-            </div>
-            <div class="col-md-5">
-                {% if number_of_participants == 0 and not job_fully_booked %}
-                    {% trans "Noch niemand" %} 🥺
-                {% else %}
-                    <ul>
-                        {% for participant, url, reachable, extras in participants_summary %}
-                            <li>
-                                {{ participant }}
-                                {{ extras|safe }}
-                                {% if reachable %}
-                                    &nbsp;
-                                    <a href="{{ url }}">
-                                        <i class="far fa-envelope">
-                                        </i>
-                                    </a>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-        </div>
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block contact %}
+    {% if not job|is_map_job %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block subscribe %}
+    {% if job|is_map_job %}
         {% if job.free_slots > 0 %}
             <div class="row">
                 <div class="col-md-3">
@@ -164,6 +72,8 @@
                 </div>
             </div>
         {% endif %}
+    {% else %}
+        {{ block.super }}
     {% endif %}
 {% endblock %}
 
@@ -173,5 +83,8 @@
     {% else %}
         {{ job.geo_area|json_script:'map_job_data' }}
         {% include 'mapjob/snippets/map/scripts.html' %}
+        {{ job.location|json_script:'location_data' }}
+        <script type="text/javascript" src="{% static 'juntagrico/external/require.min.js' %}" data-main="{% static 'juntagrico/js/initJob.js' %}">
+        </script>
     {% endif %}
 {% endblock %}
