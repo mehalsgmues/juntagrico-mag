@@ -34,6 +34,13 @@
 {% block time %}
     {% if not job|is_map_job %}
         {{ block.super }}
+    {% else %}
+        <div class="alert alert-warning">
+            Weitere Flyergebiete findest du
+            <a href="{% url "mapjob:member_dashboard" %}" style="text-decoration: underline">
+                auf der Karte
+            </a>.
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -81,5 +88,8 @@
     {% else %}
         {{ job.geo_area|json_script:'map_job_data' }}
         {% include 'mapjob/snippets/map/scripts.html' %}
+        {{ job.location|json_script:'location_data' }}
+        <script type="text/javascript" src="{% static 'juntagrico/external/require.min.js' %}" data-main="{% static 'juntagrico/js/initJob.js' %}">
+        </script>
     {% endif %}
 {% endblock %}
