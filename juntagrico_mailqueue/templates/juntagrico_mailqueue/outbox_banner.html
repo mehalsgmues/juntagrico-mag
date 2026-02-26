@@ -3,15 +3,17 @@
     <div class="alert alert-info">
         {% blocktrans %}Es sind noch {{ emails }} E-Mail(s) an {{ recipients }} Person(en) im Postausgang.{% endblocktrans %}
         <br>
-        <a href="{% url 'mail-queue' %}" class="btn btn-info">
-            {% if can_see_outbox %}
-                <i class="fa-solid fa-inbox"></i>
+        {% if can_see_outbox %}
+            <a href="{% url 'mail-queue' %}" class="btn btn-info">
+                <i class="bi bi-inbox"></i>
                 {% trans "Postausgang öffnen" %}
-            {% else %}
-                <i class="fa-solid fa-rotate"></i>
+            </a>
+        {% else %}
+            <a href="" class="btn btn-info">
+                <i class="bi bi-arrow-clockwise"></i>
                 {% trans "Aktualisieren" %}
-            {% endif %}
-        </a>
+            </a>
+        {% endif %}
     </div>
 {% elif show_empty %}
     <div class="alert alert-success">

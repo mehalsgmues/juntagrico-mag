@@ -1,21 +1,12 @@
-{% load formatter %}
 {% load admin_links %}
 {% load i18n %}
-{% load util %}
-{% load juntagrico.config %}
+{% load formatter %}
 
-{% edit_link %}
+<h4 id="profile">
+    {% trans "Steckbrief" %}
+    {% edit_link %}
+</h4>
 
-<div class="row mb-3">
-    <div class="col-md-3">
-        <strong>{% trans "Beschreibung" %}</strong>
-    </div>
-    <div class="col-md-9">
-        {{ area.description|safe }}
-    </div>
-</div>
-
-{% if area.profile %}
 <div class="row mb-3">
     <div class="col-md-3">
         <strong>Lernen / Vorkenntnisse</strong>
@@ -34,20 +25,7 @@
         {{ area.profile.introduction|safe }}
     </div>
 </div>
-{% endif %}
 
-<div class="row mb-4">
-    <div class="col-md-3">
-        <strong>{% trans "Kontaktperson" %}</strong>
-    </div>
-    <div class="col-md-9">
-        {% for contact in area.contacts %}
-            {{ contact.to_html }}
-        {% endfor %}
-    </div>
-</div>
-
-{% if area.profile %}
 <div class="row mb-3">
     <div class="col-md-3">
         <strong>Gruppe / Mitglieder</strong>
@@ -125,10 +103,6 @@
         {% if area.profile.group_email %}E-Mail: <a href="mailto:{{ area.profile.group_email }}">{{ area.profile.group_email }}</a><br>{% endif %}
         {% if area.profile.chat %}Chat: <a href="{{ area.profile.chat }}" target="_blank">{{ area.profile.chat }}</a><br>{% endif %}
         {% if area.profile.other_communication %}{{ area.profile.other_communication|urlize }}<br>{% endif %}
-        <span class="switch switch-sm">
-            <input type="checkbox" class="switch" value="{{ area.id }}" id="area{{ area.id }}" name="area{{ area.id }}" {% if area_checked %}checked="checked"{% endif %}/>
-            <label for="area{{ area.id }}">{% trans "Mitmachen" %}</label>
-        </span><br>
         {% if jobslink %}<a href="{% url 'area' area.id %}">Aktuelle Einsätze</a>{% endif %}
     </div>
 </div>
@@ -145,22 +119,8 @@
 <div class="row mb-3">
     <div class="col-md-12">
         <a href="{% url 'activityprofile:print' area.id %}" target="_blank">
-            <i class="fas fa-download">
-            </i>
+            <i class="bi bi-download"></i>
             Steckbrief als PDF herunterladen
         </a>
     </div>
 </div>
-
-{% else %}
-    <div class="row mb-3 no-gutters">
-        <div class="offset-md-3 col-md-9">
-            <span class="switch switch-sm">
-                <input type="checkbox" class="switch" value="{{ area.id }}" id="area{{ area.id }}" name="area{{ area.id }}" {% if area_checked %}checked="checked"{% endif %}/>
-                <label for="area{{ area.id }}">
-                    {% trans "Mitmachen" %}
-                </label>
-            </span>
-        </div>
-    </div>
-{% endif %}

@@ -16,7 +16,7 @@ def close_ul(string):
 def demojize(string):
     """ skip emoji support for now, as the supported font types do not support color emojis
     """
-    return emoji.get_emoji_regexp().sub('', string)
+    return emoji.replace_emoji(string, replace='')
 
 
 @register.filter

@@ -4,9 +4,9 @@ from django.db.models import Count, Q
 from import_export.fields import Field
 from import_export.widgets import DecimalWidget
 from juntagrico.config import Config
-from juntagrico.dao.subscriptiontypedao import SubscriptionTypeDao
 
 from juntagrico.entity.subs import Subscription
+from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.resources import ModQuerysetModelResource
 from juntagrico.util.models import q_isactive
 
@@ -21,7 +21,7 @@ class SubscriptionByTypeResource(ModQuerysetModelResource):
         # create a field for each type dynamically
         self.fields.update({
             'EAT ' + subs_type.display_name: Field(f'type{subs_type.id}_count', 'EAT ' + str(subs_type.price))
-            for subs_type in SubscriptionTypeDao.get_all()
+            for subs_type in SubscriptionType.objects.all()
         })
 
     def dehydrate_members(self, subscription):
@@ -29,7 +29,7 @@ class SubscriptionByTypeResource(ModQuerysetModelResource):
 
     def update_queryset(self, queryset):
         today = datetime.date.today()
-        for subs_type in SubscriptionTypeDao.get_all():
+        for subs_type in SubscriptionType.objects.all():
             queryset = queryset.annotate(**{
                 f'type{subs_type.id}_count':
                     Count('parts', filter=Q(parts__type__id=subs_type.id) & Q(parts__activation_date__lte=today) & ~Q(

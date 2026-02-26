@@ -10,6 +10,7 @@ from antispam.models import EmailToken
 
 
 class CreateSubscriptionTests(JuntagricoTestCase):
+    with_extra_subs = False
 
     def testSignupLogout(self):
         self.client.force_login(self.member.user)
@@ -63,7 +64,7 @@ class CreateSubscriptionTests(JuntagricoTestCase):
             Permission.objects.get(codename='notified_on_share_creation'))
         self.member.user.save()
         member_email = 'test@user.com'
-        response = self.client.post(reverse('pre-signup'), {'email': member_email,})
+        response = self.client.post(reverse('pre-signup'), {'email': member_email})
         email_token = EmailToken.objects.first()
         self.assertRedirects(response, reverse('confirm-email', args=[email_token.uid]))
         response = self.client.post(reverse('confirm-email', args=[email_token.uid]), {
@@ -89,6 +90,7 @@ class CreateSubscriptionTests(JuntagricoTestCase):
                 'amount[1]': 1,
                 'amount[2]': 0,
                 'amount[3]': 0,
+                'amount[4]': 0,
             }
         )
         self.assertRedirects(response, reverse('cs-depot'))
@@ -107,10 +109,16 @@ class CreateSubscriptionTests(JuntagricoTestCase):
             }
         )
         self.assertRedirects(response, reverse('cs-co-members'))
+        response = self.client.get(
+            reverse('cs-co-members'), {
+                'next': '1'
+            }
+        )
+        self.assertRedirects(response, reverse('cs-shares'))
         response = self.client.post(
             reverse('cs-shares'),
             {
-                'shares_mainmember': 1
+                'of_member': 1
             }
         )
         self.assertRedirects(response, reverse('cs-summary'))

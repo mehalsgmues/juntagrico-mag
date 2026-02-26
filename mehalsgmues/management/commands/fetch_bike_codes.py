@@ -87,7 +87,7 @@ class Command(BaseCommand):
                         recuringjob__type__id=settings.BIKE_CODE_JOB_TYPE, time__date=date)
                     if jobs:
                         AccessInformation.objects.update_or_create(
-                            job=jobs[0], name=vehicle, defaults= {"code": code})
+                            job=jobs[0], name=vehicle, defaults={"code": code})
 
     def find_substring_between_tags(self, text, start_tag, end_tag):
         start_index = text.find(start_tag)
