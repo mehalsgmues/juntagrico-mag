@@ -5,24 +5,29 @@
 {% load juntagrico.common %}
 {% load juntagrico.config %}
 
-{% block page_title %}
-    {% if not job|is_map_job %}
-        {{ block.super }}
-    {% else %}
-        <h3>
-        {{ job }}
-        <a href="{% url 'admin:mapjob_mapjob_change' job.id %}" class="edit">
-            <i class="fas fa-pen">
-            </i>
-        </a>
-        </h3>
-    {% endif %}
-{% endblock %}
-
 {% block styles %}
     {{ block.super }}
     {% if job|is_map_job %}
         {% include 'mapjob/snippets/map/styles.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block admin_actions %}
+    {% if job|is_map_job %}
+        {% if edit_url.strip or can_copy or can_cancel %}
+            <div class="row pb-4">
+                <div class="col-12">
+                    {% if edit_url.strip %}
+                        <a href="{{ edit_url }}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square mr-1"></i>
+                            {% trans "Einsatz bearbeiten" %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        {{ block.super }}
     {% endif %}
 {% endblock %}
 

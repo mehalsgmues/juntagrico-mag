@@ -1,7 +1,5 @@
-Juntagrico Template for cookiecutter
-===========
-
-This template sets up a project.
+Juntagrico for meh als gmües
+============================
 
 # Setting up locally to test setup
 

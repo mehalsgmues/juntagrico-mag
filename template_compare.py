@@ -9,7 +9,7 @@ from functools import cached_property
 logger = logging.getLogger(__name__)
 
 
-MERGE_TOOL = "pycharm-professional", "merge"
+MERGE_TOOL = "pycharm", "merge"
 TEMPLATE_DIFF_DIR = ".template_diff"
 
 
@@ -309,7 +309,7 @@ def main(template_path):
         template_dir="/juntagrico/templates"
     )
     project.set_base_version("mag")
-    project.set_new_version("releases/1.7")
+    project.set_new_version("releases/2.0")
 
     project.compare("mehalsgmues/templates", template_path)
 

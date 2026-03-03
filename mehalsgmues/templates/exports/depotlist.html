@@ -28,7 +28,7 @@
                 <td class="checkboxcol top-border left-border"> </td>
             {% endfor %}
             {% for product in products %}
-                {% for size in product.sizes_for_depot_list %}
+                {% for size in product.sizes.on_depot_list %}
                     <td class="top-border left-border">{{ sub|parts_by_size:size|active_on:date|count|default:'' }}</td>
                 {% empty %}
                     <td class="top-border left-border"></td>

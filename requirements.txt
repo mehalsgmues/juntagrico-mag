@@ -1,22 +1,21 @@
-vobject
-gunicorn==23.0.0
-# juntagrico~=1.7.0
-git+https://github.com/juntagrico/juntagrico@mag
-juntagrico-pg~=1.7.0
-juntagrico-godparent~=1.7.0
-juntagrico-assignment-request~=1.7.0
+gunicorn~=25.1.0
+juntagrico~=2.0.0
+juntagrico-godparent~=2.0.0
+juntagrico-assignment-request~=2.0.0
 # juntagrico-calendar~=1.6.0
-git+https://github.com/mehalsgmues/juntagrico_calendar@mag
+git+https://github.com/mehalsgmues/juntagrico_calendar@new
 psycopg>=3.1.8
-openpyxl==3.0.7
-django-oauth-toolkit~=2.2.0
-django-cors-headers==3.11.0
-django-ckeditor==6.1.0
-django-qr-code==2.2.0
-django-multiselectfield==0.1.12
-emoji==1.4.2
+# activity profile
+emoji~=2.15.0
+django-qr-code~=4.2.0
+django-multiselectfield==1.0.1
+# custom
+vobject~=0.9.9
+openpyxl~=3.1.5
+django-oauth-toolkit~=3.2.0
+django-cors-headers~=4.9.0
 git+https://github.com/pascalfree/django-url-shortener
-requests==2.32.5
-django-admin-shell==2.0.1
-IMAPClient==3.0.1
+django-admin-shell~=2.0.1
+requests~=2.32.5
+IMAPClient~=3.1.0
 django-simple-captcha~=0.6.0
