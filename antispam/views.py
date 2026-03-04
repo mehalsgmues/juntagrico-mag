@@ -104,4 +104,5 @@ class ProtectedMemberSignupView(MemberSignupView):
     def form_valid(self, form):
         if self.email_token:
             self.email_token.delete()
+        form.data = form.data.dict() | {'email': self.initial_email}
         return super().form_valid(form)
