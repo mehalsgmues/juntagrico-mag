@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% include 'management_lists/snippets/email_sender.html' %}
+
 <div class="row mb-3">
     <div class="col-md-12">
         <table id="filter-table" class="list table map-job-table" style="width: 100%">
@@ -23,7 +23,7 @@
                             </a>
                             {% if can_send_mails or perms.juntagrico.can_send_mails %}
                             {% for member in job.participants %}
-                                <span class="email d-none" data-id="{{ member.id }}"></span>
+                                <span class="email d-none" data-id="{{ member.id }}">{{ member.email }}</span>
                             {% endfor %}
                         {% endif %}
                         </td>

@@ -17,10 +17,20 @@ function onEachFeature(feature, layer) {
 }
 
 $(document).ready(function () {
-    let table = $("#filter-table.map-job-table").DataTable({"ordering": true});
-    if (table) {
-        $("#email-sender").EmailButton(table)
-    }
+    $("#filter-table.map-job-table").DataTable({
+        "ordering": true,
+        layout: {
+            topStart: {
+                rowClass: 'row justify-content-between table-sticky-row',
+                features: {
+                    buttons: [
+                        email_button('/email/write', false),
+                        email_copy_button()
+                    ]
+                }
+            }
+        }
+    });
 
     $('.map-container').each(function () {
         let map = L.map(this, {fullscreenControl: true}).setView([48, 2], 11);
