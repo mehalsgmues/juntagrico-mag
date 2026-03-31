@@ -81,9 +81,9 @@ def get_eat_stats(active_parts):
     eat_equivalent_price = float(getattr(settings, "EAT_EQUIVALENT_PRICE", "1200") or "1200")
     num_eat_equivalent = float(active_parts.filter(
             type__price__gt=0).aggregate(total=Sum('type__price'))['total']) / eat_equivalent_price
-    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "270") or "270")
+    target_num_eat = int(getattr(settings, "SUBSCRIPTION_PROGRESS_GOAL", "250") or "250")
     missing_eat = target_num_eat - num_eat_equivalent
-    rotation = 1.8 * min(max(num_eat_equivalent - 200, 0), 100)
+    rotation = 1.8 * min(max(num_eat_equivalent - 180, 0), 100)
     return {
         'eat_equivalent_price': eat_equivalent_price,
         'target_num_eat': target_num_eat,
