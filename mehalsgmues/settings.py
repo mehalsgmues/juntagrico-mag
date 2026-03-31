@@ -293,7 +293,7 @@ DJRICHTEXTFIELD_CONFIG = defaults.richtextfield_config(LANGUAGE_CODE, mailer={
 })
 
 # The goal for the number of standard subscrition equivalents
-SUBSCRIPTION_PROGRESS_GOAL = 270
+SUBSCRIPTION_PROGRESS_GOAL = 250
 # The price of one standard subscription
 EAT_EQUIVALENT_PRICE = 1200.0
 
