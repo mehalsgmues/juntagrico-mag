@@ -1,0 +1,32 @@
+{% extends "juntagrico/subscription/create/select_start_date.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+
+{% block title %}
+    {% trans "Wähle dein Startdatum" %}
+{% endblock %}
+
+{% block intro %}
+    {% trans "Info:" %}
+    {% if start_date.month == 4 %}
+        <p>
+            {% blocktrans trimmed with sd=start_date|date:"d.m.Y" v_subscription=vocabulary.subscription %}
+                Der {{ v_subscription }} startet in der Regel mit unserem Geschäftsjahr.
+                Das nächste Startdatum wäre also der <b>{{ sd }}</b>.
+            {% endblocktrans %}
+        </p>
+    {% else %}
+        <p>
+            {% blocktrans trimmed with sd=start_date|date:"d.m.Y" %}
+                Sofern wir noch Platz haben, kannst du normalerweise schon auf Anfang nächsten Monat einsteigen.
+                Das nächste Startdatum wäre also der <b>{{ sd }}</b>.
+            {% endblocktrans %}
+        </p>
+    {% endif %}
+    <p>
+        {% blocktrans %}
+            Hier kannst du angeben, auf wann du frühestens starten möchtest.
+            Wir informieren dich, sobald dein definitives Startdatum bekannt ist.
+        {% endblocktrans %}
+    </p>
+{% endblock %}

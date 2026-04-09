@@ -2,7 +2,9 @@
 """
 from django.urls import path, include
 from django.contrib import admin
+from juntagrico.views import create_subscription
 
+from mehalsgmues.utils.overrides import next_start_date
 from mehalsgmues.views import api, other, sso, stats
 from juntagrico_calendar import views as juntagrico_calendar
 
@@ -12,6 +14,10 @@ urlpatterns = [
 
     # member list override
     path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
+
+    # start date override
+    path('subscription/create/start/', create_subscription.select_start_date,
+         {'default': next_start_date}, name='cs-start'),
 
     # activity profile overrides
     path('', include('activityprofile.url_overrides')),
