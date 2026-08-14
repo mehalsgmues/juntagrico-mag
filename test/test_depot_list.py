@@ -2,7 +2,6 @@ from copy import deepcopy
 
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.test import override_settings
 from django.urls import reverse
 from juntagrico.tests import JuntagricoTestCase
@@ -14,10 +13,18 @@ class InvalidTemplateVariable(str):
 
 
 @override_settings(STORAGES={
-    'default': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
+    'internal': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
     'staticfiles': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
 })
 class DepotListTests(JuntagricoTestCase):
+    def setUp(self):
+        super().setUp()
+        from juntagrico.util.pdf import internal_storage
+        self.internal_storage = internal_storage
+        self.internal_storage.delete('depotlist.pdf')
+        self.internal_storage.delete('depot_overview.pdf')
+        self.internal_storage.delete('amount_overview.pdf')
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -32,15 +39,10 @@ class DepotListTests(JuntagricoTestCase):
         cls.override.disable()  # Restore settings
         super().tearDownClass()
 
-    def tearDown(self):
-        default_storage.delete('depotlist.pdf')
-        default_storage.delete('depot_overview.pdf')
-        default_storage.delete('amount_overview.pdf')
-
     def assertListsCreated(self):
-        self.assertTrue(default_storage.exists('depotlist.pdf'))
-        self.assertTrue(default_storage.exists('depot_overview.pdf'))
-        self.assertTrue(default_storage.exists('amount_overview.pdf'))
+        self.assertTrue(self.internal_storage.exists('depotlist.pdf'))
+        self.assertTrue(self.internal_storage.exists('depot_overview.pdf'))
+        self.assertTrue(self.internal_storage.exists('amount_overview.pdf'))
 
     def testManualDepotListGeneration(self):
         url = reverse('lists')
@@ -51,24 +53,25 @@ class DepotListTests(JuntagricoTestCase):
         }
         # member has no access
         self.assertPost(url, data, code=200)
-        self.assertFalse(default_storage.exists('depotlist.pdf'))
+        self.assertFalse(self.internal_storage.exists('depotlist.pdf'))
         # admin has access
         self.assertPost(url, data, code=302, member=self.admin)
         self.assertListsCreated()
 
 
 @override_settings(STORAGES={
-    'default': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
+    'internal': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
     'staticfiles': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
 })
 class DepotListAccessTests(JuntagricoTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUp(self):
+        super().setUp()
+        from juntagrico.util.pdf import internal_storage
+        self.internal_storage = internal_storage
         # create empty dummy files
-        default_storage.save('depotlist.pdf', ContentFile(''))
-        default_storage.save('depot_overview.pdf', ContentFile(''))
-        default_storage.save('amount_overview.pdf', ContentFile(''))
+        self.internal_storage.save('depotlist.pdf', ContentFile(''))
+        self.internal_storage.save('depot_overview.pdf', ContentFile(''))
+        self.internal_storage.save('amount_overview.pdf', ContentFile(''))
 
     def testViewDepotList(self):
         url = reverse('lists')
