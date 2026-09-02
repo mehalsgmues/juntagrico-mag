@@ -1,9 +1,9 @@
-from django.core.files.storage import default_storage
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.urls import reverse
 from djrichtextfield.models import RichTextField
 from juntagrico.config import Config
+from juntagrico.util.pdf import internal_storage
 from multiselectfield import MultiSelectField
 from django.db import models
 from juntagrico.entity.jobs import ActivityArea
@@ -125,4 +125,4 @@ def clear_pdf(sender, instance, **kwargs):
                 return
             instance = instance.profile
         if isinstance(instance, ActivityProfile):
-            default_storage.delete(instance.output_file)
+            internal_storage.delete(instance.output_file)
