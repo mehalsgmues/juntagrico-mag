@@ -148,7 +148,7 @@ CORS_ORIGIN_WHITELIST = (
     'https://cloud.mehalsgmues.ch',
 )
 
-EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
+# EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('JUNTAGRICO_EMAIL_USER')
@@ -231,7 +231,7 @@ BUSINESS_REGULATIONS = "https://mehalsgmues.ch/betriebsreglement"
 BYLAWS = "https://mehalsgmues.ch/statutenpdf"
 FAQ_DOC = "https://mehalsgmues.ch/mitmachen/faq"
 STYLES = {'static': ['css/mehalsgmues.css']}
-SCRIPTS = {'template': 'mag/js/page.html'}
+# SCRIPTS = {'template': 'mag/js/page.html'}  # 2026-09-02 was needed for Forum link
 EXTRA_SUB_INFO = ""
 ACTIVITY_AREA_INFO = ""
 ENABLE_SHARES = True
@@ -331,3 +331,6 @@ if os.environ.get('JUNTAGRICO_STAGING') == '1':
     ALLOWED_HOSTS = ['mehalsgmues-staging.juntagrico.science']
     # E-Mails Deaktivieren
     EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
+
+WHITELIST_EMAILS = ['.*']
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
