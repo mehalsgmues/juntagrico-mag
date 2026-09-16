@@ -331,6 +331,3 @@ if os.environ.get('JUNTAGRICO_STAGING') == '1':
     ALLOWED_HOSTS = ['mehalsgmues-staging.juntagrico.science']
     # E-Mails Deaktivieren
     EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
-
-WHITELIST_EMAILS = ['.*']
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
