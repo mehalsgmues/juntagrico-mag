@@ -148,7 +148,7 @@ CORS_ORIGIN_WHITELIST = (
     'https://cloud.mehalsgmues.ch',
 )
 
-# EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
+EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('JUNTAGRICO_EMAIL_USER')
