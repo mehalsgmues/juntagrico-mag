@@ -114,6 +114,8 @@ class CreateSubscriptionTests(JuntagricoTestCase):
                 'next': '1'
             }
         )
+        self.assertRedirects(response, reverse('cs-membership'))
+        response = self.client.post(reverse('cs-membership'), {'membership': 1})
         self.assertRedirects(response, reverse('cs-shares'))
         response = self.client.post(
             reverse('cs-shares'),
