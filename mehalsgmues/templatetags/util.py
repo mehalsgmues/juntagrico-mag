@@ -1,7 +1,8 @@
 from django import template
-from juntagrico.entity.jobs import RecuringJob
-
+from django.contrib.admin.sites import site as default_site
 from django.conf import settings
+
+from juntagrico.entity.jobs import RecuringJob
 
 register = template.Library()
 
@@ -46,3 +47,13 @@ def telegram_link():
     if group_id:
         return f"https://t.me/joinchat/{group_id}"
     return "#"
+
+
+@register.simple_tag(takes_context=True)
+def can_open_admin(context):
+    request = context.get("request")
+    if request is None:
+        return False
+
+    site = default_site
+    return site.has_permission(request)
