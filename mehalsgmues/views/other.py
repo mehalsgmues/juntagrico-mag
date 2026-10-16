@@ -58,13 +58,3 @@ def ajax_notifications(request):
     if notifications is None:
         notifications = u"\u00A0"
     return HttpResponse(notifications)
-
-
-class MemberActiveView(MemberView):
-    title = 'Alle Mitglieder'
-
-    def get_queryset(self):
-        self.queryset = Member.objects.exclude(share=None).filter(
-            Q(share__termination_date__gte=date.today()) | Q(share__termination_date__isnull=True)
-        ).distinct
-        return super().get_queryset()
