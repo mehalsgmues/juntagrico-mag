@@ -17,7 +17,7 @@ DEBUG = os.environ.get("JUNTAGRICO_DEBUG", 'True') == 'True'
 SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
 
 if not DEBUG:
-    ALLOWED_HOSTS = ['.mehalsgmues.ch']
+    ALLOWED_HOSTS = ['.mehalsgmues.ch', 'mehalsgmues.juntagrico.app']
 
 
 # Admin Settings
