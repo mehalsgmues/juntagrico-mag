@@ -6,6 +6,7 @@ from juntagrico.entity.jobs import RecuringJob, Assignment
 from django.utils.translation import gettext_lazy as _
 from juntagrico.entity.location import Location
 from juntagrico.util.signals import set_old_state
+from polymorphic.managers import PolymorphicManager
 
 from mapjob.querysets import MapJobQueryset
 
@@ -43,7 +44,7 @@ class MapJob(RecuringJob):
     progress = models.CharField(_('Fortschritt'), max_length=2, choices=Progress.choices, default=Progress.OPEN)
     used_flyers = models.PositiveSmallIntegerField(_('Verteilte Flyer'), default=0)
 
-    objects = MapJobQueryset.as_manager()
+    objects = PolymorphicManager.from_queryset(MapJobQueryset)()
 
     def start_time(self):
         # start is always in the future.

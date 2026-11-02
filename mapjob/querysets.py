@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from django.db import models
 from django.db.models import Count, Q, F
 from django.utils import timezone
+from polymorphic.query import PolymorphicQuerySet
 
 
-class MapJobQueryset(models.QuerySet):
+class MapJobQueryset(PolymorphicQuerySet):
     def of_member(self, member):
         return self.filter(assignment__member=member).distinct()
 
