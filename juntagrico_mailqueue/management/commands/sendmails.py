@@ -26,7 +26,7 @@ class Command(BaseCommand):
                     handler.level = logging.DEBUG
 
         try:
-            with Lock('juntagrico_mailqueue.lock') as lock:
+            with Lock('/tmp/juntagrico_mailqueue.lock') as lock:
                 # TODO: add option to use another backend
                 with mail.get_connection(backend='django.core.mail.backends.smtp.EmailBackend') as connection:
                     count = 0
