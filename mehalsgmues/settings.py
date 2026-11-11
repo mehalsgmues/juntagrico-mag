@@ -139,7 +139,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
-    'django.contrib.sites.middleware.CurrentSiteMiddleware'
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
@@ -185,7 +186,10 @@ STORAGES = {
 
 LOCALE_PATHS = ('locale',)
 
+allow_impersonate = defaults.allow_group('impersonators')
+
 IMPERSONATE = {
+    'CUSTOM_ALLOW': 'mehalsgmues.settings.allow_impersonate',
     'REDIRECT_URL': '/my/profile',
     'URI_EXCLUSIONS': [],
 }
