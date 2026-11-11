@@ -9,6 +9,15 @@
 {% endblock %}
 
 {% block content %}
+    {% if job_type %}
+    <div class="row pb-2">
+        <div class="col-md-12">
+            <a href="{% url 'mapjob:edit_map_by_type' job_type.id %}" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i> {% trans "Flächen bearbeiten" %}
+            </a>
+        </div>
+    </div>
+    {% endif %}
     {% include 'mapjob/snippets/map/container.html' %}
     {% include 'mapjob/snippets/admin/table.html' %}
 {% endblock %}
