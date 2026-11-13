@@ -90,7 +90,7 @@ def create_map_job(request):
         slots=data.get('slots', 1),
         infinite_slots=False,
         # time is required, but the actual start time of a MapJob is always computed (see MapJob.start_time)
-        time=timezone.now() + timezone.timedelta(hours=1),
+        time=timezone.now() - timezone.timedelta(days=1),
     )
     return JsonResponse({'success': True, 'job_id': job.id, 'name': name})
 
