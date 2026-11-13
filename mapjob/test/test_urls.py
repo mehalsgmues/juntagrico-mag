@@ -251,3 +251,80 @@ class MapJobTests(JuntagricoTestCase):
     def test_import(self):
         self.assertGet(reverse('mapjob:import'), member=self.admin)
         self.assertGet(reverse('mapjob:select_entries'), code=302, member=self.admin)
+
+    def test_edit_map_template_includes_leaflet_draw(self):
+        """The edit map template should load Leaflet.draw CSS and JS from static files."""
+        self.client.force_login(self.admin.user)
+        response = self.client.get(reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id]))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('leaflet-draw', content)
+
+    def test_edit_map_context_contains_map_job_data(self):
+        """The edit map view should pass map_job_data in the context."""
+        self.client.force_login(self.admin.user)
+        response = self.client.get(reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('map_job_data', response.context)
+        self.assertIn('job_type', response.context)
+
+    def test_edit_map_excludes_canceled_jobs(self):
+        """Canceled MapJobs should not appear in the edit map GeoJSON data."""
+        self.client.force_login(self.admin.user)
+        response = self.client.get(reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id]))
+        self.assertEqual(response.status_code, 200)
+        job_ids = [area['properties']['id'] for area in response.context['map_job_data']['data']]
+        self.assertNotIn(self.map_job_canceled.id, job_ids)
+
+    def test_edit_map_unauthenticated_redirects(self):
+        """Unauthenticated users should be redirected from the edit map view."""
+        response = self.client.get(reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+    def test_edit_map_no_permission_redirects(self):
+        """Users without mapjob.change_mapjob permission should be redirected."""
+        self.client.force_login(self.member2.user)
+        response = self.client.get(reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+    def test_save_geo_area_unauthenticated(self):
+        """Unauthenticated users should be redirected from save_geo_area."""
+        response = self.client.post(
+            reverse('mapjob:save_geo_area', args=[self.map_job1.id]),
+            data=json.dumps({'geo_area': {}, 'name': 'Test'}),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_create_map_job_unauthenticated(self):
+        """Unauthenticated users should be redirected from create_map_job."""
+        response = self.client.post(
+            reverse('mapjob:create_map_job'),
+            data=json.dumps({'geo_area': {}, 'type_id': self.map_job_type.id}),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_delete_map_job_unauthenticated(self):
+        """Unauthenticated users should be redirected from delete_map_job."""
+        response = self.client.post(reverse('mapjob:delete_map_job', args=[self.map_job1.id]))
+        self.assertEqual(response.status_code, 302)
+
+    def test_cancel_map_job_unauthenticated(self):
+        """Unauthenticated users should be redirected from cancel_map_job."""
+        response = self.client.post(reverse('mapjob:cancel_map_job', args=[self.map_job1.id]))
+        self.assertEqual(response.status_code, 302)
+
+    def test_import_unauthenticated(self):
+        """Unauthenticated users should be redirected from CSV import views."""
+        response = self.client.get(reverse('mapjob:import'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+    def test_admin_map_unauthenticated(self):
+        """Unauthenticated users should be redirected from admin map views."""
+        response = self.client.get(reverse('mapjob:map'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)

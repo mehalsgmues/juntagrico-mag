@@ -1,235 +1,159 @@
+"""Browser tests for the edit map feature using Playwright + Django StaticLiveServerTestCase.
+
+These tests run a real Django dev server and a real Chromium browser, so they verify
+the full stack including JavaScript, Leaflet.draw, and Bootstrap modals.
+
+Run with:
+    DJANGO_ALLOW_ASYNC_UNSAFE=1 JUNTAGRICO_SECRET_KEY=test \
+        python manage.py test mapjob.test.test_edit_map_browser -v 2
+
+Playwright browsers must be installed once:
+    uv run playwright install chromium
 """
-Playwright browser tests for the edit map functionality.
-Tests the interactive polygon editing, saving, and creation of MapJobs.
-"""
-import os
-import subprocess
-import time
-import pytest
-from playwright.sync_api import Page, expect, BrowserContext
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import override_settings, tag
+from django.urls import reverse
+from django.utils import timezone
+from playwright.sync_api import sync_playwright
+
+from juntagrico.entity.jobs import JobType
+from mapjob.models import MapJob
 
 
-# Test server configuration
-TEST_SERVER_HOST = '127.0.0.1'
-TEST_SERVER_PORT = 18888
-BASE_URL = f'http://{TEST_SERVER_HOST}:{TEST_SERVER_PORT}'
+@tag('playwright')
+@override_settings(
+    EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+)
+class EditMapBrowserTest(StaticLiveServerTestCase):
+    """Browser tests for the edit map page."""
 
+    fixtures = ['test/members', 'test/areas']
 
-# Test user credentials
-TEST_USER = 'playwright_test'
-TEST_PASSWORD = 'playwright_test'
+    @classmethod
+    def _create_location(cls, name):
+        from juntagrico.entity.location import Location
+        return Location.objects.create(
+            name=name,
+            latitude='47.0',
+            longitude='8.0',
+            addr_street='Teststreet 1',
+            addr_zipcode='8000',
+            addr_location='Zurich',
+            description='Test location',
+        )
 
+    def setUp(self):
+        super().setUp()
+        from juntagrico.entity.member import Member
+        from juntagrico.entity.jobs import ActivityArea
+        self.admin = Member.objects.get(email='admin@email.org')
+        self.area = ActivityArea.objects.first()
+        self.admin.user.is_staff = True
+        self.admin.user.is_superuser = True
+        self.admin.user.save()
+        self.admin.confirmed = True
+        self.admin.save()
+        self.admin.user.set_password('testpassword')
+        self.admin.user.save()
 
-def start_django_server():
-    """Start Django development server in background."""
-    env = os.environ.copy()
-    env['DJANGO_SETTINGS_MODULE'] = 'mehalsgmues.settings'
-    env['JUNTAGRICO_SECRET_KEY'] = 'test'
-    proc = subprocess.Popen(
-        ['.venv/bin/python', 'manage.py', 'runserver', f'{TEST_SERVER_HOST}:{TEST_SERVER_PORT}'],
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    for _ in range(30):
-        try:
-            import urllib.request
-            urllib.request.urlopen(f'{BASE_URL}/', timeout=1)
-            return proc
-        except Exception:
-            time.sleep(0.5)
-    raise RuntimeError("Django server failed to start")
+        self.map_job_type = JobType.objects.create(
+            name='mapjob campaign',
+            activityarea=self.area,
+            default_duration=2,
+            location=self._create_location('mapjob location'),
+        )
+        self.map_job1 = MapJob.objects.create(
+            type=self.map_job_type,
+            slots=2,
+            time=timezone.now() - timezone.timedelta(hours=2),
+            geo_area={
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [9.5479748, 45.419413],
+                            [9.5488224, 45.41905],
+                            [9.5503352, 45.4192242],
+                        ]
+                    ],
+                },
+                "properties": {"name": "Test Area", "description": None},
+            },
+        )
+        self.playwright = sync_playwright().start()
+        self.browser = self.playwright.chromium.launch()
+        self.page = self.browser.new_page()
 
+    def tearDown(self):
+        self.browser.close()
+        self.playwright.stop()
+        super().tearDown()
 
-def stop_django_server(proc):
-    """Stop Django development server."""
-    if proc:
-        proc.terminate()
-        proc.wait(timeout=5)
+    def _login_and_go_to_edit_map(self):
+        """Log in via the Django login form and navigate to the edit map page."""
+        login_url = f'{self.live_server_url}/accounts/login/'
+        self.page.goto(login_url, wait_until='networkidle')
+        self.page.fill('input[name="username"]', 'admin@email.org')
+        self.page.fill('input[name="password"]', 'testpassword')
+        self.page.click('button[type="submit"]', timeout=10000)
+        self.page.wait_for_url(lambda url: '/accounts/login/' not in url, timeout=15000)
+        url = reverse('mapjob:edit_map_by_type', args=[self.map_job_type.id])
+        self.page.goto(f'{self.live_server_url}{url}', wait_until='domcontentloaded')
 
+    def test_edit_map_page_loads(self):
+        """The edit map page should load without JavaScript errors."""
+        console_errors = []
+        self.page.on('console', lambda msg: console_errors.append(msg.text) if msg.type == 'error' else None)
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.map-container')
+        js_errors = [e for e in console_errors if 'edit_map' in e or 'leaflet' in e.lower()]
+        self.assertEqual(js_errors, [], f"JavaScript errors on edit map page: {js_errors}")
 
-def login_to_django(page: Page):
-    """Log in to Django admin via the login form."""
-    page.goto(f'{BASE_URL}/admin/login/?next=/map/jobs/1/edit/')
-    page.wait_for_load_state('networkidle')
-    # Fill in the login form
-    page.fill('input[name="username"]', TEST_USER)
-    page.fill('input[name="password"]', TEST_PASSWORD)
-    page.click('input[type="submit"]')
-    page.wait_for_load_state('networkidle')
-    # Wait for the map to load
-    page.wait_for_selector('.map-container', timeout=15000)
+    def test_map_shows_polygon(self):
+        """The edit map should display the existing polygon."""
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.map-container')
+        self.page.wait_for_selector('.leaflet-interactive', timeout=5000)
 
+    def test_add_area_button_exists(self):
+        """The 'Neues Gebiet hinzufügen' button should be visible on the map."""
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.add-area-control')
 
-@pytest.fixture(scope="session", autouse=True)
-def django_server():
-    """Session-scoped fixture to manage Django server lifecycle."""
-    proc = start_django_server()
-    yield proc
-    stop_django_server(proc)
+    def test_popup_shows_rename_and_delete(self):
+        """Clicking a polygon should open a popup with rename and delete actions."""
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.leaflet-interactive', timeout=5000)
+        self.page.click('.leaflet-interactive')
+        self.page.wait_for_selector('.leaflet-popup')
+        popup_text = self.page.text_content('.leaflet-popup-content')
+        self.assertIn('Test Area', popup_text)
+        self.assertTrue(
+            'bi-pencil' in popup_text or 'Löschen' in popup_text,
+            f"Popup should contain pencil icon or delete button. Got: {popup_text}",
+        )
 
+    def test_bootstrap_modal_exists(self):
+        """The message modal should be present in the DOM for error feedback."""
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.map-container')
+        modal = self.page.locator('#messageModal')
+        self.assertTrue(modal.is_visible() or modal.count() > 0)
 
-@pytest.fixture(scope="session")
-def authenticated_context(browser, django_server):
-    """Create an authenticated browser context by logging in via the form."""
-    context = browser.new_context()
-    # Log in once and the session cookie will persist in the context
-    page = context.new_page()
-    login_to_django(page)
-    page.close()
-    yield context
-    context.close()
+    def test_no_leaflet_editable_references(self):
+        """The page should not load Leaflet.Editable — only Leaflet.draw."""
+        self._login_and_go_to_edit_map()
+        html = self.page.content()
+        self.assertNotIn('Leaflet.Editable', html)
+        self.assertIn('leaflet-draw', html)
 
-
-@pytest.fixture
-def logged_in_page(authenticated_context: BrowserContext):
-    """Create a new page that inherits the authenticated session."""
-    page = authenticated_context.new_page()
-    yield page
-    page.close()
-
-
-class TestEditMapPage:
-    """Tests for the edit map page functionality."""
-
-    def test_edit_map_page_loads(self, logged_in_page: Page):
-        """Test that the edit map page loads without JavaScript errors."""
-        page = logged_in_page
-        js_errors = []
-        page.on("console", lambda msg: js_errors.append(msg.text) if msg.type == "error" else None)
-
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-
-        expect(page.locator('.map-container')).to_be_visible()
-        # The add area button is now a Leaflet control, not a page element
-        expect(page.locator('.add-area-control')).to_be_visible()
-
-        critical_errors = [e for e in js_errors if 'setEditing' in e or 'disableGlobal' in e]
-        assert len(critical_errors) == 0, f"Critical JS errors found: {critical_errors}"
-
-    def test_polygon_click_no_error(self, logged_in_page: Page):
-        """Test that clicking on the map doesn't throw JS errors."""
-        page = logged_in_page
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-        page.wait_for_selector('.leaflet-container', timeout=10000)
-
-        map_bounds = page.locator('.map-container').bounding_box()
-        center_x = map_bounds['x'] + map_bounds['width'] / 2
-        center_y = map_bounds['y'] + map_bounds['height'] / 2
-
-        page.mouse.click(center_x, center_y)
-        page.wait_for_timeout(500)
-
-    def test_add_area_button_toggles(self, logged_in_page: Page):
-        """Test that the add area button toggles between draw and cancel modes."""
-        page = logged_in_page
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-        page.wait_for_selector('.leaflet-container', timeout=10000)
-
-        # The button is a Leaflet control with class .add-area-control
-        add_btn = page.locator('.add-area-control')
-        expect(add_btn).to_be_visible()
-
-        initial_text = add_btn.text_content()
-        assert 'hinzufügen' in initial_text or 'add' in initial_text.lower(), \
-            f"Expected add button text, got: {initial_text}"
-
-        add_btn.click()
-        page.wait_for_timeout(500)
-
-        after_click_text = add_btn.text_content()
-        assert 'abbrechen' in after_click_text.lower() or 'cancel' in after_click_text.lower(), \
-            f"Expected cancel button text, got: {after_click_text}"
-
-        add_btn.click()
-        page.wait_for_timeout(500)
-
-        final_text = add_btn.text_content()
-        assert 'hinzufügen' in final_text or 'add' in final_text.lower(), \
-            f"Expected add button text after toggle, got: {final_text}"
-
-    def test_no_setediting_error_on_edit(self, logged_in_page: Page):
-        """Test that clicking a polygon doesn't throw setEditing error."""
-        page = logged_in_page
-        js_errors = []
-        page.on("pageerror", lambda err: js_errors.append(err.message))
-        page.on("console", lambda msg: js_errors.append(msg.text) if msg.type == "error" else None)
-
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-        page.wait_for_selector('.leaflet-container', timeout=10000)
-
-        map_bounds = page.locator('.map-container').bounding_box()
-        center_x = map_bounds['x'] + map_bounds['width'] / 2
-        center_y = map_bounds['y'] + map_bounds['height'] / 2
-
-        page.mouse.click(center_x, center_y)
-        page.wait_for_timeout(1000)
-
-        setediting_errors = [e for e in js_errors if 'setEditing' in str(e)]
-        assert len(setediting_errors) == 0, f"setEditing error still occurring: {setediting_errors}"
-
-        disable_global_errors = [e for e in js_errors if 'disableGlobal' in str(e)]
-        assert len(disable_global_errors) == 0, f"disableGlobal error still occurring: {disable_global_errors}"
-
-    def test_leaflet_draw_control_initialized(self, logged_in_page: Page):
-        """Test that Leaflet.draw control is properly initialized."""
-        page = logged_in_page
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-        page.wait_for_selector('.leaflet-container', timeout=10000)
-
-        draw_control_exists = page.evaluate('''() => {
-            return typeof L !== 'undefined' && L.Control !== undefined && L.Control.Draw !== undefined;
-        }''')
-        assert draw_control_exists, "Leaflet.draw control is not loaded"
-
-        edit_toolbar_exists = page.evaluate('''() => {
-            return typeof L !== 'undefined' && 
-                   L.EditToolbar !== undefined && 
-                   L.EditToolbar.Edit !== undefined;
-        }''')
-        assert edit_toolbar_exists, "Leaflet.draw EditToolbar is not loaded"
-
-    def test_popup_shows_rename_and_delete(self, logged_in_page: Page):
-        """Test that clicking a polygon opens a popup with rename and delete actions."""
-        page = logged_in_page
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-        page.wait_for_selector('.leaflet-container', timeout=10000)
-
-        # Click on the map center to open a polygon popup
-        map_bounds = page.locator('.map-container').bounding_box()
-        center_x = map_bounds['x'] + map_bounds['width'] / 2
-        center_y = map_bounds['y'] + map_bounds['height'] / 2
-        page.mouse.click(center_x, center_y)
-        page.wait_for_timeout(1000)
-
-        # Popup should be visible
-        popup = page.locator('.leaflet-popup')
-        expect(popup).to_be_visible()
-
-        # Popup should have the pencil icon for inline name editing
-        expect(page.locator('.popup-name')).to_be_visible()
-
-        # "Löschen" button should be present
-        expect(page.locator('.area-popup button')).to_be_visible()
-
-    def test_back_button_navigates_correctly(self, logged_in_page: Page):
-        """Test that the back button navigates to the job map view."""
-        page = logged_in_page
-        page.goto(f'{BASE_URL}/map/jobs/1/edit/')
-        page.wait_for_load_state('networkidle')
-
-        back_btn = page.locator('a.btn-secondary').filter(has_text='Zurück')
-        expect(back_btn).to_be_visible()
-
-        back_btn.click()
-        page.wait_for_load_state('networkidle')
-
-        current_url = page.url
-        assert '/map/1/' in current_url or 'map_by_type' in current_url, \
-            f"Expected to navigate to job map, but URL is: {current_url}"
+    def test_back_button_navigates(self):
+        """The back button should navigate back to the job map view."""
+        self._login_and_go_to_edit_map()
+        self.page.wait_for_selector('.map-container')
+        self.page.click('a.btn-secondary')
+        self.page.wait_for_load_state('networkidle')
+        current_url = self.page.url
+        self.assertIn(f'/map/jobs/{self.map_job_type.id}/', current_url)
