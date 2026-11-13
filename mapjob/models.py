@@ -77,5 +77,11 @@ class MapJob(RecuringJob):
         verbose_name_plural = _('Job mit Fläche')
 
 
+def _set_reminder_sent(sender, instance, **kwargs):
+    """MapJobs should never receive reminder emails."""
+    instance.reminder_sent = True
+
+
 signals.post_init.connect(set_old_state, sender=MapJob)
 signals.post_save.connect(set_old_state, sender=MapJob)
+signals.pre_save.connect(_set_reminder_sent, sender=MapJob)
