@@ -59,8 +59,7 @@ jobs:
         pip install --upgrade -r requirements-local.txt
     - name: Install Playwright browsers
       run: |
-        playwright install chromium
-        apt-get update && apt-get install -y libnss3 libatk-bridge2.0-0 libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1
+        playwright install --with-deps chromium
     - name: Prepare database and static files
       run: |
         python -m django makemigrations --noinput
