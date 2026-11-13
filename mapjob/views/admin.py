@@ -4,8 +4,10 @@ from django.urls import reverse
 from django.contrib import messages
 from ..forms import CSVUploadForm, CSVSelectionForm
 from ..models import MapJob
+from .permissions import mapjob_change_required
 
 
+@mapjob_change_required
 def import_csv(request):
     if request.method == 'POST':
         form = CSVUploadForm(request.POST, request.FILES)
@@ -21,6 +23,7 @@ def import_csv(request):
     return render(request, 'admin/mapjob/mapjob/import_csv.html', {'form': form})
 
 
+@mapjob_change_required
 def select_entries(request):
     csv_data = request.session.get('csv_data', [])
 

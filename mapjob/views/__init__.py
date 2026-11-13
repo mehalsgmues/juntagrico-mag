@@ -1,4 +1,3 @@
-from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -9,6 +8,7 @@ from mapjob.models import MapJob
 from mapjob.utils import get_map_data
 
 from . import member, admin  # noqa: F401
+from .permissions import mapjob_change_required
 
 
 def _render_job_map(request, jobs, job_type=None):
@@ -19,18 +19,18 @@ def _render_job_map(request, jobs, job_type=None):
     })
 
 
-@staff_member_required
+@mapjob_change_required
 def job_map(request, days=60):
     return _render_job_map(request, MapJob.objects.recent(days).not_canceled())
 
 
-@staff_member_required
+@mapjob_change_required
 def job_map_by_type(request, type_id):
     job_type = get_object_or_404(JobType, id=type_id)
     return _render_job_map(request, MapJob.objects.filter(type=type_id).not_canceled(), job_type)
 
 
-@method_decorator(staff_member_required, name="dispatch")
+@method_decorator(mapjob_change_required, name="dispatch")
 class JobMapsListView(ListView):
     queryset = JobType.objects.filter(recuringjob__mapjob__isnull=False).distinct()
     template_name = "mapjob/mapjobtype_list.html"

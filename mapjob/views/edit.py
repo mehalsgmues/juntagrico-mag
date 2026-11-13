@@ -1,6 +1,5 @@
 import json
 
-from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -10,6 +9,7 @@ from juntagrico.entity.jobs import JobType
 
 from mapjob.models import MapJob
 from mapjob.utils import get_map_data
+from .permissions import mapjob_change_required
 
 
 def _error(message, status=400):
@@ -40,7 +40,7 @@ def _load_json(request):
     return data if isinstance(data, dict) else None
 
 
-@staff_member_required
+@mapjob_change_required
 def edit_map_by_type(request, type_id):
     job_type = get_object_or_404(JobType, id=type_id)
     jobs = MapJob.objects.filter(type=type_id).not_canceled()
@@ -50,7 +50,7 @@ def edit_map_by_type(request, type_id):
     })
 
 
-@staff_member_required
+@mapjob_change_required
 @require_POST
 def save_geo_area(request, job_id):
     """API endpoint to save a modified geo_area for a MapJob."""
@@ -68,7 +68,7 @@ def save_geo_area(request, job_id):
     return JsonResponse({'success': True})
 
 
-@staff_member_required
+@mapjob_change_required
 @require_POST
 def create_map_job(request):
     """API endpoint to create a new MapJob from a drawn polygon."""
@@ -95,7 +95,7 @@ def create_map_job(request):
     return JsonResponse({'success': True, 'job_id': job.id, 'name': name})
 
 
-@staff_member_required
+@mapjob_change_required
 def get_map_job_info(request, job_id):
     """API endpoint to get MapJob info including assignments."""
     job = get_object_or_404(MapJob, id=job_id)
@@ -109,7 +109,7 @@ def get_map_job_info(request, job_id):
     })
 
 
-@staff_member_required
+@mapjob_change_required
 @require_POST
 def delete_map_job(request, job_id):
     """API endpoint to delete a MapJob (only if no assignments exist)."""
@@ -121,7 +121,7 @@ def delete_map_job(request, job_id):
     return JsonResponse({'success': True})
 
 
-@staff_member_required
+@mapjob_change_required
 @require_POST
 def cancel_map_job(request, job_id):
     """API endpoint to cancel (absagen) a MapJob, setting the canceled flag."""
