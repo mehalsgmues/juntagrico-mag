@@ -7,9 +7,6 @@
         {% for mapjobtype in object_list %}
             <li>
                 <a href="{% url 'mapjob:map_by_type' mapjobtype.id %}">{{ mapjobtype.name }}</a>
-                <a href="{% url 'mapjob:edit_map_by_type' mapjobtype.id %}" class="btn btn-sm btn-primary ml-2">
-                    <i class="bi bi-pencil-square"></i> {% trans "Flächen bearbeiten" %}
-                </a>
             </li>
         {% endfor %}
     </ul>
