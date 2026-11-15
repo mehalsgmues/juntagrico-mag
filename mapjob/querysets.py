@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from django.db import models
 from django.db.models import Count, Q, F
 from django.utils import timezone
+from polymorphic.query import PolymorphicQuerySet
 
 
-class MapJobQueryset(models.QuerySet):
+class MapJobQueryset(PolymorphicQuerySet):
     def of_member(self, member):
         return self.filter(assignment__member=member).distinct()
 
@@ -18,7 +18,10 @@ class MapJobQueryset(models.QuerySet):
         return self.filter(time__gte=timezone.now() - timedelta(days=days))
 
     def active(self):
-        return self.exclude(progress=self.model.Progress.COMPLETE)
+        return self.exclude(progress=self.model.Progress.COMPLETE).filter(canceled=False)
+
+    def not_canceled(self):
+        return self.filter(canceled=False)
 
     def need_pickup(self):
         return self.filter(progress__in=[self.model.Progress.OPEN, self.model.Progress.NEED_MORE])

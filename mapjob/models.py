@@ -6,6 +6,7 @@ from juntagrico.entity.jobs import RecuringJob, Assignment
 from django.utils.translation import gettext_lazy as _
 from juntagrico.entity.location import Location
 from juntagrico.util.signals import set_old_state
+from polymorphic.managers import PolymorphicManager
 
 from mapjob.querysets import MapJobQueryset
 
@@ -43,7 +44,7 @@ class MapJob(RecuringJob):
     progress = models.CharField(_('Fortschritt'), max_length=2, choices=Progress.choices, default=Progress.OPEN)
     used_flyers = models.PositiveSmallIntegerField(_('Verteilte Flyer'), default=0)
 
-    objects = MapJobQueryset.as_manager()
+    objects = PolymorphicManager.from_queryset(MapJobQueryset)()
 
     def start_time(self):
         # start is always in the future.
@@ -76,5 +77,11 @@ class MapJob(RecuringJob):
         verbose_name_plural = _('Job mit Fläche')
 
 
+def _set_reminder_sent(sender, instance, **kwargs):
+    """MapJobs should never receive reminder emails."""
+    instance.reminder_sent = True
+
+
 signals.post_init.connect(set_old_state, sender=MapJob)
 signals.post_save.connect(set_old_state, sender=MapJob)
+signals.pre_save.connect(_set_reminder_sent, sender=MapJob)

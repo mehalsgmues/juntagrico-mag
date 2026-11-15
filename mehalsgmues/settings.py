@@ -139,7 +139,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
-    'django.contrib.sites.middleware.CurrentSiteMiddleware'
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
@@ -148,7 +149,7 @@ CORS_ORIGIN_WHITELIST = (
     'https://cloud.mehalsgmues.ch',
 )
 
-# EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
+EMAIL_BACKEND = "juntagrico_mailqueue.backends.EmailBackend"
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('JUNTAGRICO_EMAIL_USER')
@@ -185,7 +186,10 @@ STORAGES = {
 
 LOCALE_PATHS = ('locale',)
 
+allow_impersonate = defaults.allow_group('impersonators')
+
 IMPERSONATE = {
+    'CUSTOM_ALLOW': 'mehalsgmues.settings.allow_impersonate',
     'REDIRECT_URL': '/my/profile',
     'URI_EXCLUSIONS': [],
 }
@@ -331,6 +335,3 @@ if os.environ.get('JUNTAGRICO_STAGING') == '1':
     ALLOWED_HOSTS = ['mehalsgmues-staging.juntagrico.science']
     # E-Mails Deaktivieren
     EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
-
-WHITELIST_EMAILS = ['.*']
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

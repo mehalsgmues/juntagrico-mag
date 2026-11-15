@@ -1,0 +1,12 @@
+{% extends 'juntagrico/menu/admin.html' %}
+{% load i18n %}
+{% block extend %}
+    {% if perms.mapjob.change_mapjob %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'mapjob:list' %}">
+                {% trans "Flyer-Kampagnen" %}
+            </a>
+        </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
