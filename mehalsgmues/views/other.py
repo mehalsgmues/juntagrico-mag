@@ -1,16 +1,12 @@
-from datetime import date
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from juntagrico.config import Config
-from juntagrico.entity.member import Member
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionType
-from juntagrico.views.manage import MemberView
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 

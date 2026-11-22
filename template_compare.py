@@ -65,9 +65,9 @@ class TemplateBlock:
     ENDBLOCK_TAG = tag_regex("endblock")
     SUPER_TAG = re.compile("{{\s*block.super\s*}}")
 
-    def __init__(self, name, content : list = None):
+    def __init__(self, name, content: list = None):
         self.name = name
-        self.content : list[str|TemplateBlock] = content or [""]
+        self.content: list[str | TemplateBlock] = content or [""]
 
     @cached_property
     def blocks(self):
@@ -147,7 +147,7 @@ class TemplateBlock:
                     return True
         return False
 
-    def patch(self, template_file : 'TemplateFile'):
+    def patch(self, template_file: 'TemplateFile'):
         new_block = TemplateBlock(self.name)
         if self.uses_super:
             base_block = self
@@ -155,7 +155,6 @@ class TemplateBlock:
             base_block = template_file.get_block(self.name)
         if base_block is None:
             return None
-        indent = ""
         for content in base_block.content:
             if isinstance(content, str):
                 new_block.content.append(content)
@@ -223,7 +222,7 @@ class TemplateFile:
             headers = TemplateHeader(extends, headers.loads)
         with open(str(target_file), "w") as g:
             g.write(str(headers) + "\n")
-            for name, block in blocks.items():
+            for _name, block in blocks.items():
                 g.write("\n")
                 block = block.patch(self)
                 g.write(block.full_content if block else "[BLOCK NOT FOUND!]")

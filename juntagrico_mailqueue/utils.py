@@ -17,7 +17,7 @@ class AttachmentEncoder(json.JSONEncoder):
 
 class AttachmentDecoder(json.JSONDecoder):
     def __init__(self, *args, **kwargs):
-        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
+        json.JSONDecoder.__init__(self, *args, object_hook=self.object_hook, **kwargs)
 
     def object_hook(self, dictionary):
         if 'AttachmentBytes' in dictionary:
@@ -40,7 +40,7 @@ class Lock:
             if lock_time + datetime.timedelta(minutes=self.expiration) < datetime.datetime.now():
                 self.renew()
             else:
-                raise RuntimeError('sendmails command is already running.')
+                raise RuntimeError('sendmails command is already running.') from None
         return self
 
     def renew(self):
