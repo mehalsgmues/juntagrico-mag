@@ -12,9 +12,6 @@ urlpatterns = [
     # jobs view override
     path('my/jobs', juntagrico_calendar.job_calendar, name='jobs'),
 
-    # member list override
-    path('manage/member/active', other.MemberActiveView.as_view(), name='manage-member-active'),
-
     # start date override
     path('subscription/create/start/', create_subscription.select_start_date,
          {'default': next_start_date}, name='cs-start'),

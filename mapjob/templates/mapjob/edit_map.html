@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block body_extra_classes %}wide-layout{% endblock %}
+
+{% block page_title %}
+    <h3>
+        {% trans "Flächen bearbeiten" %}: {{ job_type.name }}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row pb-2">
+        <div class="col-md-12">
+            <p>
+                <a href="{% url 'mapjob:map_by_type' job_type.id %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> {% trans "Zurück zur Übersicht" %}
+                </a>
+            </p>
+            <p>{% trans "Klicke auf ein Gebiet auf der Karte, um es zu bearbeiten. Ziehe die Punkte, um die Form zu ändern." %}</p>
+        </div>
+    </div>
+    <div class="row pb-4">
+        <div class="col-md-12">
+            <div class="map-container" data-type-id="{{ job_type.id }}"></div>
+        </div>
+    </div>
+    {# Modal for error messages #}
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="messageModalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Modal to confirm deleting or canceling an area. Text and button are set by edit_map.js #}
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmModalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn" id="confirmModalBtn"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+    {% include 'mapjob/snippets/map/styles.html' %}
+    <link rel="stylesheet" href="{% static 'mapjob/external/leaflet-draw/leaflet.draw.css' %}" />
+    <style>
+        .map-container {
+            height: 90vh !important;
+        }
+        .add-area-control {
+            background: #28a745;
+            padding: 6px 12px;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            user-select: none;
+        }
+        .add-area-control:hover {
+            background: #218838;
+        }
+        .add-area-control.drawing-mode {
+            background: #ffc107;
+            color: #212529;
+        }
+        .add-area-control.drawing-mode:hover {
+            background: #e0a800;
+        }
+        /* Hide the edit mode tooltip (e.g. "Drag handles to edit") */
+        .leaflet-draw-tooltip {
+            display: none !important;
+        }
+        /* Popup of an area */
+        .area-popup {
+            min-width: 150px;
+        }
+        .area-popup-members {
+            margin-top: 5px;
+            font-size: 0.85em;
+            color: #666;
+        }
+        /* Inline name editing in popup */
+        .popup-name-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .popup-name-text {
+            font-weight: bold;
+        }
+        .popup-name-pencil {
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: -2px -4px 0 0;
+            border-radius: 3px;
+            color: #6c757d;
+            flex-shrink: 0;
+        }
+        .popup-name-pencil:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+        .popup-name-input {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    {{ map_job_data|json_script:'map_job_data' }}
+    {# Load Leaflet dependencies directly, without mapjob.js which would conflict with edit_map.js #}
+    <script type="text/javascript" src="{% static 'juntagrico/external/leaflet/leaflet.js' %}"></script>
+    <script type="text/javascript" src="{% static 'mapjob/external/leaflet-fullscreen/leaflet.fullscreen.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'mapjob/external/leaflet-draw/leaflet.draw.js' %}"></script>
+    <script type="text/javascript" src="{% static 'mapjob/js/edit_map.js' %}"></script>
+{% endblock %}

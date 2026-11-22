@@ -1,0 +1,14 @@
+{% load juntagrico.common %}
+{% load juntagrico.config %}
+{% load i18n %}
+{% block all %}
+    {% config "share_price_display" as c_share_price %}
+    {% blocktrans trimmed with v_share=vocabulary.share %}
+        1 {{ v_share }} hat einen Wert von {{ c_share_price }}.
+    {% endblocktrans %}
+    <br>
+    {% blocktrans trimmed with v_share_pl=vocabulary.share_pl %}
+        Die {{ v_share_pl }} sind das Kapital, das vor allem zur Finanzierung von Investitionen –
+        zum Beispiel Infrastruktur - verwendet wird.
+    {% endblocktrans %}
+{% endblock %}

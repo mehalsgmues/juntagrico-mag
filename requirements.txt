@@ -1,4 +1,5 @@
-juntagrico~=2.0.9
+gunicorn>=25.1.0
+juntagrico~=2.1.0
 juntagrico-godparent~=2.0.0
 juntagrico-assignment-request~=2.0.0
 # juntagrico-calendar~=1.6.0

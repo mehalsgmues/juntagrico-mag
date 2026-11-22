@@ -24,8 +24,6 @@ class MagTests(JuntagricoTestCase):
         self.assertGet(reverse('mag-mailing-list'), member=self.admin)
         self.assertGet(reverse('mag-contact-list'), 302, self.member2)
         self.assertGet(reverse('mag-contact-list'), member=self.admin)
-        self.assertGet(reverse('manage-member-active'), 403, self.member2)
-        self.assertGet(reverse('manage-member-active'), member=self.admin)
 
     def test_subscription_export(self):
         self.assertGet(reverse('export-subscriptions-mag'), 302, self.member2)

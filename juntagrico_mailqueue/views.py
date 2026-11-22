@@ -14,6 +14,7 @@ def mail_queue(request):
         'emails': EmailMessage.objects.all(),
     })
 
+
 def sent(request):
     # Change success message
     messages.success(request, 'Email sent.')

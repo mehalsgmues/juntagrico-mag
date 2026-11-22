@@ -18,7 +18,10 @@ class MapJobQueryset(PolymorphicQuerySet):
         return self.filter(time__gte=timezone.now() - timedelta(days=days))
 
     def active(self):
-        return self.exclude(progress=self.model.Progress.COMPLETE)
+        return self.exclude(progress=self.model.Progress.COMPLETE).filter(canceled=False)
+
+    def not_canceled(self):
+        return self.filter(canceled=False)
 
     def need_pickup(self):
         return self.filter(progress__in=[self.model.Progress.OPEN, self.model.Progress.NEED_MORE])
